@@ -40,5 +40,4 @@
         }
     }
     init();
-    animate();
 }
