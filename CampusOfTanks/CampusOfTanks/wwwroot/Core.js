@@ -72,8 +72,6 @@
         requestAnimationFrame(render);
         cameraControls.update();
         renderer.render(scene, camera);
-
-        console.log("Render me!")
     }
 
     init();
