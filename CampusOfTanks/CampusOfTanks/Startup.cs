@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CampusofTanks
@@ -19,8 +15,19 @@ namespace CampusofTanks
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            app.UseStaticFiles();
+        { 
+            //Use default, so we don't have to redirect to "/index.html."
+            app.UseDefaultFiles();
+
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".mtl"] = "text/plain";
+            provider.Mappings[".obj"] = "text/plain";
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = provider
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
