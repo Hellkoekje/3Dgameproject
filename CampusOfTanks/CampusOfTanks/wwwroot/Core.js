@@ -1,4 +1,6 @@
-﻿window.onload = function ()
+﻿
+
+window.onload = function ()
 {
     var camera, scene, renderer;
     var cameraControls;
@@ -8,7 +10,7 @@
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
         cameraControls = new THREE.OrbitControls(camera);
         camera.position.z = -4;
-        camera.position.y = 3;
+        camera.position.y = -20;
         camera.position.x = -4;
         camera.rotation.x = 90 * Math.PI / 180;
         cameraControls.update();
@@ -64,9 +66,24 @@
         // Tankje
         var tank = new Tank();
         tank.position.x = 0;
-        tank.position.y = 0;
+        tank.position.y = -20;
         tank.position.z = 0;
         scene.add(tank);
+
+        //ammo tests
+
+         //ei
+        var ei = new Ei(tank);
+        scene.add(ei);
+         //appel
+        var appel = new Appel(tank);
+        scene.add(appel);
+         //monster
+        var monster = new MonsterEnergy(tank);
+        monster.position.x = 0;
+        monster.position.y = 0;
+        monster.position.z = 0;
+        scene.add(monster);
     
         
 
