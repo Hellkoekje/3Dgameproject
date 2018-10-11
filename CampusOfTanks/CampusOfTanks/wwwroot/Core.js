@@ -66,6 +66,8 @@
         tank.position.x = 0;
         tank.position.y = 0;
         tank.position.z = 0;
+        scene.add(tank);
+    
         
 
         
