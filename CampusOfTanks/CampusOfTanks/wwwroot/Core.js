@@ -60,6 +60,9 @@
         ambientlight.intensity = 1;
         scene.add(ambientlight);
 
+        var tank = new Tank();
+        scene.add(tank);
+
         function onWindowResize()
         {
             camera.aspect = window.innerWidth / window.innerHeight;
