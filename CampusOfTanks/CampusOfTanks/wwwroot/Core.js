@@ -60,6 +60,15 @@
         ambientlight.intensity = 1;
         scene.add(ambientlight);
 
+
+        // Tankje
+        var tank = new Tank();
+        tank.position.x = 0;
+        tank.position.y = 0;
+        tank.position.z = 0;
+        
+
+        
         function onWindowResize()
         {
             camera.aspect = window.innerWidth / window.innerHeight;
