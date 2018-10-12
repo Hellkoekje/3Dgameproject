@@ -20,7 +20,7 @@
             objLoader.setPath("Models/Ammo/Ei/");
             objLoader.load("Egg_01.obj", function (object) {
 
-                object.scale.set(0.75, 0.75, 0.75);
+                object.scale.set(0.05, 0.05, 0.05);
                 object.rotation.y = Math.PI / 2;
 
                 selfRef.castShadow = true;

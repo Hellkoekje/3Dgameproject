@@ -26,4 +26,19 @@
             });
         });
     }
+
+
+    fire(ammo) {
+        switch (ammo.type) {
+            case Appel:
+                break;
+            case Ei:
+                break;
+            case MonsterEnergy:
+                break;
+
+            
+        
+        }
+    }
 }

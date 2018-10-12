@@ -20,7 +20,7 @@ class Appel extends Ammo {
             objLoader.setPath("Models/Ammo/Appel/");
             objLoader.load("Apple.obj", function (object) {
                 
-                object.scale.set(0.75, 0.75, 0.75);
+                object.scale.set(0.04, 0.04, 0.04);
                 object.rotation.y = Math.PI / 2;
                
                 selfRef.castShadow = true;
