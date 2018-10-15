@@ -1,12 +1,14 @@
-﻿///<reference path="./../Ammo.js"/>
+﻿///<reference path="./../Projectile.js"/>
 
-class Appel extends Ammo {
+
+
+class Appel extends Projectile {
     constructor(firedFrom) {
         super(firedFrom);
-
+        
         this.init();
     }
-
+    
     init() {
         var selfRef = this;
         var mtlLoader = new THREE.MTLLoader();

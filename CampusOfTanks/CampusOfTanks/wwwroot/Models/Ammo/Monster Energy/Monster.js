@@ -1,4 +1,5 @@
-﻿class MonsterEnergy extends Ammo {
+﻿///<reference path="./../Projectile.js"/>
+class MonsterEnergy extends Projectile {
     constructor(firedFrom = Tank) {
         super(firedFrom);
         this.init();

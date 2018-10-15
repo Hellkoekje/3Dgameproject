@@ -1,4 +1,5 @@
-﻿class Ei extends Ammo {
+﻿///<reference path="./../Projectile.js"/>
+class Ei extends Projectile {
     constructor(firedFrom) {
         super(firedFrom);
         this.type = "ei";

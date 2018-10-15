@@ -5,8 +5,12 @@ window.onload = function ()
     var camera, scene, renderer;
     var cameraControls;
 
+ 
+
+
     function init() 
     {
+
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
         cameraControls = new THREE.OrbitControls(camera);
         camera.position.z = -4;
@@ -14,9 +18,10 @@ window.onload = function ()
         camera.position.x = -4;
         camera.rotation.x = 90 * Math.PI / 180;
         cameraControls.update();
-
-        scene = new THREE.Scene();
-
+        //scene = new THREE.Scene(); <- Replaced by a PhysiJS scene
+        scene = new Physijs.Scene();
+        scene.setGravity(0, -10, 0); // Gravity for our scene.
+        scene.bullets = [];
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight + 5);
@@ -42,12 +47,41 @@ window.onload = function ()
 
         plane.reveiveShadow = true;
         plane.position.x = 0;
-        plane.position.y = -20;
+        plane.position.y = -5;
         plane.position.z = 0;
         plane.rotation.x = -(Math.PI / 2);
         plane.rotation.y = 0;
         plane.rotation.z = 0;
         scene.add(plane);
+
+        //Collision testing walls.
+
+        //arr of meshes our ammo can collide with
+        var collidableMeshList = [];
+
+        //walls that our ammo is going to collide with
+        var wallGeometry = new THREE.CubeGeometry(100, 100, 20, 1, 1, 1);
+        var wallMaterial = new THREE.MeshBasicMaterial({ color: 0x8888ff });
+        var wireMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
+
+        var wall = new THREE.Mesh(wallGeometry, wallMaterial);
+        wall.position.set(100, 50, -100);
+        scene.add(wall);
+        collidableMeshList.push(wall);
+        var wall = new THREE.Mesh(wallGeometry, wireMaterial);
+        wall.position.set(100, 50, -100);
+        scene.add(wall);
+
+        var wall2 = new THREE.Mesh(wallGeometry, wallMaterial);
+        wall2.position.set(-150, 50, 0);
+        wall2.rotation.y = 3.14159 / 2;
+        scene.add(wall2);
+        collidableMeshList.push(wall2);
+        var wall2 = new THREE.Mesh(wallGeometry, wireMaterial);
+        wall2.position.set(-150, 50, 0);
+        wall2.rotation.y = 3.14159 / 2;
+        scene.add(wall2);
+        
 
         //Skybox
         scene.add(
@@ -63,14 +97,14 @@ window.onload = function ()
         scene.add(ambientlight);
 
 
-        // Tankje
+        // Tank object
         var tank = new Tank();
         tank.position.x = 0;
-        tank.position.y = -20;
+        
         tank.position.z = 0;
         scene.add(tank);
 
-        //ammo tests
+     /*   //ammo tests
 
          //ei
         var ei = new Ei(tank);
@@ -84,9 +118,20 @@ window.onload = function ()
         monster.position.y = 0;
         monster.position.z = 0;
         scene.add(monster);
-    
+    */
         
+        document.addEventListener("keydown", function (event) {
+            var keycode = event.which;
+            if (keycode == 32) { //spacebar, knalluh
+                tank.fire();
+                
+            }
+            if (keycode == 82) { // R, switch ammo
+                tank.cycleAmmo();
+            }
 
+
+        }, false);
         
         function onWindowResize()
         {
@@ -97,9 +142,23 @@ window.onload = function ()
     }
 
     function render() {
+
+        for (var index = 0; index < scene.bullets.length; index++) {
+            if (scene.bullets[index] === undefined) continue;
+            if (scene.bullets[index].alive === false) {
+                scene.bullets.splice(index, 1);
+                continue;
+            }
+            scene.bullets[index].position.add(scene.bullets[index].velocity);
+            console.log("updating!");
+        }
+
+
+
         requestAnimationFrame(render);
         cameraControls.update();
         renderer.render(scene, camera);
+
     }
 
     init();
