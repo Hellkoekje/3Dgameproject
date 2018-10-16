@@ -34,8 +34,8 @@ h1{
     width: 100%;
 }
 .pic{
-    height: 60%;
-    width: 60%;
+    height:250px;
+    width: 250px;
     float: left;
     padding: 0px;
 }
@@ -44,8 +44,13 @@ h1{
     height: 150%;
     width: 150%;
 }
+.bar {
+    width:100%;
+    background-color:black;
+    
+}
 input.MyButton {
-    width: 50%;
+    width: 75%;
     cursor: pointer;
     font-weight: bold;
     font-size: 150%;
@@ -65,4 +70,5 @@ input.MyButton:hover {
 
 .button {
     float: left;
+    width: auto;
 }
