@@ -47,6 +47,16 @@
         plane.rotation.z = 0;
         scene.add(plane);
 
+        var grid = new THREE.GridHelper(950, 10);
+        var color = new THREE.Color("rgb(255,0,0)");
+        grid.setColors(color, 0x000000);
+
+        scene.add(grid);
+
+       
+
+        
+
         //Skybox
         scene.add(
             new THREE.Mesh(new THREE.SphereGeometry(750, 12, 12),
@@ -55,10 +65,35 @@
                 }))
         );
 
+        //verlichting
         var ambientlight = new THREE.AmbientLight(0xFFFFFF);
 
-        ambientlight.intensity = 1;
+        ambientlight.intensity = 0.3;
         scene.add(ambientlight);
+
+        var pointLight = new THREE.PointLight(0xFFFFFF, 1, 100);
+
+        pointLight.position.set(10, 10, 10);
+        pointLight.intensity = 1;
+        scene.add(pointLight);
+
+        var sphereSize = 4;
+        var pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
+        scene.add(pointLightHelper);
+        //gui scherm
+        var guiControls = new function () {
+
+            this.RotationX = 0.01;
+            this.RotationZ = 0.01;
+            this.RotationY = 0.01;
+        }
+        var datGUI = new dat.GUI();
+        datGUI.add(guiControls, 'RotationX', 0, 1);
+        datGUI.add(guiControls, 'RotationY', 0, 1);
+        datGUI.add(guiControls, 'RotationZ', 0, 1);
+
+        datGUI.add(guiControls, 'intensity', 0.01, 5).onChange(function (value));
+        pointLight.intensity = value;
 
         function onWindowResize()
         {
