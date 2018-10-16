@@ -21,6 +21,7 @@ namespace CampusofTanks
 
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".mtl"] = "text/plain";
+            provider.Mappings[".dds"] = "image/png";
             provider.Mappings[".obj"] = "text/plain";
 
             app.UseStaticFiles(new StaticFileOptions
