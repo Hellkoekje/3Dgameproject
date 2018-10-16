@@ -1,0 +1,68 @@
+﻿body {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    word-spacing: 2px;
+    color: white;
+    font-weight: 400;
+    text-decoration: none;
+    font-style: italic;
+    font-variant: small-caps;
+    text-transform: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    
+    max-width: 100%;
+    background-size: cover;
+    background-position: center;
+    max-height: 100%;
+    background-repeat: no-repeat;
+    background-image: url("pic/background.jpg");
+}
+
+.container {
+    color: white;
+    text-align: center;
+    font-size: large;
+}
+h1{
+    font-weight: bold;
+    font-size: 400% !important;
+}
+.navbar {
+    width: 100%;
+}
+.pic{
+    height: 60%;
+    width: 60%;
+    float: left;
+    padding: 0px;
+}
+.name{
+    text-align: center;
+    height: 150%;
+    width: 150%;
+}
+input.MyButton {
+    width: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 150%;
+    background: #3366cc;
+    color: #fff;
+    border: 1px solid #3366cc;
+    border-radius: 10px;
+    padding: 5px;
+
+}
+
+input.MyButton:hover {
+    color: #ffff00;
+    background: #000;
+    border: 1px solid #fff;
+}
+
+.button {
+    float: left;
+}

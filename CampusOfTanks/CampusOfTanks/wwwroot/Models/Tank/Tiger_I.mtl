@@ -10,7 +10,6 @@ Ni 1.000000
 d 1.000000
 illum 2
 map_Kd  .\PzVI_Tiger_I_track.png
-
 newmtl Material_1.003
 Ns 96.078431
 Ka 0.000000 0.000000 0.000000
