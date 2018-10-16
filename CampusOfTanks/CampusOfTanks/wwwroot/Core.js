@@ -5,7 +5,6 @@
     var TankDirection = 0;
     var angularspeed = 0.01;
     var TankSpeed = 0.075;
-    var TankBackwardsSpeed = TankSpeed * 0.4;
     var TankIsRotatingLeft = 0;
     var TankIsRotatingRight = 0;
     var TankIsMovingForward = 0;
@@ -82,10 +81,6 @@
         }
     }
 
-    
-
-    
-
     function key_up(event) {
         TankIsMovingForward = 0;
         TankIsMovingBackwards = 0;
@@ -95,11 +90,13 @@
         TankGoesDown = 0;
     }
 
-    function moveForward(speed) {
+    function moveForward(speed)
+    {
         var delta_x = speed * Math.cos(TankDirection);
         var delta_z = speed * Math.sin(TankDirection);
         var new_x = camera.position.x + delta_x;
         var new_z = camera.position.z + delta_z;
+
         camera.position.x = new_x;
         camera.position.z = new_z;
 
@@ -118,17 +115,25 @@
         var plus = 187;
 
         var k = event.keyCode;
-        console.log(k);
-        if (k == A){
-        TankIsRotatingLeft = 1;}
-        if (k == D){
-        TankIsRotatingRight     = 1;}
-        if (k == W){
-        TankIsMovingForward     = 1;}
-        if (k == S) {
-        TankIsMovingBackwards   = 1;}
+        if (k == A)
+        {
+            TankIsRotatingLeft = 1;
+        }
+        else if (k == D)
+        {
+            TankIsRotatingRight = 1;
+        }
+        else if(k == W)
+        {
+            TankIsMovingForward = 1;
+        }
+        else if (k == S)
+        {
+            TankIsMovingBackwards = 1;
+        }
     }
-    function setTankDirection() {
+    function setTankDirection()
+    {
         //direction changed.
         var delta_x = TankSpeed * Math.cos(TankDirection);
         var delta_z = TankSpeed * Math.sin(TankDirection);
@@ -137,6 +142,7 @@
         var new_dz = camera.position.z + delta_z;
         tank.x = new_dx;
         tank.z = new_dz;
+
         camera.lookAt(tank);
     }
 
@@ -151,23 +157,24 @@
             setTankDirection();
             return;
         }
-        if (TankIsMovingForward) { // go forward
+        if (TankIsMovingForward)
+        { // go forward
             moveForward(TankSpeed);
             return;
         }
         if (TankIsMovingBackwards) { // go backwards
-            moveForward(-TankBackwardsSpeed);
+            var speed = -(TankSpeed * 0.4);
+            moveForward(speed);
             return;
         }
 
     }
 
     function render() {
+        UpdateTank();
+
         requestAnimationFrame(render);
         cameraControls.update();
-        //key_down();
-        //key_up();
-        UpdateTank();
         renderer.render(scene, camera);
     }
     
