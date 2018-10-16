@@ -100,8 +100,9 @@ window.onload = function ()
         // Tank object
         var tank = new Tank();
         tank.position.x = 0;
-        
+        tank.rotation.y = 90 * Math.PI / 180;
         tank.position.z = 0;
+        
         scene.add(tank);
 
      /*   //ammo tests
@@ -119,7 +120,7 @@ window.onload = function ()
         monster.position.z = 0;
         scene.add(monster);
     */
-        
+      //key events  
         document.addEventListener("keydown", function (event) {
             var keycode = event.which;
             if (keycode == 32) { //spacebar, knalluh
@@ -128,8 +129,16 @@ window.onload = function ()
             }
             if (keycode == 82) { // R, switch ammo
                 tank.cycleAmmo();
+                
             }
+            if (keycode == 65) { //left -- A
+                tank.rotation.y += Math.PI / 180;
+            }
+            if (keycode == 68) { //right -- D
+                tank.rotation.y -= Math.PI / 180;
+                console.log(tank.sphere.barrelPoint);
 
+            }
 
         }, false);
         
@@ -143,6 +152,7 @@ window.onload = function ()
 
     function render() {
 
+        //iterate over active projectiles, removing them when needed and updating them if not.
         for (var index = 0; index < scene.bullets.length; index++) {
             if (scene.bullets[index] === undefined) continue;
             if (scene.bullets[index].alive === false) {
@@ -150,7 +160,7 @@ window.onload = function ()
                 continue;
             }
             scene.bullets[index].position.add(scene.bullets[index].velocity);
-            console.log("updating!");
+          //  console.log("updating!");
         }
 
 

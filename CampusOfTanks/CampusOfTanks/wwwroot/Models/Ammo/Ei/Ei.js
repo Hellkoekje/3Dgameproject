@@ -4,7 +4,12 @@ class Ei extends Projectile {
         super(firedFrom);
         this.type = "ei";
         this.init();
+        console.log(this.position);
+        //this.position.set(firedFrom.worldToLocal(this.position));
+        console.log(firedFrom.worldToLocal(this.position));
+        this.delay = 2000;
 
+        this.velocity = new THREE.Vector3(-Math.sin(firedFrom.rotation.y) * 2, 0, -Math.cos(firedFrom.rotation.y) * 2);
     }
 
 

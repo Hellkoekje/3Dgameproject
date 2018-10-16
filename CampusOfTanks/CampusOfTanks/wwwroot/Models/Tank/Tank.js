@@ -5,12 +5,24 @@ class Tank extends THREE.Group {
         super();
 
         this.init();
-//default ammo
+        //invisible sphere which is always in front of the barrel of the tank, projectiles use this sphere's matrix to spawn in front of the barrel.
+        //super kut code maar wist niet hoe dit anders moest :/
+        this.sphere = new THREE.Mesh(
+            new THREE.SphereGeometry(0.5, 8, 8),
+            new THREE.MeshBasicMaterial({ transparent: true})
+        );
+        this.add(this.sphere);
+        this.sphere.visible = false;
+        this.sphere.position.set(
+            this.position.x , this.position.y, this.position.z - 35
+        );
+    
+        //default ammo
         this.ammoSelected = 0;
 //ammo types user can cycle through
         this.ammoTypes = ["appel", "ei", "monster"];
         this.position.y = 3;
-        
+        this.canShoot = true;
     }
 
     //load 3d model
@@ -45,14 +57,15 @@ class Tank extends THREE.Group {
     }
 
     fire() {
-        var selfref = this;
-        var projectile;
+        if (this.canShoot) {
+            var selfref = this;
+            var projectile;
 
-        //check the selected ammo, and fire it!
-        switch (this.ammoSelected) {
+            //check the selected ammo, and fire it!
+            switch (this.ammoSelected) {
             case 0:
                 projectile = new Appel(this);
-                
+
                 break;
             case 1:
                 projectile = new Ei(this);
@@ -61,18 +74,26 @@ class Tank extends THREE.Group {
                 projectile = new MonsterEnergy(this);
                 break;
 
-                
+
+            }
+            projectile.applyMatrix(this.sphere.matrixWorld);
+            this.canShoot = false;
+            this.parent.bullets.push(projectile);
             
-        
+            //remove projectile from scene after 10s
+            setTimeout(function() {
+                    projectile.alive = false;
+                    selfref.parent.remove(projectile);
+                    selfref.remove(projectile);
+                },
+                10000);
+
+            //delay next shot by the shootingdelay of the chosen ammo.
+
+            setTimeout(function() {
+                selfref.canShoot = true;
+            },projectile.delay);
+            this.parent.add(projectile);
         }
-        this.parent.bullets.push(projectile);
-        projectile.position.set(this.position.x + 4, this.position.y, this.position.z - 35);
-        projectile.velocity = new THREE.Vector3(-Math.sin(selfref.rotation.y),0,-Math.cos(selfref.rotation.y));
-        setTimeout(function() {
-                projectile.alive = false;
-                selfref.parent.remove(projectile);
-        }, 10000);
-        this.parent.add(projectile);
     }
-    
 }
