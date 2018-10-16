@@ -2,6 +2,16 @@
 {
     var camera, scene, renderer;
     var cameraControls;
+    var TankDirection = 0;
+    var angularspeed = 0.01;
+    var TankSpeed = 0.075;
+    var TankBackwardsSpeed = TankSpeed * 0.4;
+    var TankIsRotatingLeft = 0;
+    var TankIsRotatingRight = 0;
+    var TankIsMovingForward = 0;
+    var TankIsMovingBackwards = 0;
+    var angularSpeed;
+    var tank;
 
     function init() 
     {
@@ -23,7 +33,8 @@
 
         document.body.appendChild(renderer.domElement);
         window.addEventListener('resize', onWindowResize, false);
-
+        window.addEventListener('keydown', key_down);
+        window.addEventListener('keyup', key_up);
         //Plane stuff.
         var geometry = new THREE.PlaneGeometry(1000, 1000, 1000);
 
@@ -60,7 +71,7 @@
         ambientlight.intensity = 1;
         scene.add(ambientlight);
 
-        var tank = new Tank();
+        tank = new Tank();
         scene.add(tank);
 
         function onWindowResize()
@@ -71,12 +82,95 @@
         }
     }
 
+    
+
+    
+
+    function key_up(event) {
+        TankIsMovingForward = 0;
+        TankIsMovingBackwards = 0;
+        TankIsRotatingLeft = 0;
+        TankIsRotatingRight = 0;
+        TankGoesUp = 0;
+        TankGoesDown = 0;
+    }
+
+    function moveForward(speed) {
+        var delta_x = speed * Math.cos(TankDirection);
+        var delta_z = speed * Math.sin(TankDirection);
+        var new_x = camera.position.x + delta_x;
+        var new_z = camera.position.z + delta_z;
+        camera.position.x = new_x;
+        camera.position.z = new_z;
+
+        var new_dx = tank.x + delta_x;
+        var new_dz = tank.z + delta_z;
+        tank.x = new_dx;
+        tank.z = new_dz;
+        camera.lookAt(tank);
+    }
+    function key_down(event) {
+        var W = 87;
+        var A = 83;
+        var S = 65;
+        var D = 68;
+        var minus = 189;
+        var plus = 187;
+
+        var k = event.keyCode;
+        console.log(k);
+        if (k == A){
+        TankIsRotatingLeft = 1;}
+        if (k == D){
+        TankIsRotatingRight     = 1;}
+        if (k == W){
+        TankIsMovingForward     = 1;}
+        if (k == S) {
+        TankIsMovingBackwards   = 1;}
+    }
+    function setTankDirection() {
+        //direction changed.
+        var delta_x = TankSpeed * Math.cos(TankDirection);
+        var delta_z = TankSpeed * Math.sin(TankDirection);
+
+        var new_dx = camera.position.x + delta_x;
+        var new_dz = camera.position.z + delta_z;
+        tank.x = new_dx;
+        tank.z = new_dz;
+        camera.lookAt(tank);
+    }
+
+    function UpdateTank() {
+        if (TankIsRotatingLeft) { // rotate left
+            TankDirection -= angularSpeed;
+        }
+        if (TankIsRotatingRight) { // rotate right
+            TankDirection += angularSpeed;
+        }
+        if (TankIsRotatingRight || TankIsRotatingLeft) {
+            setTankDirection();
+            return;
+        }
+        if (TankIsMovingForward) { // go forward
+            moveForward(TankSpeed);
+            return;
+        }
+        if (TankIsMovingBackwards) { // go backwards
+            moveForward(-TankBackwardsSpeed);
+            return;
+        }
+
+    }
+
     function render() {
         requestAnimationFrame(render);
         cameraControls.update();
+        //key_down();
+        //key_up();
+        UpdateTank();
         renderer.render(scene, camera);
     }
-
+    
     init();
     render();
 }
