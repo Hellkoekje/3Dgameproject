@@ -115,19 +115,19 @@
         var plus = 187;
 
         var k = event.keyCode;
-        if (k == A)
+        if (k === A)
         {
             TankIsRotatingLeft = 1;
         }
-        else if (k == D)
+        else if (k === D)
         {
             TankIsRotatingRight = 1;
         }
-        else if(k == W)
+        else if(k === W)
         {
             TankIsMovingForward = 1;
         }
-        else if (k == S)
+        else if (k === S)
         {
             TankIsMovingBackwards = 1;
         }
