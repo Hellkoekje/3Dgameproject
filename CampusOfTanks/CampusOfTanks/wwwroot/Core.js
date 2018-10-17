@@ -163,27 +163,6 @@ window.onload = function ()
 
 
 
-      //key events  
-        document.addEventListener("keydown", function (event) {
-            var keycode = event.which;
-            if (keycode == 32) { //spacebar, knalluh
-                tank.fire();
-                
-            }
-            if (keycode == 82) { // R, switch ammo
-                tank.cycleAmmo();
-                
-            }
-            if (keycode == 65) { //left -- A
-                tank.rotation.y += Math.PI / 180;
-            }
-            if (keycode == 68) { //right -- D
-                tank.rotation.y -= Math.PI / 180;
-                console.log(tank.sphere.barrelPoint);
-
-            }
-
-        }, false);
         
 
         function onWindowResize()
@@ -292,7 +271,7 @@ window.onload = function ()
         // Copy coordinates from Cannon.js to Three.js
         sphere.position.copy(spherebody.position);
         sphere.quaternion.copy(spherebody.quaternion);
-        console.log(spherebody.position);
+        
     }
 
     function render() {
