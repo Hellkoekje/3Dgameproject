@@ -107,6 +107,8 @@
         tank.z = new_dz;
         camera.lookAt(tank);
     }
+
+    var a = false;
     function key_down(event) {
         var W = 87;
         var A = 83;
@@ -116,20 +118,16 @@
         var plus = 187;
 
         var k = event.keyCode;
-        if (k === A)
-        {
+        if (k === A) {
             TankIsRotatingLeft = 1;
         }
-        else if (k === D)
-        {
+        else if (k === D) {
             TankIsRotatingRight = 1;
         }
-        else if(k === W)
-        {
+        else if (k === W) {
             TankIsMovingForward = 1;
         }
-        else if (k === S)
-        {
+        else if (k === S) {
             TankIsMovingBackwards = 1;
         }
     }
@@ -171,7 +169,13 @@
 
     }
 
-    function render() {
+    function render()
+    {
+        if (network.isAvailable())
+        {
+            network.test();
+        }
+
         UpdateTank();
 
         requestAnimationFrame(render);
@@ -180,9 +184,10 @@
     }
     
     init();
-    render();
 
     network = new Network();
     network.connect(window.location.hostname, window.location.port);
+
+    render();
 
 }

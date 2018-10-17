@@ -24,5 +24,6 @@ namespace CampusofTanks.Server.Communication
         {
             Capacity = Math.Max(MAX_PLAYERS, maxPlayers);
         }
+
     }
 }

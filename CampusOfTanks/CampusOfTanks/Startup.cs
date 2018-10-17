@@ -1,4 +1,5 @@
 ﻿using CampusofTanks.Server;
+using CampusofTanks.Server.Communication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,10 +34,6 @@ namespace CampusofTanks
                 ContentTypeProvider = provider
             });
 
-            WebSocketOptions options = new WebSocketOptions
-            {
-                
-            };
             app.UseWebSockets();
             app.Use(HandleRequests);
 
@@ -53,12 +50,8 @@ namespace CampusofTanks
                 if (context.WebSockets.IsWebSocketRequest)
                 {
                     WebSocket socket = await context.WebSockets.AcceptWebSocketAsync();
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("A new client connected! :o");
-                    Console.ForegroundColor = ConsoleColor.White;
-
-                    // await networkView.Receive();
+                    GameSocket gameSock = server.AcceptClient(socket);
+                    await gameSock.Receive();
                 }
                 else
                 {

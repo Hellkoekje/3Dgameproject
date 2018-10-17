@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.WebSockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,10 +12,48 @@ namespace CampusofTanks.Server.Communication
         ///     Socket of the client.
         /// </summary>
         private WebSocket socket;
+        private Task receiveTask;
 
         public GameSocket(WebSocket socket)
         {
             this.socket = socket;
+        }
+
+        public void BeginReceiving()
+        {
+            if (receiveTask != null) return;
+
+            receiveTask = new Task(async () =>
+            {
+                while (true)
+                {
+                    Console.WriteLine(socket.State);
+
+                    Monitor.Enter(socket);
+
+                    try
+                    {
+                        byte[] buffer = new byte[4096];
+                        WebSocketReceiveResult result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+
+                        while (!result.CloseStatus.HasValue)
+                        {
+                            result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                            Console.WriteLine(result);
+                        }
+
+                        await socket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+
+                        //return new GamePacket();
+                    }
+                    finally
+                    {
+                        Monitor.Exit(socket);
+                    }
+                }
+            }, TaskCreationOptions.LongRunning);
+
+            receiveTask.Start();
         }
 
         /// <summary>
@@ -23,18 +62,34 @@ namespace CampusofTanks.Server.Communication
         /// <returns>A GamePacket from the clients.</returns>
         public async Task<GamePacket> Receive()
         {
-            byte[] buffer = new byte[4096];
+            Monitor.Enter(socket);
 
-            WebSocketReceiveResult result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-
-            while (!result.CloseStatus.HasValue)
+            try
             {
-                result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-                return new GamePacket("houston, we have a received message!");
-            }
+                byte[] buffer = new byte[4096];
+                WebSocketReceiveResult result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
-            await socket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
-            return new GamePacket("houston, we have no message!.");
+                while (!result.CloseStatus.HasValue)
+                {
+                    result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+
+                    string resultString = Encoding.UTF8.GetString(buffer).Trim().Remove(' ');
+
+                    if(!string.IsNullOrEmpty(resultString))
+                    {
+                        Console.WriteLine(resultString);
+                    }
+
+                }
+
+                await socket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+
+                return new GamePacket();
+            }
+            finally
+            {
+                Monitor.Exit(socket);
+            }
         }
 
         /// <summary>
@@ -67,5 +122,7 @@ namespace CampusofTanks.Server.Communication
                 Monitor.Exit(socket);
             }
         }
+
+
     }
 }
