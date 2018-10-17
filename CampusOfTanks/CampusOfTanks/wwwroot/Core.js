@@ -15,7 +15,9 @@
     function init() 
     {
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
+       
         cameraControls = new THREE.OrbitControls(camera);
+
         camera.position.z = -4;
         camera.position.y = 3;
         camera.position.x = -4;
