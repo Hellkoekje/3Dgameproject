@@ -27,15 +27,17 @@
         </div>
         <div class="col-md-2 nopadding"></div>
         <div class="col-md-8 nopadding">
-            
-            <form id="myForm" action="#">
-                <h2>Username:</h2><input type="text" name="Uname"><br><br>
-                <input class="MyButton" type="button" onclick="myFunction()" value="Submit">
-                <input class="MyButton" type="button" value="Back" onclick="window.location.href='index.html'" />
-            </form>
+            <!-- username forum with the buttons to send it. -->
+            <div class="username">
+                <form id="myForm" action="#">
+                    <h2>Username:</h2><input type="text" name="Uname"><br><br>
+                    <input class="MyButton" type="button" value="Submit" onclick="window.location.href='Tanks.html'" /> <!--onclick="myFunction()"value="Submit"-->
+                    <input class="MyButton" type="button" value="Back" onclick="window.location.href='index.html'" />
+                </form>
+            </div>
             <!-- saving the username here (stil need to fix the database) -->
             <script>
-                function myFunction() {s
+                function myFunction() {
                     document.getElementById("#").submit();
                 }
             </script>

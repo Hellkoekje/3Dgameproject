@@ -49,6 +49,12 @@ h1{
     background-color:black;
     
 }
+.buttons{
+    margin-left: 50%;
+    margin-top:35%;
+    margin-bottom: 20%;
+}
+
 input.MyButton {
     width: 75%;
     cursor: pointer;
@@ -59,7 +65,7 @@ input.MyButton {
     border: 1px solid #3366cc;
     border-radius: 10px;
     padding: 5px;
-
+    margin-top: 5%;
 }
 
 input.MyButton:hover {
@@ -71,4 +77,9 @@ input.MyButton:hover {
 .button {
     float: left;
     width: auto;
+}
+.username{
+    margin-top:30%;
+    margin-left: 50%;
+    margin-bottom: 30%;
 }
