@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
@@ -20,6 +21,8 @@ namespace CampusofTanks
         { 
             //NOTE: Use default, so we don't have to redirect to "/index.html."
             app.UseDefaultFiles();
+            
+          
 
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".mtl"] = "text/plain";
@@ -30,6 +33,10 @@ namespace CampusofTanks
                 ContentTypeProvider = provider
             });
 
+            WebSocketOptions options = new WebSocketOptions
+            {
+                
+            };
             app.UseWebSockets();
             app.Use(HandleRequests);
 

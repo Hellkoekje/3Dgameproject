@@ -1,6 +1,7 @@
 ﻿window.onload = function ()
 {
     var camera, scene, renderer;
+    var network;
     var cameraControls;
     var TankDirection = 0;
     var angularspeed = 0.01;
@@ -15,9 +16,7 @@
     function init() 
     {
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
-       
         cameraControls = new THREE.OrbitControls(camera);
-
         camera.position.z = -4;
         camera.position.y = 3;
         camera.position.x = -4;
@@ -182,4 +181,8 @@
     
     init();
     render();
+
+    network = new Network();
+    network.connect(window.location.hostname, window.location.port);
+
 }
