@@ -1,10 +1,8 @@
-﻿window.onload = function ()
-{
+﻿window.onload = function () {
     var camera, scene, renderer;
     var cameraControls;
 
-    function init() 
-    {
+    function init() {
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
         cameraControls = new THREE.OrbitControls(camera);
         camera.position.z = -4;
@@ -14,6 +12,7 @@
         cameraControls.update();
 
         scene = new THREE.Scene();
+        
 
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -35,9 +34,10 @@
             texture.repeat.set(10, 10);
         });
 
-        var material = new THREE.MeshPhongMaterial({ map: texture});
+        var material = new THREE.MeshPhongMaterial({ map: texture });
         var plane = new THREE.Mesh(geometry, material);
 
+        plane.castShadow = false;
         plane.reveiveShadow = true;
         plane.position.x = 0;
         plane.position.y = -20;
@@ -49,13 +49,10 @@
 
         var grid = new THREE.GridHelper(950, 10);
         var color = new THREE.Color("rgb(255,0,0)");
-        grid.setColors(color, 0x000000);
+        grid.setColors(color, 0xFFFFFF);
 
         scene.add(grid);
 
-       
-
-        
 
         //Skybox
         scene.add(
@@ -66,20 +63,36 @@
         );
 
         //verlichting
-        var ambientlight = new THREE.AmbientLight(0xFFFFFF);
+        //hemilight + derictional light voor een realistische belichting
 
-        ambientlight.intensity = 0.3;
-        scene.add(ambientlight);
+        hemiLight = new THREE.HemisphereLight(0x7F7F7F, 0xFFFFFF, 0.8);
+        
+        hemiLight.position.set(0, 80, 0);
+        scene.add(hemiLight);
 
-        var pointLight = new THREE.PointLight(0xFFFFFF, 1, 100);
+        hemiLightHelper = new THREE.HemisphereLightHelper(hemiLight, 10);
+        scene.add(hemiLightHelper);
 
-        pointLight.position.set(10, 10, 10);
-        pointLight.intensity = 1;
-        scene.add(pointLight);
+        dirLight = new THREE.DirectionalLight(0xFFFFFF, 1);
+        dirLight.color.setHSL(0.0, 0, 100);
+        dirLight.position.set(-4.714, 10, 4.714);
+        dirLight.position.multiplyScalar(30);
+        scene.add(dirLight);
+        dirLight.castShadow = true;
 
-        var sphereSize = 4;
-        var pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
-        scene.add(pointLightHelper);
+        dirLight.shadow.mapSize.width = 2048;
+        dirLight.shadow.mapSize.height = 2048;
+
+        var d = 50;
+        dirLight.shadow.camera.left = -d;
+        dirLight.shadow.camera.right = d;
+        dirLight.shadow.camera.top = d;
+        dirLight.shadow.camera.bottom = -d;
+        dirLight.shadow.camera.far = 3500;
+        dirLight.shadow.bias = -0.0001;
+        dirLightHeper = new THREE.DirectionalLightHelper(dirLight, 100, 0xFFFFFF);
+        scene.add(dirLightHeper);    
+
         //gui scherm
         var guiControls = new function () {
 
@@ -92,9 +105,8 @@
         datGUI.add(guiControls, 'RotationY', 0, 1);
         datGUI.add(guiControls, 'RotationZ', 0, 1);
 
-        datGUI.add(guiControls, 'intensity', 0.01, 5).onChange(function (value));
-        pointLight.intensity = value;
-
+        
+    
         function onWindowResize()
         {
             camera.aspect = window.innerWidth / window.innerHeight;
@@ -107,6 +119,8 @@
         requestAnimationFrame(render);
         cameraControls.update();
         renderer.render(scene, camera);
+        redered.shadowMap.enabled = true;
+     
     }
 
     init();
