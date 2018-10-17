@@ -2,7 +2,7 @@
 
 window.onload = function ()
 {
-    var camera, scene, renderer;
+    var camera, scene, renderer,world,sphere,spherebody;
     var cameraControls;
 
  
@@ -11,6 +11,16 @@ window.onload = function ()
     function init() 
     {
 
+        //Cannon init
+       world = new CANNON.World();
+        world.broadphase = new CANNON.NaiveBroadphase();
+        world.gravity.set(0, -9.82, 0);
+        world.solver.iterations = 20;
+
+
+
+
+        //THREE inits
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
         cameraControls = new THREE.OrbitControls(camera);
         camera.position.z = -4;
@@ -18,9 +28,9 @@ window.onload = function ()
         camera.position.x = -4;
         camera.rotation.x = 90 * Math.PI / 180;
         cameraControls.update();
-        //scene = new THREE.Scene(); <- Replaced by a PhysiJS scene
-        scene = new Physijs.Scene();
-        scene.setGravity(0, -10, 0); // Gravity for our scene.
+       
+        scene = new THREE.Scene();
+        
         scene.bullets = [];
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -105,21 +115,41 @@ window.onload = function ()
         
         scene.add(tank);
 
-     /*   //ammo tests
 
-         //ei
-        var ei = new Ei(tank);
-        scene.add(ei);
-         //appel
-        var appel = new Appel(tank);
-        scene.add(appel);
-         //monster
-        var monster = new MonsterEnergy(tank);
-        monster.position.x = 0;
-        monster.position.y = 0;
-        monster.position.z = 0;
-        scene.add(monster);
-    */
+       
+/* cannonjs test
+ */
+        var physicsMaterial = new CANNON.Material("slipperyMaterial");
+        var physicsContactMaterial = new CANNON.ContactMaterial(physicsMaterial,
+            physicsMaterial,
+            0.0, // friction coefficient
+            0.3  // restitution
+        );
+        // We must add the contact materials to the world
+        world.addContactMaterial(physicsContactMaterial);
+
+        var mass = 20, radius = 1.3;
+       var sphereShape = new CANNON.Sphere(radius);
+        spherebody = new CANNON.Body({ mass: mass, material: physicsMaterial });
+        spherebody.addShape(sphereShape);
+        spherebody.position.set(20,100,0);
+     //   spherebody.linearDamping = 0.9;
+        world.addBody(spherebody);
+        // Create a plane
+        var groundShape = new CANNON.Plane();
+        var groundBody = new CANNON.Body({ mass: 0, material: physicsMaterial });
+        groundBody.addShape(groundShape);
+        groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
+        groundBody.position.set(0, -5, 0);
+        world.addBody(groundBody);
+
+        var spheregeo = new THREE.SphereGeometry(radius, 16, 16);
+        var spheremat = new THREE.MeshBasicMaterial({ color: 0xfffffff });
+         sphere = new THREE.Mesh(spheregeo, spheremat);
+        scene.add(sphere);
+
+
+
       //key events  
         document.addEventListener("keydown", function (event) {
             var keycode = event.which;
@@ -150,6 +180,15 @@ window.onload = function ()
         }
     }
 
+    function updatePhysics() {
+        // Step the physics world
+        world.step(1/60);
+        // Copy coordinates from Cannon.js to Three.js
+        sphere.position.copy(spherebody.position);
+        sphere.quaternion.copy(spherebody.quaternion);
+        console.log(spherebody.position);
+    }
+
     function render() {
 
         //iterate over active projectiles, removing them when needed and updating them if not.
@@ -160,11 +199,11 @@ window.onload = function ()
                 continue;
             }
             scene.bullets[index].position.add(scene.bullets[index].velocity);
-          //  console.log("updating!");
+          
+            //  console.log("updating!");
         }
 
-
-
+        updatePhysics();
         requestAnimationFrame(render);
         cameraControls.update();
         renderer.render(scene, camera);
