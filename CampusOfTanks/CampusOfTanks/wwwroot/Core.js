@@ -4,7 +4,10 @@ window.onload = function ()
 {
     var camera, scene, renderer;
     var cameraControls;
-
+    
+    Physijs.scripts.worker = "js/lib/physijs_worker.js";
+    Physijs.scripts.ammo = "ammo.js";
+    
  
 
 
@@ -120,6 +123,7 @@ window.onload = function ()
         monster.position.z = 0;
         scene.add(monster);
     */
+        
       //key events  
         document.addEventListener("keydown", function (event) {
             var keycode = event.which;
@@ -164,7 +168,7 @@ window.onload = function ()
         }
 
 
-
+        scene.simulate();
         requestAnimationFrame(render);
         cameraControls.update();
         renderer.render(scene, camera);

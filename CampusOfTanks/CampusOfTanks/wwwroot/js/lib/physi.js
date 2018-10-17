@@ -1,7 +1,5 @@
 window.Physijs = (function() {
-    'use strict';
-
- 
+	'use strict';
 
 	var SUPPORT_TRANSFERABLE,
 		_is_simulating = false,
@@ -32,7 +30,7 @@ window.Physijs = (function() {
 		CONSTRAINTREPORT_ITEMSIZE = 6;
 
 	Physijs.scripts = {};
-    
+
 	Eventable = function() {
 		this._eventListeners = {};
 	};

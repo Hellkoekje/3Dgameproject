@@ -50,7 +50,7 @@ class Tank extends THREE.Group {
     }
     //should be called when 'R' is pressed.
     cycleAmmo() {
-        if (this.ammoSelected < 1) this.ammoSelected++;
+        if (this.ammoSelected < 2) this.ammoSelected++;
         else this.ammoSelected = 0;
 
 
@@ -65,20 +65,25 @@ class Tank extends THREE.Group {
             switch (this.ammoSelected) {
             case 0:
                 projectile = new Appel(this);
-
+                this.parent.bullets.push(projectile);
                 break;
             case 1:
-                projectile = new Ei(this);
+                    projectile = new Ei(this);
+                this.parent.bullets.push(projectile);
                 break;
             case 2:
-                projectile = new MonsterEnergy(this);
+                projectile = new PhysiJSprojectile(this);
                 break;
 
 
             }
+            //put the projectile  at the tip of the barrel
             projectile.applyMatrix(this.sphere.matrixWorld);
+
+            //delay next shot
             this.canShoot = false;
-            this.parent.bullets.push(projectile);
+            //add fired projectile to bullet array.
+           
             
             //remove projectile from scene after 10s
             setTimeout(function() {
