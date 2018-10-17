@@ -7,37 +7,34 @@ window.onload = function ()
 
     var cameraControls;
     var TankDirection = 0;
-    var angularspeed = 0.01;
+    var angularSpeed = 0.1;
     var TankSpeed = 0.075;
+    var TankDirection = 0;
     var TankIsRotatingLeft = 0;
     var TankIsRotatingRight = 0;
     var TankIsMovingForward = 0;
     var TankIsMovingBackwards = 0;
-    var angularSpeed;
-    var tank;
+    var TankBackwardsSpeed = TankSpeed * 0.4;
+    var tank = new Tank();
 
  
 
 
     function init() 
     {
-
         //Cannon init
-       world = new CANNON.World();
+        world = new CANNON.World();
         world.broadphase = new CANNON.NaiveBroadphase();
         world.gravity.set(0, -9.82, 0);
         world.solver.iterations = 20;
-
-
-
-
+                     
         //THREE inits
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
         cameraControls = new THREE.OrbitControls(camera);
-        camera.position.z = -4;
-        camera.position.y = -20;
-        camera.position.x = -4;
         camera.rotation.x = 90 * Math.PI / 180;
+        camera.position.z = 0;
+        camera.position.y = -20;
+        camera.position.x = 0;
         cameraControls.update();
        
         scene = new THREE.Scene();
@@ -118,17 +115,12 @@ window.onload = function ()
         ambientlight.intensity = 1;
         scene.add(ambientlight);
 
-
-
         // Tank object
-         tank = new Tank();
         tank.position.x = 0;
-        tank.rotation.y = 90 * Math.PI / 180;
         tank.position.z = 0;
-        
         scene.add(tank);
-
-
+        camera.position.clone(tank);
+        camera.lookAt(tank.position);
        
 /* cannonjs test
  */
@@ -195,16 +187,16 @@ window.onload = function ()
 
         var new_dx = tank.x + delta_x;
         var new_dz = tank.z + delta_z;
-        tank.x = new_dx;
-        tank.z = new_dz;
-        camera.lookAt(tank);
+        tank.position.x = new_dx;
+        tank.position.z = new_dz;
+        camera.position.clone(tank);
     }
 
     var a = false;
     function key_down(event) {
         var W = 87;
-        var A = 83;
-        var S = 65;
+        var A = 65;
+        var S = 83;
         var D = 68;
         var R = 82;
         var space = 32;
@@ -212,35 +204,40 @@ window.onload = function ()
         var plus = 187;
 
         var k = event.keyCode;
-        if (k === A) {
-            TankIsRotatingLeft = 1;
+        if (k == A) {
+            TankIsRotatingLeft = true;
         }
-        else if (k === D) {
-            TankIsRotatingRight = 1;
+        else if (k == D) {
+            TankIsRotatingRight = true;
         }
-        else if (k === W) {
-            TankIsMovingForward = 1;
+        else if (k == W) {
+            TankIsMovingForward = true;
         }
-        else if (k === S) {
-            TankIsMovingBackwards = 1;
-        }
+        else if (k == S) {
+            TankIsMovingBackwards = true;
+        }        
         else if (k === space) { // Knallen.
             tank.fire();
         }
         else if (k === R) { // Cycle ammo.
             tank.cycleAmmo();
         }
+        else {
+            TankIsRotatingLeft = false;
+            TankIsRotatingRight = false;
+            TankIsMovingForward = false;
+            TankIsMovingBackwards = false;
+        }
     }
-    function setTankDirection()
-    {
+    function setTankDirection() {
         //direction changed.
         var delta_x = TankSpeed * Math.cos(TankDirection);
         var delta_z = TankSpeed * Math.sin(TankDirection);
 
         var new_dx = camera.position.x + delta_x;
         var new_dz = camera.position.z + delta_z;
-        tank.x = new_dx;
-        tank.z = new_dz;
+        tank.position.x = new_dx;
+        tank.position.z = new_dz;
 
         camera.lookAt(tank);
     }
@@ -256,16 +253,15 @@ window.onload = function ()
             setTankDirection();
             return;
         }
-        if (TankIsMovingForward)
-        { // go forward
+        if (TankIsMovingForward) { // go forward
             moveForward(TankSpeed);
             return;
         }
         if (TankIsMovingBackwards) { // go backwards
-            var speed = -(TankSpeed * 0.4);
-            moveForward(speed);
+            moveForward(-TankBackwardsSpeed);
             return;
         }
+        //key_down();
 
     }
 
