@@ -1,4 +1,4 @@
-﻿
+﻿///<reference path="./../Projectile.js"/>
 class Ei extends Projectile {
     constructor(firedFrom) {
         super(firedFrom);
