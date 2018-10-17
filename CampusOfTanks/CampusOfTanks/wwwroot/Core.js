@@ -121,7 +121,7 @@ window.onload = function ()
 
 
         // Tank object
-        var tank = new Tank();
+         tank = new Tank();
         tank.position.x = 0;
         tank.rotation.y = 90 * Math.PI / 180;
         tank.position.z = 0;
@@ -204,25 +204,29 @@ window.onload = function ()
         var A = 83;
         var S = 65;
         var D = 68;
+        var R = 82;
+        var space = 32;
         var minus = 189;
         var plus = 187;
 
         var k = event.keyCode;
-        if (k === A)
-        {
+        if (k === A) {
             TankIsRotatingLeft = 1;
         }
-        else if (k === D)
-        {
+        else if (k === D) {
             TankIsRotatingRight = 1;
         }
-        else if(k === W)
-        {
+        else if (k === W) {
             TankIsMovingForward = 1;
         }
-        else if (k === S)
-        {
+        else if (k === S) {
             TankIsMovingBackwards = 1;
+        }
+        else if (k === space) { // Knallen.
+            tank.fire();
+        }
+        else if (k === R) { // Cycle ammo.
+            tank.cycleAmmo();
         }
     }
     function setTankDirection()
