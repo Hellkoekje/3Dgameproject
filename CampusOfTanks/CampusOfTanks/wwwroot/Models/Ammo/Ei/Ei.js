@@ -10,6 +10,9 @@ class Ei extends Projectile {
         this.delay = 2000;
 
         this.velocity = new THREE.Vector3(-Math.sin(firedFrom.rotation.y) * 2, 0, -Math.cos(firedFrom.rotation.y) * 2);
+        this.travelSpeed = 150;
+        this.mass = 10;
+        this.radius = 1.5;
     }
 
 

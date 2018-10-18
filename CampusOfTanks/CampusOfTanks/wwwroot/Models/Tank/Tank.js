@@ -1,5 +1,7 @@
 ﻿///<reference path="~/wwwroot/Core.js"/>
 //class that represents a tank aka a player.
+//TODO make subclasses that represent other types of tanks, one of which should move faster, one of which should shoot faster, and one of which should have higher hitpoints.
+//TODO and should have different models 
 class Tank extends THREE.Group {
     constructor() {
         super();
@@ -88,36 +90,34 @@ class Tank extends THREE.Group {
             var y = projectile.position.y;
             var z = projectile.position.z;
             var physicsMaterial = new CANNON.Material("slipperyMaterial");
-            var physicsContactMaterial = new CANNON.ContactMaterial(physicsMaterial,
-                physicsMaterial,
-                0.0, // friction coefficient
-                0.3  // restitution
-            );
-            // We must add the contact materials to the world
-            this.parent.cannonWorld.addContactMaterial(physicsContactMaterial);
-
-            var mass = 20, radius = 1.3;
-            var sphereShape = new CANNON.Sphere(radius);
-            var spherebody = new CANNON.Body({ mass: mass, material: physicsMaterial });
+        
+        //create collidable sphere object with radius and mass based on projectile subclass property  
+            var sphereShape = new CANNON.Sphere(projectile.radius);
+            var spherebody = new CANNON.Body({ mass: projectile.mass, material: physicsMaterial });
             spherebody.addShape(sphereShape);
-            spherebody.position.set(0,100,0);
+            spherebody.position.set(x, y, z);
 
 
-           
+            this.parent.bulletMeshes.push(projectile);
             this.parent.cannonWorld.addBody(spherebody);
             this.parent.bulletBodies.push(spherebody);
-            spherebody.velocity.set(this.velocity);
-            spherebody.angularVelocity.set(this.velocity);  
+            spherebody.velocity.set(
+                projectile.velocity.x * projectile.travelSpeed,
+                projectile.velocity.y,
+                projectile.velocity.z * projectile.travelSpeed);
+            
             
             this.canShoot = false;
 
-            this.parent.bulletMeshes.push(projectile);
+            
             
             //remove projectile from scene after 10s
             setTimeout(function() {
                     projectile.alive = false;
-                    selfref.parent.remove(projectile);
-                    selfref.remove(projectile);
+                selfref.parent.remove(projectile);
+                    selfref.parent.cannonWorld.remove(spherebody);
+                selfref.remove(projectile);
+                
                 },
                 10000);
 

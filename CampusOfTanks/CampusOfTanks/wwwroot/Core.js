@@ -30,16 +30,16 @@ window.onload = function ()
         world.solver.iterations = 20;
         //THREE inits
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
-        //cameraControls = new THREE.OrbitControls(camera);
+        cameraControls = new THREE.OrbitControls(camera);
         camera.rotation.x = 90 * Math.PI / 180;
         camera.position.z = 50;
         camera.position.y = 0;
         camera.position.x = 50;
         camera.lookAt(tank.position);
-        //cameraControls.update();
-        var controls = new THREE.ObjectControls(camera, window.domElement, tank);
-        controls.setDistance(8, 200); // set min - max distance for zoom
-        controls.setZoomSpeed(1); // set zoom speed
+        cameraControls.update();
+      //  var controls = new THREE.ObjectControls(camera, window.domElement, tank);
+        //controls.setDistance(8, 200); // set min - max distance for zoom
+      //  controls.setZoomSpeed(1); // set zoom speed
         scene = new THREE.Scene();
 
         //VISUAL meshes of bullets(apple,egg models.)
@@ -279,10 +279,15 @@ window.onload = function ()
         sphere.position.copy(spherebody.position);
         sphere.quaternion.copy(spherebody.quaternion);
         for (var i = 0; i < scene.bulletMeshes.length; i++) {
-            scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
-            scene.bulletMeshes[i].quaternion.copy(scene.bulletBodies[i].quaternion);
-            //console.log(scene.bulletBodies[i].position);
-           // console.log(scene.bulletMeshes[i].position);
+            if (scene.bulletMeshes[i].alive) {
+                scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
+                scene.bulletMeshes[i].quaternion.copy(scene.bulletBodies[i].quaternion);
+                //console.log(scene.bulletBodies[i].position);
+                // console.log(scene.bulletMeshes[i].position);
+            } else {
+                scene.bulletMeshes.splice(i, 1);
+                scene.bulletBodies.splice(i, 1);
+            }
 
         }
         
@@ -310,7 +315,7 @@ window.onload = function ()
         UpdateTank();
         requestAnimationFrame(render);
         camera.lookAt(tank.position);
-        //cameraControls.update();
+        cameraControls.update();
         
         renderer.render(scene, camera);
 
