@@ -7,7 +7,9 @@ class Projectile extends THREE.Object3D {
     constructor(firedFrom = Tank) {
         super();
         this.firedFrom = firedFrom;
-        
+        this.mass;
+        this.radius;
+        this.castShadow = true;
   
         this.alive = true;
         

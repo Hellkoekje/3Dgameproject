@@ -31,19 +31,23 @@ window.onload = function ()
         world.solver.iterations = 20;
         //THREE inits
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
-        //cameraControls = new THREE.OrbitControls(camera);
+        cameraControls = new THREE.OrbitControls(camera);
         camera.rotation.x = 90 * Math.PI / 180;
         camera.position.z = 50;
         camera.position.y = 0;
         camera.position.x = 50;
         camera.lookAt(tank.position);
-        //cameraControls.update();
-        var controls = new THREE.ObjectControls(camera, window.domElement, tank);
-        controls.setDistance(8, 200); // set min - max distance for zoom
-        controls.setZoomSpeed(1); // set zoom speed
+        cameraControls.update();
+      //  var controls = new THREE.ObjectControls(camera, window.domElement, tank);
+        //controls.setDistance(8, 200); // set min - max distance for zoom
+      //  controls.setZoomSpeed(1); // set zoom speed
         scene = new THREE.Scene();
-        
-        scene.bullets = [];
+
+        //VISUAL meshes of bullets(apple,egg models.)
+        scene.bulletMeshes = [];
+        //actual collidable physics objects (spheres) placed inside of visual mesh.
+        scene.bulletBodies = [];
+        scene.cannonWorld = world;
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight + 5);
@@ -274,13 +278,25 @@ window.onload = function ()
         // Copy coordinates from Cannon.js to Three.js
         sphere.position.copy(spherebody.position);
         sphere.quaternion.copy(spherebody.quaternion);
+        for (var i = 0; i < scene.bulletMeshes.length; i++) {
+            if (scene.bulletMeshes[i].alive) {
+                scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
+                scene.bulletMeshes[i].quaternion.copy(scene.bulletBodies[i].quaternion);
+                //console.log(scene.bulletBodies[i].position);
+                // console.log(scene.bulletMeshes[i].position);
+            } else {
+                scene.bulletMeshes.splice(i, 1);
+                scene.bulletBodies.splice(i, 1);
+            }
+
+        }
         
     }
 
     function render()
     {
         //iterate over active projectiles, removing them when needed and updating them if not.
-        for (var index = 0; index < scene.bullets.length; index++) {
+      /*  for (var index = 0; index < scene.bullets.length; index++) {
             if (scene.bullets[index] === undefined) continue;
             if (scene.bullets[index].alive === false) {
                 scene.bullets.splice(index, 1);
@@ -288,13 +304,18 @@ window.onload = function ()
             }
             scene.bullets[index].position.add(scene.bullets[index].velocity);
           
-            //  console.log("updating!");
-        }
+            //  console.log("updating!");*/
+        //}
 
         updatePhysics();
         UpdateTank();
         requestAnimationFrame(render);
         camera.lookAt(tank.position);
+<<<<<<< HEAD
+=======
+        cameraControls.update();
+        
+>>>>>>> 4ab851a062b931a83f85003edf2f30d8445587ea
         renderer.render(scene, camera);
 
     }
