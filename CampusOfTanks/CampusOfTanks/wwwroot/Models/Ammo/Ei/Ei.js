@@ -20,7 +20,7 @@ class Ei extends Projectile {
         var selfRef = this;
         var mtlLoader = new THREE.MTLLoader();
         mtlLoader.setPath("Models/Ammo/Ei/");
-        
+
         mtlLoader.load("Egg_01.mtl", function (materials) {
             materials.preload();
 

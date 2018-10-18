@@ -12,20 +12,21 @@ class Tank extends THREE.Group {
         //super kut code maar wist niet hoe dit anders moest :/
         this.sphere = new THREE.Mesh(
             new THREE.SphereGeometry(0.5, 8, 8),
-            new THREE.MeshBasicMaterial({ transparent: true})
+            new THREE.MeshBasicMaterial({ transparent: true })
         );
         this.add(this.sphere);
         this.sphere.visible = false;
         this.sphere.position.set(
-            this.position.x , this.position.y, this.position.z - 35
+            this.position.x, this.position.y, this.position.z - 35
         );
-    
-        //default ammo
+
+        //default ammo. 0 == appel, 1 == ei, 2 == monster?
         this.ammoSelected = 0;
-//ammo types user can cycle through
-        this.ammoTypes = ["appel", "ei", "monster"];
+
+
         this.position.y = 3;
         this.canShoot = true;
+        
     }
 
     //load 3d model
@@ -53,6 +54,8 @@ class Tank extends THREE.Group {
         });
         camera.lookAt(selfRef);
         self.castShadow = true;
+
+
     }
     //should be called when 'R' is pressed.
     cycleAmmo() {
@@ -69,31 +72,31 @@ class Tank extends THREE.Group {
 
             //check the selected ammo, and fire it!
             switch (this.ammoSelected) {
-            case 0:
-                projectile = new Appel(this);
+                case 0:
+                    projectile = new Appel(this);
 
-                break;
-            case 1:
-                projectile = new Ei(this);
-                break;
-            case 2:
-                projectile = new MonsterEnergy(this);
-                break;
+                    break;
+                case 1:
+                    projectile = new Ei(this);
+                    break;
+                case 2:
+                    projectile = new MonsterEnergy(this);
+                    break;
 
 
             }
 
-            
+
             //spawns the projectile in front of the tank barrel, regardless of tank rotation.
             projectile.applyMatrix(this.sphere.matrixWorld);
-            //Create collidable physics object to "attach" projectile to.
-          
+            //Create collidable physics object to "attach" projectile to so we can simulate gravity and collisions.
+
             var x = projectile.position.x;
             var y = projectile.position.y;
             var z = projectile.position.z;
             var physicsMaterial = new CANNON.Material("slipperyMaterial");
-        
-        //create collidable sphere object with radius and mass based on projectile subclass property  
+
+            //create collidable sphere object with radius and mass based on projectile subclass property  
             var sphereShape = new CANNON.Sphere(projectile.radius);
             var spherebody = new CANNON.Body({ mass: projectile.mass, material: physicsMaterial });
             spherebody.addShape(sphereShape);
@@ -109,27 +112,27 @@ class Tank extends THREE.Group {
                 projectile.velocity.x * projectile.travelSpeed,
                 projectile.velocity.y,
                 projectile.velocity.z * projectile.travelSpeed);
-            
-            
+
+
             this.canShoot = false;
 
-            
-            
+
+
             //remove projectile from scene after 10s
-            setTimeout(function() {
-                    projectile.alive = false;
+            setTimeout(function () {
+                projectile.alive = false;
                 selfref.parent.remove(projectile);
-                    selfref.parent.cannonWorld.remove(spherebody);
+                selfref.parent.cannonWorld.remove(spherebody);
                 selfref.remove(projectile);
-                
-                },
+
+            },
                 10000);
 
             //delay next shot by the shootingdelay of the chosen ammo.
 
-            setTimeout(function() {
+            setTimeout(function () {
                 selfref.canShoot = true;
-            },projectile.delay);
+            }, projectile.delay);
             this.parent.add(projectile);
         }
     }
