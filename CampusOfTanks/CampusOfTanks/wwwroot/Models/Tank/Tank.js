@@ -1,7 +1,8 @@
 ﻿///<reference path="~/wwwroot/Core.js"/>
-//class that represents a tank aka a player.
+//class that represents a tank aka a player. This is the superclass for our different tanks.
 //TODO make subclasses that represent other types of tanks, one of which should move faster, one of which should shoot faster, and one of which should have higher hitpoints.
 //TODO and should have different models 
+
 class Tank extends THREE.Group {
     constructor() {
         super();
@@ -97,10 +98,12 @@ class Tank extends THREE.Group {
             spherebody.addShape(sphereShape);
             spherebody.position.set(x, y, z);
 
-
+            // add mesh and body to respective lists, so that we can copy the mesh into the body at every frame.
             this.parent.bulletMeshes.push(projectile);
             this.parent.cannonWorld.addBody(spherebody);
             this.parent.bulletBodies.push(spherebody);
+
+            //shoot the body!
             spherebody.velocity.set(
                 projectile.velocity.x * projectile.travelSpeed,
                 projectile.velocity.y,
