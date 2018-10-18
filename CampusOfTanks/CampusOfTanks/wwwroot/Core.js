@@ -7,39 +7,39 @@ window.onload = function ()
 
     var cameraControls;
     var TankDirection = 0;
-    var angularspeed = 0.01;
+    var angularSpeed = 0.1;
     var TankSpeed = 0.075;
+    var TankDirection = 0;
     var TankIsRotatingLeft = 0;
     var TankIsRotatingRight = 0;
     var TankIsMovingForward = 0;
     var TankIsMovingBackwards = 0;
-    var angularSpeed;
-    var tank;
+    var TankBackwardsSpeed = TankSpeed * 0.4;
+    var tank = new Tank();
+    tank.name = 'tanky';
 
  
 
 
     function init() 
     {
-
         //Cannon init
-       world = new CANNON.World();
+        world = new CANNON.World();
         world.broadphase = new CANNON.NaiveBroadphase();
         world.gravity.set(0, -9.82, 0);
         world.solver.iterations = 20;
-
-
-
-
         //THREE inits
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
-        cameraControls = new THREE.OrbitControls(camera);
-        camera.position.z = -4;
-        camera.position.y = -20;
-        camera.position.x = -4;
+        //cameraControls = new THREE.OrbitControls(camera);
         camera.rotation.x = 90 * Math.PI / 180;
-        cameraControls.update();
-       
+        camera.position.z = 50;
+        camera.position.y = 0;
+        camera.position.x = 50;
+        camera.lookAt(tank.position);
+        //cameraControls.update();
+        var controls = new THREE.ObjectControls(camera, window.domElement, tank);
+        controls.setDistance(8, 200); // set min - max distance for zoom
+        controls.setZoomSpeed(1); // set zoom speed
         scene = new THREE.Scene();
 
         //VISUAL meshes of bullets(apple,egg models.)
@@ -122,17 +122,11 @@ window.onload = function ()
         ambientlight.intensity = 1;
         scene.add(ambientlight);
 
-
-
         // Tank object
-         tank = new Tank();
         tank.position.x = 0;
-        tank.rotation.y = 90 * Math.PI / 180;
         tank.position.z = 0;
-        
         scene.add(tank);
-
-
+        
        
 /* cannonjs test
  */
@@ -178,14 +172,7 @@ window.onload = function ()
     }
 
 
-    function key_up(event) {
-        TankIsMovingForward = 0;
-        TankIsMovingBackwards = 0;
-        TankIsRotatingLeft = 0;
-        TankIsRotatingRight = 0;
-        TankGoesUp = 0;
-        TankGoesDown = 0;
-    }
+    
 
     function moveForward(speed)
     {
@@ -197,56 +184,68 @@ window.onload = function ()
         camera.position.x = new_x;
         camera.position.z = new_z;
 
-        var new_dx = tank.x + delta_x;
-        var new_dz = tank.z + delta_z;
-        tank.x = new_dx;
-        tank.z = new_dz;
-        camera.lookAt(tank);
+        var new_dx = tank.position.x + delta_x;
+        var new_dz = tank.position.z + delta_z;
+        tank.position.x = new_dx;
+        tank.position.z = new_dz;
+        camera.lookAt(tank.position);
     }
 
     var a = false;
     function key_down(event) {
-        var W = 87;
-        var A = 83;
-        var S = 65;
-        var D = 68;
-        var R = 82;
-        var space = 32;
-        var minus = 189;
-        var plus = 187;
+        keys = { LEFT: 65, UP: 87, RIGHT: 68, BOTTOM: 83, SPACE: 32, RELOAD:82};
 
-        var k = event.keyCode;
-        if (k === A) {
-            TankIsRotatingLeft = 1;
-        }
-        else if (k === D) {
-            TankIsRotatingRight = 1;
-        }
-        else if (k === W) {
-            TankIsMovingForward = 1;
-        }
-        else if (k === S) {
-            TankIsMovingBackwards = 1;
-        }
-        else if (k === space) { // Knallen.
-            tank.fire();
-        }
-        else if (k === R) { // Cycle ammo.
-            tank.cycleAmmo();
+        switch (event.keyCode) {
+
+            case keys.UP:
+                TankIsMovingForward = 1;
+                break;
+
+            case keys.BOTTOM:
+                TankIsMovingBackwards = 1;
+                break;
+
+            case keys.LEFT:
+                TankIsRotatingLeft = 1; 
+                break;
+
+            case keys.RIGHT:
+                TankIsRotatingRight = 1;
+                break;
+
+            case keys.SPACE:
+                tank.fire();
+                break;
+
+            case keys.RELOAD:
+                tank.cycleAmmo();
+                break;            
         }
     }
-    function setTankDirection()
-    {
+
+    function key_up() {
+        
+            TankIsMovingForward = 0;
+            TankIsMovingBackwards = 0;
+            TankIsRotatingLeft = 0;
+            TankIsRotatingRight = 0;
+            TankGoesUp = 0;
+            TankGoesDown = 0;
+        
+    }
+
+    function setTankDirection() {
         //direction changed.
         var delta_x = TankSpeed * Math.cos(TankDirection);
         var delta_z = TankSpeed * Math.sin(TankDirection);
+        tank.rotateY(delta_x);
 
         var new_dx = camera.position.x + delta_x;
         var new_dz = camera.position.z + delta_z;
-        tank.x = new_dx;
-        tank.z = new_dz;
+        tank.position.x = delta_x;
+        tank.position.z = delta_z;
+        camera.lookAt(tank.position);
 
-        camera.lookAt(tank);
     }
 
     function UpdateTank() {
@@ -260,16 +259,15 @@ window.onload = function ()
             setTankDirection();
             return;
         }
-        if (TankIsMovingForward)
-        { // go forward
+        if (TankIsMovingForward) { // go forward
             moveForward(TankSpeed);
             return;
         }
         if (TankIsMovingBackwards) { // go backwards
-            var speed = -(TankSpeed * 0.4);
-            moveForward(speed);
+            moveForward(-TankBackwardsSpeed);
             return;
         }
+        //key_down();
 
     }
 
@@ -311,7 +309,9 @@ window.onload = function ()
         updatePhysics();
         UpdateTank();
         requestAnimationFrame(render);
-        cameraControls.update();
+        camera.lookAt(tank.position);
+        //cameraControls.update();
+        
         renderer.render(scene, camera);
 
     }

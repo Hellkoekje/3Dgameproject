@@ -28,6 +28,7 @@ class Tank extends THREE.Group {
     //load 3d model
     init() {
         var selfRef = this;
+        var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
         var mtlLoader = new THREE.MTLLoader();
         mtlLoader.setPath('Models/Tank/');
         var url = "materials.mtl";
@@ -47,6 +48,7 @@ class Tank extends THREE.Group {
                 selfRef.add(group);
             });
         });
+        camera.lookAt(selfRef);
     }
     //should be called when 'R' is pressed.
     cycleAmmo() {
