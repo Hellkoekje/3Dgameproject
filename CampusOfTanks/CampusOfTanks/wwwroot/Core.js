@@ -3,7 +3,8 @@
 window.onload = function ()
 {
 
-    var camera, scene, renderer,world,sphere,spherebody,network;
+    var camera, scene, renderer, world, sphere, spherebody;
+    var net;
 
     var cameraControls;
     var TankDirection = 0;
@@ -42,8 +43,12 @@ window.onload = function ()
         controls.setDistance(8, 200); // set min - max distance for zoom
         controls.setZoomSpeed(1); // set zoom speed
         scene = new THREE.Scene();
-        
-        scene.bullets = [];
+
+        //VISUAL meshes of bullets(apple,egg models.)
+        scene.bulletMeshes = [];
+        //actual collidable physics objects (spheres) placed inside of visual mesh.
+        scene.bulletBodies = [];
+        scene.cannonWorld = world;
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight + 5);
@@ -117,7 +122,6 @@ window.onload = function ()
         );
 
         var ambientlight = new THREE.AmbientLight(0xFFFFFF);
-
         ambientlight.intensity = 1;
         scene.add(ambientlight);
 
@@ -277,17 +281,25 @@ window.onload = function ()
         // Copy coordinates from Cannon.js to Three.js
         sphere.position.copy(spherebody.position);
         sphere.quaternion.copy(spherebody.quaternion);
+        for (var i = 0; i < scene.bulletMeshes.length; i++) {
+            if (scene.bulletMeshes[i].alive) {
+                scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
+                scene.bulletMeshes[i].quaternion.copy(scene.bulletBodies[i].quaternion);
+                //console.log(scene.bulletBodies[i].position);
+                // console.log(scene.bulletMeshes[i].position);
+            } else {
+                scene.bulletMeshes.splice(i, 1);
+                scene.bulletBodies.splice(i, 1);
+            }
+
+        }
         
     }
 
     function render()
     {
-        if (network.isAvailable()) {
-            network.test();
-        }
-
         //iterate over active projectiles, removing them when needed and updating them if not.
-        for (var index = 0; index < scene.bullets.length; index++) {
+      /*  for (var index = 0; index < scene.bullets.length; index++) {
             if (scene.bullets[index] === undefined) continue;
             if (scene.bullets[index].alive === false) {
                 scene.bullets.splice(index, 1);
@@ -295,24 +307,22 @@ window.onload = function ()
             }
             scene.bullets[index].position.add(scene.bullets[index].velocity);
           
-            //  console.log("updating!");
-        }
+            //  console.log("updating!");*/
+        //}
 
         updatePhysics();
         UpdateTank();
         requestAnimationFrame(render);
         camera.lookAt(tank.position);
-        //cameraControls.update();
-        
+        cameraControls.update();
         renderer.render(scene, camera);
 
     }
     
     init();
 
-    network = new Network();
-    network.connect(window.location.hostname, window.location.port);
+    net = new Network();
+    net.connect(window.location.hostname, window.location.port);
 
     render();
-
 }

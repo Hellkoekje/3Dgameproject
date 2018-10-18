@@ -77,7 +77,7 @@ namespace CampusofTanks.Server.Communication
 
                     if(!string.IsNullOrEmpty(resultString))
                     {
-                        Console.WriteLine(resultString);
+                        //Console.WriteLine(resultString);
                     }
 
                 }
@@ -96,7 +96,7 @@ namespace CampusofTanks.Server.Communication
         ///     Send a message to this client.
         /// </summary>
         /// <param name="packet">The message we want to send.</param>
-        public async void Send(GamePacket packet)
+        public async Task Send(GamePacket packet)
         {
             ArraySegment<byte> messageSegment = new ArraySegment<byte>(packet.Buffer);
 

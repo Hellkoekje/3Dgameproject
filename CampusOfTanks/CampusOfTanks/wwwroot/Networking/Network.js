@@ -1,20 +1,34 @@
 ﻿class Network {
     constructor() {
         this.socket = null;
-        this.count = 0;
     }
 
     connect(hostname, port) {
-        this.socket = new WebSocket("ws://" + hostname + ":" + 5000 + "/connect_client");
-        console.log("[NETWORK] Initialized Socket!");
+        this.socket = new WebSocket("ws://" + hostname + ":" + port + "/connect_client");
+
+        this.socket.onmessage = function (e) {
+            console.log(e.data);
+        }
+        this.socket.onopen = function (event) {
+            console.log("[NETWORK] Socket has been opened");
+        }
+
+        this.socket.onerror = function (event) {
+            console.log("[NETWORK] Uh oh error! " + JSON.stringify(event));
+        }
+
+    }
+
+    receive(message) {
+        console.log("[NETWORK] I've received shit! " + message);
     }
 
     isAvailable() {
-        return (this.socket.readyState == 1);
+        return (this.socket != null && this.socket.readyState == 1);
     }
 
-    test() {
-        //this.socket.send("hello world! x" + this.count);
-        this.count++;
+    replicateEntity(content) {
+        this.socket.send(content);
+        this.count += this.factor;
     }
 }
