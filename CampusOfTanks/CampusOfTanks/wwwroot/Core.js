@@ -311,11 +311,6 @@ window.onload = function ()
         UpdateTank();
         requestAnimationFrame(render);
         camera.lookAt(tank.position);
-<<<<<<< HEAD
-=======
-        cameraControls.update();
-        
->>>>>>> 4ab851a062b931a83f85003edf2f30d8445587ea
         renderer.render(scene, camera);
 
     }
