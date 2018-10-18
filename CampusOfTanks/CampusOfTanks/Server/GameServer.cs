@@ -49,7 +49,7 @@ namespace CampusofTanks.Server
                         await sock.Send(packet);
                     });
 
-                    send.Start();
+                    //send.Start();
                 }
             }
         }

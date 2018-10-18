@@ -1,4 +1,5 @@
-﻿class Network {
+﻿class Network
+{
     constructor() {
         this.socket = null;
     }

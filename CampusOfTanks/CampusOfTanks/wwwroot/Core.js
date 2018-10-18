@@ -7,9 +7,8 @@ window.onload = function () {
 
     var cameraControls;
     var TankDirection = 0;
-    var angularSpeed = 0.1;
+    var angularSpeed = 0.5;
     var TankSpeed = 0.075;
-    var TankDirection = 0;
     var TankIsRotatingLeft = 0;
     var TankIsRotatingRight = 0;
     var TankIsMovingForward = 0;
@@ -48,16 +47,20 @@ window.onload = function () {
 
         //THREE inits
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
-        cameraControls = new THREE.OrbitControls(camera);
+        cameraControls = new THREE.OrbitControls(camera, renderer);
+        cameraControls.center = new THREE.Vector3(
+            tank.position.x,
+            tank.position.y,
+            tank.position.z);
         camera.rotation.x = 90 * Math.PI / 180;
-        camera.position.z = 50;
-        camera.position.y = 0;
-        camera.position.x = 50;
+        camera.position.set(tank.position.x - 75, tank.position.y + 50, tank.position.z);
         camera.lookAt(tank.position);
         cameraControls.update();
-        //  var controls = new THREE.ObjectControls(camera, window.domElement, tank);
-        //controls.setDistance(8, 200); // set min - max distance for zoom
-        //  controls.setZoomSpeed(1); // set zoom speed
+
+        var controls = new THREE.ObjectControls(camera, window.domElement, tank);
+        controls.setDistance(8, 200); // set min - max distance for zoom
+        controls.setZoomSpeed(1); // set zoom speed
+
         scene = new THREE.Scene();
 
         //VISUAL meshes of bullets(apple,egg models.)
@@ -75,6 +78,8 @@ window.onload = function () {
         window.addEventListener('resize', onWindowResize, false);
         window.addEventListener('keydown', key_down);
         window.addEventListener('keyup', key_up);
+
+       
         //Plane stuff.
         var geometry = new THREE.PlaneGeometry(1000, 1000, 1000);
 
@@ -142,6 +147,7 @@ window.onload = function () {
         // Tank object
         tank.position.x = 0;
         tank.position.z = 0;
+        tank.rotation.y = 270*Math.PI/180;
         scene.add(tank);
 
         //enemy tank for hitbox tests
@@ -166,9 +172,11 @@ window.onload = function () {
 
 
 
-    function moveForward(speed) {
-        var delta_x = speed * Math.cos(TankDirection);
-        var delta_z = speed * Math.sin(TankDirection);
+    function moveForward(speed)
+    {
+        var delta_z = speed * Math.cos(TankDirection);
+        var delta_x = speed * Math.sin(TankDirection);
+
         var new_x = camera.position.x + delta_x;
         var new_z = camera.position.z + delta_z;
 
@@ -181,6 +189,37 @@ window.onload = function () {
         tank.position.z = new_dz;
         camera.lookAt(tank.position);
     }
+    function setTankDirection() {
+        //direction changed.
+        //var delta_x = TankDirection;
+
+        //var new_dx = camera.position.x + delta_x;
+        tank.rotation.y = TankDirection;
+        camera.lookAt(tank.position);
+
+    }
+    function UpdateTank() {
+        if (TankIsRotatingLeft) { // rotate left
+            TankDirection -= angularSpeed * Math.PI / 180;
+        }
+        if (TankIsRotatingRight) { // rotate right
+            TankDirection += angularSpeed * Math.PI / 180;
+        }
+        if (TankIsRotatingRight || TankIsRotatingLeft) {
+            setTankDirection();
+            return;
+        }
+        if (TankIsMovingForward) { // go forward
+            moveForward(TankSpeed);
+            return;
+        }
+        if (TankIsMovingBackwards) { // go backwards
+            moveForward(-TankBackwardsSpeed);
+            return;
+        }
+        //key_down();
+
+    }
 
     var a = false;
     function key_down(event) {
@@ -189,6 +228,7 @@ window.onload = function () {
         switch (event.keyCode) {
 
             case keys.UP:
+                
                 TankIsMovingForward = 1;
                 break;
 
@@ -237,30 +277,20 @@ window.onload = function () {
         tank.position.z = delta_z;
         camera.lookAt(tank.position);
 
-    }
 
-    function UpdateTank() {
-        if (TankIsRotatingLeft) { // rotate left
-            TankDirection -= angularSpeed;
-        }
-        if (TankIsRotatingRight) { // rotate right
-            TankDirection += angularSpeed;
-        }
-        if (TankIsRotatingRight || TankIsRotatingLeft) {
-            setTankDirection();
-            return;
-        }
-        if (TankIsMovingForward) { // go forward
-            moveForward(TankSpeed);
-            return;
-        }
-        if (TankIsMovingBackwards) { // go backwards
-            moveForward(-TankBackwardsSpeed);
-            return;
-        }
-        //key_down();
+        
+            TankIsMovingForward = 0;
+            TankIsMovingBackwards = 0;
+            TankIsRotatingLeft = 0;
+            TankIsRotatingRight = 0;
+            TankGoesUp = 0;
+            TankGoesDown = 0;
 
     }
+
+    
+
+    
 
 
     function updatePhysics() {
@@ -288,7 +318,9 @@ window.onload = function () {
         requestAnimationFrame(render);
         camera.lookAt(tank.position);
 
+
         cameraControls.update();
+
 
 
         renderer.render(scene, camera);
