@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace CampusofTanks.Server.Communication
 {
@@ -18,9 +19,9 @@ namespace CampusofTanks.Server.Communication
             }
         }
 
-        public GamePacket()
+        public void SetString(string message)
         {
-           // Console.WriteLine("I've received something");
+            buffer = Encoding.UTF8.GetBytes(message);
         }
     }
 }
