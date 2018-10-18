@@ -7,7 +7,7 @@ window.onload = function ()
     var net;
 
     var cameraControls;
-    var TankDirection = 0;
+    var TankDirection = 270 * Math.PI / 180;
     var angularSpeed = 0.5;
     var TankSpeed = 0.075;
     var TankIsRotatingLeft = 0;
@@ -180,8 +180,8 @@ window.onload = function ()
 
     function moveForward(speed)
     {
-        var delta_z = speed * Math.cos(TankDirection);
-        var delta_x = speed * Math.sin(TankDirection);
+        var delta_z = -speed * Math.cos(TankDirection);
+        var delta_x = -speed * Math.sin(TankDirection);
         var new_x = camera.position.x + delta_x;
         var new_z = camera.position.z + delta_z;
 
@@ -205,10 +205,10 @@ window.onload = function ()
     }
     function UpdateTank() {
         if (TankIsRotatingLeft) { // rotate left
-            TankDirection -= angularSpeed * Math.PI / 180;
+            TankDirection += angularSpeed * Math.PI / 180;
         }
         if (TankIsRotatingRight) { // rotate right
-            TankDirection += angularSpeed * Math.PI / 180;
+            TankDirection -= angularSpeed * Math.PI / 180;
         }
         if (TankIsRotatingRight || TankIsRotatingLeft) {
             setTankDirection();
