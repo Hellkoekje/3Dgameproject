@@ -41,8 +41,12 @@ window.onload = function ()
         cameraControls.update();
        
         scene = new THREE.Scene();
-        
-        scene.bullets = [];
+
+        //VISUAL meshes of bullets(apple,egg models.)
+        scene.bulletMeshes = [];
+        //actual collidable physics objects (spheres) placed inside of visual mesh.
+        scene.bulletBodies = [];
+        scene.cannonWorld = world;
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight + 5);
@@ -276,6 +280,13 @@ window.onload = function ()
         // Copy coordinates from Cannon.js to Three.js
         sphere.position.copy(spherebody.position);
         sphere.quaternion.copy(spherebody.quaternion);
+        for (var i = 0; i < scene.bulletMeshes.length; i++) {
+            scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
+            scene.bulletMeshes[i].quaternion.copy(scene.bulletBodies[i].quaternion);
+            //console.log(scene.bulletBodies[i].position);
+           // console.log(scene.bulletMeshes[i].position);
+
+        }
         
     }
 
@@ -286,7 +297,7 @@ window.onload = function ()
         }
 
         //iterate over active projectiles, removing them when needed and updating them if not.
-        for (var index = 0; index < scene.bullets.length; index++) {
+      /*  for (var index = 0; index < scene.bullets.length; index++) {
             if (scene.bullets[index] === undefined) continue;
             if (scene.bullets[index].alive === false) {
                 scene.bullets.splice(index, 1);
@@ -294,8 +305,8 @@ window.onload = function ()
             }
             scene.bullets[index].position.add(scene.bullets[index].velocity);
           
-            //  console.log("updating!");
-        }
+            //  console.log("updating!");*/
+        //}
 
         updatePhysics();
         UpdateTank();

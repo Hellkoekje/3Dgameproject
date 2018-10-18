@@ -55,7 +55,7 @@ class Tank extends THREE.Group {
 
 
     }
-
+    //called when spacebar is pressed.
     fire() {
         if (this.canShoot) {
             var selfref = this;
@@ -76,9 +76,40 @@ class Tank extends THREE.Group {
 
 
             }
+
+            
+            //spawns the projectile in front of the tank barrel, regardless of tank rotation.
             projectile.applyMatrix(this.sphere.matrixWorld);
+            //Create collidable physics object to "attach" projectile to.
+          
+            var x = projectile.position.x;
+            var y = projectile.position.y;
+            var z = projectile.position.z;
+            var physicsMaterial = new CANNON.Material("slipperyMaterial");
+            var physicsContactMaterial = new CANNON.ContactMaterial(physicsMaterial,
+                physicsMaterial,
+                0.0, // friction coefficient
+                0.3  // restitution
+            );
+            // We must add the contact materials to the world
+            this.parent.cannonWorld.addContactMaterial(physicsContactMaterial);
+
+            var mass = 20, radius = 1.3;
+            var sphereShape = new CANNON.Sphere(radius);
+            var spherebody = new CANNON.Body({ mass: mass, material: physicsMaterial });
+            spherebody.addShape(sphereShape);
+            spherebody.position.set(0,100,0);
+
+
+           
+            this.parent.cannonWorld.addBody(spherebody);
+            this.parent.bulletBodies.push(spherebody);
+            spherebody.velocity.set(this.velocity);
+            spherebody.angularVelocity.set(this.velocity);  
+            
             this.canShoot = false;
-            this.parent.bullets.push(projectile);
+
+            this.parent.bulletMeshes.push(projectile);
             
             //remove projectile from scene after 10s
             setTimeout(function() {
