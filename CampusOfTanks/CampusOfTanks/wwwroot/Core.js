@@ -311,6 +311,7 @@ window.onload = function ()
         UpdateTank();
         requestAnimationFrame(render);
         camera.lookAt(tank.position);
+        cameraControls.update();
         renderer.render(scene, camera);
 
     }
