@@ -3,7 +3,8 @@
 window.onload = function ()
 {
 
-    var camera, scene, renderer,world,sphere,spherebody,network;
+    var camera, scene, renderer, world, sphere, spherebody;
+    var net;
 
     var cameraControls;
     var TankDirection = 0;
@@ -114,7 +115,6 @@ window.onload = function ()
         );
 
         var ambientlight = new THREE.AmbientLight(0xFFFFFF);
-
         ambientlight.intensity = 1;
         scene.add(ambientlight);
 
@@ -279,10 +279,6 @@ window.onload = function ()
 
     function render()
     {
-        if (network.isAvailable()) {
-            network.test();
-        }
-
         //iterate over active projectiles, removing them when needed and updating them if not.
         for (var index = 0; index < scene.bullets.length; index++) {
             if (scene.bullets[index] === undefined) continue;
@@ -299,17 +295,14 @@ window.onload = function ()
         UpdateTank();
         requestAnimationFrame(render);
         camera.lookAt(tank.position);
-        //cameraControls.update();
-        
         renderer.render(scene, camera);
 
     }
     
     init();
 
-    network = new Network();
-    network.connect(window.location.hostname, window.location.port);
+    net = new Network();
+    net.connect(window.location.hostname, window.location.port);
 
     render();
-
 }

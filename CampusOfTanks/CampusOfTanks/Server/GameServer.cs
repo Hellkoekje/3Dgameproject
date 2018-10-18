@@ -1,6 +1,8 @@
 ﻿using CampusofTanks.Server.Communication;
+using System;
 using System.Net.WebSockets;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CampusofTanks.Server
 {
@@ -19,11 +21,12 @@ namespace CampusofTanks.Server
 
             serverMainThread = new Thread(() =>
             {
-                ++ticks;
-
-                Tick();
-
-                Thread.Sleep(1000 / this.tickRate);
+                while (true)
+                {
+                    ++ticks;
+                    Tick();
+                    Thread.Sleep(1000 / this.tickRate);
+                }
 
             });
 
@@ -32,6 +35,23 @@ namespace CampusofTanks.Server
 
         private void Tick()
         {
+            for (int i = 0; i < connectedPlayers.Count; i++)
+            {
+                GameSocket sock = connectedPlayers[i];
+
+                if (sock != null)
+                {
+                    GamePacket packet = new GamePacket();
+                    packet.SetString("HELLO THERE CLIENT!");
+
+                    Task send = new Task(async () =>
+                    {
+                        await sock.Send(packet);
+                    });
+
+                    send.Start();
+                }
+            }
         }
 
         public GameSocket AcceptClient(WebSocket websocket)
@@ -43,7 +63,9 @@ namespace CampusofTanks.Server
                 connectedPlayers.Add(socket);
             }
 
-            //socket.BeginReceiving();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("A challenger #" + connectedPlayers.Count + " arrived!");
+            Console.ForegroundColor = ConsoleColor.White;
 
             return socket;
         }

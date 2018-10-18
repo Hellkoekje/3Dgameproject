@@ -49,6 +49,7 @@ class Tank extends THREE.Group {
             });
         });
         camera.lookAt(selfRef);
+        self.castShadow = true;
     }
     //should be called when 'R' is pressed.
     cycleAmmo() {
