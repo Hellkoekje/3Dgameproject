@@ -267,7 +267,6 @@ window.onload = function ()
             TankIsRotatingRight = 0;
             TankGoesUp = 0;
             TankGoesDown = 0;
-        
     }
 
     
