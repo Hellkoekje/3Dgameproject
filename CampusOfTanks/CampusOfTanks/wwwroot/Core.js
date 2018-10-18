@@ -53,6 +53,7 @@
 
         scene.add(grid);
 
+       
 
         //Skybox
         scene.add(
@@ -76,7 +77,7 @@
         dirLight = new THREE.DirectionalLight(0xFFFFFF, 1);
         dirLight.color.setHSL(0.0, 0, 100);
         dirLight.position.set(-4.714, 10, 4.714);
-        dirLight.position.multiplyScalar(30);
+        dirLight.position.multiplyScalar(50);
         scene.add(dirLight);
         dirLight.castShadow = true;
 
@@ -84,14 +85,19 @@
         dirLight.shadow.mapSize.height = 2048;
 
         var d = 50;
-        dirLight.shadow.camera.left = -d;
-        dirLight.shadow.camera.right = d;
-        dirLight.shadow.camera.top = d;
-        dirLight.shadow.camera.bottom = -d;
-        dirLight.shadow.camera.far = 3500;
+        //dirLight.shadow.mapSize.width = 2048;  // default
+        //dirLight.shadow.mapSize.height = 2048; // default
+        dirLight.shadow.camera.left = -550;
+        dirLight.shadow.camera.right = 550;
+        dirLight.shadow.camera.top = 550;
+        dirLight.shadow.camera.bottom = -550;
+        dirLight.shadow.camera.far = 1000;
         dirLight.shadow.bias = -0.0001;
         dirLightHeper = new THREE.DirectionalLightHelper(dirLight, 100, 0xFFFFFF);
-        scene.add(dirLightHeper);    
+        scene.add(dirLightHeper);  
+
+        var helper = new THREE.CameraHelper(dirLight.shadow.camera);
+        scene.add(helper);
 
         //gui scherm
         var guiControls = new function () {
@@ -105,7 +111,19 @@
         datGUI.add(guiControls, 'RotationY', 0, 1);
         datGUI.add(guiControls, 'RotationZ', 0, 1);
 
-        
+        //shadow testing
+        var geometry = new THREE.BoxBufferGeometry(3, 3, 3);
+        cube = new THREE.Mesh(geometry, material);
+        cube.position.set(8, 3, 8);
+        cube.castShadow = true;
+        cube.receiveShadow = true;
+        scene.add(cube);
+        var geometry = new THREE.BoxBufferGeometry(10, 0.15, 10);
+        var material = new THREE.MeshPhongMaterial({
+            color: 0xa0adaf,
+            shininess: 150,
+            specular: 0x111111
+        });
     
         function onWindowResize()
         {
@@ -115,13 +133,21 @@
         }
     }
 
-    function render() {
-        requestAnimationFrame(render);
-        cameraControls.update();
-        renderer.render(scene, camera);
-        redered.shadowMap.enabled = true;
-     
-    }
+    
+
+        function render() {
+            requestAnimationFrame(render);
+            cameraControls.update();
+            renderer.render(scene, camera);
+
+            var time = Date.now() * 0.00025;
+            var d = 150;
+
+            cube.position.x = Math.sin(time * 0.7) * d;
+            cube.position.z = Math.cos(time * 0.3) * d;
+            
+
+        }
 
     init();
     render();
