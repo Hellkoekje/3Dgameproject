@@ -175,8 +175,8 @@ window.onload = function () {
     function moveForward(speed)
     {
 
-        var delta_z = -speed * Math.cos(TankDirection);
-        var delta_x = -speed * Math.sin(TankDirection);
+        var delta_z = speed * Math.cos(TankDirection);
+        var delta_x = speed * Math.sin(TankDirection);
 
         var new_x = camera.position.x + delta_x;
         var new_z = camera.position.z + delta_z;
@@ -297,7 +297,7 @@ window.onload = function () {
     function updatePhysics() {
         // Step the physics world
         world.step(1 / 60);
-        // Copy coordinates from Cannon.js to Three.js
+        // Copy coordinates from Cannon.js bodies to Three.js meshes.
         for (var i = 0; i < scene.bulletMeshes.length; i++) {
             if (scene.bulletMeshes[i].alive) {
                 scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
@@ -314,7 +314,7 @@ window.onload = function () {
 
     function render() {
 
-        updatePhysics();
+       // updatePhysics();
         UpdateTank();
         requestAnimationFrame(render);
         camera.lookAt(tank.position);

@@ -21,7 +21,7 @@ class Tank extends THREE.Group {
         );
 
         //default ammo. 0 == appel, 1 == ei, 2 == monster?
-        this.ammoSelected = 0;
+        this.ammoSelected = 2;
 
 
         this.position.y = 3;
@@ -59,7 +59,7 @@ class Tank extends THREE.Group {
     }
     //should be called when 'R' is pressed.
     cycleAmmo() {
-        if (this.ammoSelected < 1) this.ammoSelected++;
+        if (this.ammoSelected < 2) this.ammoSelected++;
         else this.ammoSelected = 0;
 
 
@@ -80,7 +80,7 @@ class Tank extends THREE.Group {
                     projectile = new Ei(this);
                     break;
                 case 2:
-                    projectile = new MonsterEnergy(this);
+                    projectile = new Bier(this);
                     break;
 
 
