@@ -7,7 +7,7 @@ class Bier extends Projectile {
         this.velocity = new THREE.Vector3(-Math.sin(firedFrom.rotation.y), 0, -Math.cos(firedFrom.rotation.y));
         this.travelSpeed = 300;
         this.mass = 15;
-        this.radius = 5;
+        this.radius = 7;
     }
 
     init() {
@@ -15,16 +15,16 @@ class Bier extends Projectile {
         var mtlLoader = new THREE.MTLLoader();
         mtlLoader.setPath("Models/Ammo/Bier/");
 
-        mtlLoader.load("Beer.mtl", function (materials) {
+        mtlLoader.load("Bier.mtl", function (materials) {
             materials.preload();
 
             var objLoader = new THREE.OBJLoader();
             objLoader.setMaterials(materials);
             objLoader.setPath("Models/Ammo/Bier/");
-            objLoader.load("Beer.obj", function (object) {
+            objLoader.load("Bier.obj", function (object) {
 
-                object.scale.set(3, 3, 3);
-                object.rotation.y = Math.PI / 2;
+                object.scale.set(0.4, 0.4, 0.4);
+                object.rotation.y = 270*Math.PI/180;
 
                 selfRef.castShadow = true;
 

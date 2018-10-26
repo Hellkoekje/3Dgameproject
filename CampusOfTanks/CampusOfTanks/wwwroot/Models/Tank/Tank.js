@@ -102,6 +102,13 @@ class Tank extends THREE.Group {
             spherebody.addShape(sphereShape);
             spherebody.position.set(x, y, z);
 
+            // add collision event for the projectile
+            spherebody.addEventListener("collide", function (e) {
+                selfref.parent.cannonWorld.remove(spherebody);
+                selfref.alive = false;
+
+            });
+
             // add mesh and body to respective lists, so that we can copy the mesh into the body at every frame.
             this.parent.bulletMeshes.push(projectile);
             this.parent.cannonWorld.addBody(spherebody);
@@ -115,14 +122,12 @@ class Tank extends THREE.Group {
 
 
             this.canShoot = false;
-
+            
 
 
             //remove projectile from scene after 10s
             setTimeout(function () {
                 projectile.alive = false;
-                selfref.parent.remove(projectile);
-                selfref.parent.cannonWorld.remove(spherebody);
                 selfref.remove(projectile);
 
             },

@@ -113,24 +113,32 @@ window.onload = function () {
         var wallMaterial = new THREE.MeshBasicMaterial({ color: 0x8888ff });
         var wireMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
 
+        var wallShape = new CANNON.Plane(100,100,20);
+        var wallBody = new CANNON.Body({ mass: 0, material: physicsMaterial });
+        var wall2Body = new CANNON.Body({ mass: 0, material: physicsMaterial });
+        wallBody.addShape(wallShape);
+        wall2Body.addShape(wallShape);
+      //  groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
+        
+
         var wall = new THREE.Mesh(wallGeometry, wallMaterial);
         wall.position.set(100, 50, -100);
         scene.add(wall);
         collidableMeshList.push(wall);
-        var wall = new THREE.Mesh(wallGeometry, wireMaterial);
-        wall.position.set(100, 50, -100);
-        scene.add(wall);
+       
 
         var wall2 = new THREE.Mesh(wallGeometry, wallMaterial);
         wall2.position.set(-150, 50, 0);
         wall2.rotation.y = 3.14159 / 2;
         scene.add(wall2);
         collidableMeshList.push(wall2);
-        var wall2 = new THREE.Mesh(wallGeometry, wireMaterial);
-        wall2.position.set(-150, 50, 0);
-        wall2.rotation.y = 3.14159 / 2;
-        scene.add(wall2);
 
+        wallBody.position.copy(wall.position);
+        wall2Body.position.copy(wall2.position);
+        wallBody.quaternion.copy(wall.quaternion);
+        wall2Body.quaternion.copy(wall2.quaternion);
+        world.addBody(wallBody);
+        world.addBody(wall2Body);
 
         //Skybox
         scene.add(
@@ -304,8 +312,11 @@ window.onload = function () {
                 scene.bulletMeshes[i].quaternion.copy(scene.bulletBodies[i].quaternion);
             
             } else {
+                scene.remove(bulletMeshes[i]);
+                cannonWorld.remove(bulletBodies[i]);
                 scene.bulletMeshes.splice(i, 1);
                 scene.bulletBodies.splice(i, 1);
+                
             }
 
         }
@@ -314,7 +325,7 @@ window.onload = function () {
 
     function render() {
 
-       // updatePhysics();
+        updatePhysics();
         UpdateTank();
         requestAnimationFrame(render);
         camera.lookAt(tank.position);
