@@ -20,13 +20,13 @@ class Tank extends THREE.Group {
             this.position.x, this.position.y, this.position.z - 35
         );
 
-        //default ammo. 0 == appel, 1 == ei, 2 == monster?
+        //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
 
 
         this.position.y = 3;
         this.canShoot = true;
-        
+
     }
 
     //load 3d model
@@ -85,60 +85,14 @@ class Tank extends THREE.Group {
 
 
             }
-
-
-            //spawns the projectile in front of the tank barrel, regardless of tank rotation.
-            projectile.applyMatrix(this.sphere.matrixWorld);
-            //Create collidable physics object to "attach" projectile to so we can simulate gravity and collisions.
-
-            var x = projectile.position.x;
-            var y = projectile.position.y;
-            var z = projectile.position.z;
-            var physicsMaterial = new CANNON.Material("slipperyMaterial");
-
-            //create collidable sphere object with radius and mass based on projectile subclass property  
-            var sphereShape = new CANNON.Sphere(projectile.radius);
-            var spherebody = new CANNON.Body({ mass: projectile.mass, material: physicsMaterial });
-            spherebody.addShape(sphereShape);
-            spherebody.position.set(x, y, z);
-
-            // add collision event for the projectile
-            spherebody.addEventListener("collide", function (e) {
-                selfref.parent.cannonWorld.remove(spherebody);
-                selfref.alive = false;
-
-            });
-
-            // add mesh and body to respective lists, so that we can copy the mesh into the body at every frame.
-            this.parent.bulletMeshes.push(projectile);
-            this.parent.cannonWorld.addBody(spherebody);
-            this.parent.bulletBodies.push(spherebody);
-
-            //shoot the body!
-            spherebody.velocity.set(
-                projectile.velocity.x * projectile.travelSpeed,
-                projectile.velocity.y,
-                projectile.velocity.z * projectile.travelSpeed);
-
-
-            this.canShoot = false;
-            
-
-
-            //remove projectile from scene after 10s
-            setTimeout(function () {
-                projectile.alive = false;
-                selfref.remove(projectile);
-
-            },
-                10000);
+            projectile.biem();
 
             //delay next shot by the shootingdelay of the chosen ammo.
-
+            this.canShoot = false;
             setTimeout(function () {
                 selfref.canShoot = true;
             }, projectile.delay);
-            this.parent.add(projectile);
+
         }
     }
 }
