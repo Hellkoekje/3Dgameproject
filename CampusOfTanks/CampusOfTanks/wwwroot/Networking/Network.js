@@ -27,12 +27,11 @@
     send(message)
     {
         console.log("[NETWORK] Yo send shit; " + message);
-        this.socket.send("This article explains how to get started with WebSockets in ASP.NET Core. WebSocket (RFC 6455) is a protocol that enables two-way persistent communication channels over TCP connections. It's used in apps that benefit from fast, real-time communication, such as chat, dashboard, and game apps.");
+        this.socket.send(message);
     }
 
     isAvailable()
     {
-        console.log(this.socket.readyState)
         return (this.socket != null && this.socket.readyState == 1);
     }
 
