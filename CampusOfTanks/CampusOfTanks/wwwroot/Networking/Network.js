@@ -8,8 +8,9 @@
         this.socket = new WebSocket("ws://" + hostname + ":" + port + "/connect_client");
 
         this.socket.onmessage = function (e) {
-            console.log(e.data);
+            receive(message);
         }
+
         this.socket.onopen = function (event) {
             console.log("[NETWORK] Socket has been opened");
         }
@@ -17,7 +18,6 @@
         this.socket.onerror = function (event) {
             console.log("[NETWORK] Uh oh error! " + JSON.stringify(event));
         }
-
     }
 
     receive(message) {
@@ -28,7 +28,7 @@
         return (this.socket != null && this.socket.readyState == 1);
     }
 
-    replicateEntity(content) {
+    (content) {
         this.socket.send(content);
         this.count += this.factor;
     }
