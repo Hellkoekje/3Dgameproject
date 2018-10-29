@@ -73,7 +73,7 @@ window.onload = function () {
         var material = new THREE.MeshPhongMaterial({ map: texture });
         var plane = new THREE.Mesh(geometry, material);
 
-        plane.reveiveShadow = true;
+        plane.reveiveShadow = true; 
         plane.position.x = 0;
         plane.position.y = -5;
         plane.position.z = 0;
