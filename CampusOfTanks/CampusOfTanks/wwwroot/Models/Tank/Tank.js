@@ -17,8 +17,7 @@ class Tank extends THREE.Group {
         this.add(this.sphere);
         this.sphere.visible = false;
         this.sphere.position.set(
-            this.position.x, this.position.y, this.position.z - 35
-        );
+            this.position.x, this.position.y+30, this.position.z);
 
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
@@ -44,8 +43,9 @@ class Tank extends THREE.Group {
             objLoader.setPath('Models/Tank/');
             objLoader.load('model.obj', function (object) {
                 var group = new THREE.Group();
-                object.scale.set(40, 40, 40);
-                object.rotation.y = Math.PI / 2;
+               // object.scale.set(10,10,10);
+             //   object.rotation.z = 90 * Math.PI / 180;
+               // object.rotation.y = Math.PI / 2;
                 group.add(object);
                 group.castShadow = true;
 
@@ -74,7 +74,6 @@ class Tank extends THREE.Group {
             switch (this.ammoSelected) {
                 case 0:
                     projectile = new Appel(this);
-
                     break;
                 case 1:
                     projectile = new Ei(this);
@@ -85,6 +84,7 @@ class Tank extends THREE.Group {
 
 
             }
+            //fire the projectile!
             projectile.biem();
 
             //delay next shot by the shootingdelay of the chosen ammo.

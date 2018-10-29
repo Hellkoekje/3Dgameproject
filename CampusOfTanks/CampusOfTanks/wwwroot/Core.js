@@ -14,7 +14,7 @@ window.onload = function () {
     var TankIsMovingForward = 0;
     var TankIsMovingBackwards = 0;
     var TankBackwardsSpeed = TankSpeed * 0.4;
-    var tank = new Tank(),enemytank = new Tank();
+    var tank = new Tank(), enemytank = new Tank();
     tank.name = 'tanky';
 
 
@@ -79,7 +79,7 @@ window.onload = function () {
         window.addEventListener('keydown', key_down);
         window.addEventListener('keyup', key_up);
 
-       
+
         //Plane stuff.
         var geometry = new THREE.PlaneGeometry(1000, 1000, 1000);
 
@@ -103,42 +103,42 @@ window.onload = function () {
         plane.rotation.z = 0;
         scene.add(plane);
 
-        //Collision testing walls.
-
-        //arr of meshes our ammo can collide with
-        var collidableMeshList = [];
-
-        //walls that our ammo is going to collide with
-        var wallGeometry = new THREE.CubeGeometry(100, 100, 20, 1, 1, 1);
-        var wallMaterial = new THREE.MeshBasicMaterial({ color: 0x8888ff });
-        var wireMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
-
-        var wallShape = new CANNON.Plane(100,100,20);
-        var wallBody = new CANNON.Body({ mass: 0, material: physicsMaterial });
-        var wall2Body = new CANNON.Body({ mass: 0, material: physicsMaterial });
-        wallBody.addShape(wallShape);
-        wall2Body.addShape(wallShape);
-      //  groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
+        /* //Collision testing walls.
+ 
+         //arr of meshes our ammo can collide with
+         var collidableMeshList = [];
+ 
+         //walls that our ammo is going to collide with
+         var wallGeometry = new THREE.CubeGeometry(100, 100, 20, 1, 1, 1);
+         var wallMaterial = new THREE.MeshBasicMaterial({ color: 0x8888ff });
+         var wireMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
+ 
+         var wallShape = new CANNON.Plane(100,100,20);
+         var wallBody = new CANNON.Body({ mass: 0, material: physicsMaterial });
+         var wall2Body = new CANNON.Body({ mass: 0, material: physicsMaterial });
+         wallBody.addShape(wallShape);
+         wall2Body.addShape(wallShape);
+       //  groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
+         
+ 
+         var wall = new THREE.Mesh(wallGeometry, wallMaterial);
+         wall.position.set(100, 50, -100);
+         scene.add(wall);
+         collidableMeshList.push(wall);
         
-
-        var wall = new THREE.Mesh(wallGeometry, wallMaterial);
-        wall.position.set(100, 50, -100);
-        scene.add(wall);
-        collidableMeshList.push(wall);
-       
-
-        var wall2 = new THREE.Mesh(wallGeometry, wallMaterial);
-        wall2.position.set(-150, 50, 0);
-        wall2.rotation.y = 3.14159 / 2;
-        scene.add(wall2);
-        collidableMeshList.push(wall2);
-
-        wallBody.position.copy(wall.position);
-        wall2Body.position.copy(wall2.position);
-        wallBody.quaternion.copy(wall.quaternion);
-        wall2Body.quaternion.copy(wall2.quaternion);
-        world.addBody(wallBody);
-        world.addBody(wall2Body);
+ 
+         var wall2 = new THREE.Mesh(wallGeometry, wallMaterial);
+         wall2.position.set(-150, 50, 0);
+         wall2.rotation.y = 3.14159 / 2;
+         scene.add(wall2);
+         collidableMeshList.push(wall2);
+ 
+         wallBody.position.copy(wall.position);
+         wall2Body.position.copy(wall2.position);
+         wallBody.quaternion.copy(wall.quaternion);
+         wall2Body.quaternion.copy(wall2.quaternion);
+         world.addBody(wallBody);
+         world.addBody(wall2Body);*/
 
         //Skybox
         scene.add(
@@ -155,16 +155,18 @@ window.onload = function () {
         // Tank object
         tank.position.x = 0;
         tank.position.z = 0;
-        tank.rotation.y = 270*Math.PI/180;
+      //  tank.rotation.z = 90 * Math.PI / 180;
+       // tank.rotation.y = 270 * Math.PI / 180;
         scene.add(tank);
 
         //enemy tank for hitbox tests
         enemytank.position.x = 0;
         enemytank.position.z = -100;
-        enemytank.rotation.y = 180 * Math.PI / 180;
+       // enemytank.rotation.z = 90 * Math.PI / 180;
+        //enemytank.rotation.y = 180 * Math.PI / 180;
         scene.add(enemytank);
 
-       
+
 
 
 
@@ -180,8 +182,7 @@ window.onload = function () {
 
 
 
-    function moveForward(speed)
-    {
+    function moveForward(speed) {
 
         var delta_z = speed * Math.cos(TankDirection);
         var delta_x = speed * Math.sin(TankDirection);
@@ -237,7 +238,7 @@ window.onload = function () {
         switch (event.keyCode) {
 
             case keys.UP:
-                
+
                 TankIsMovingForward = 1;
                 break;
 
@@ -287,19 +288,19 @@ window.onload = function () {
         camera.lookAt(tank.position);
 
 
-        
-            TankIsMovingForward = 0;
-            TankIsMovingBackwards = 0;
-            TankIsRotatingLeft = 0;
-            TankIsRotatingRight = 0;
-            TankGoesUp = 0;
-            TankGoesDown = 0;
+
+        TankIsMovingForward = 0;
+        TankIsMovingBackwards = 0;
+        TankIsRotatingLeft = 0;
+        TankIsRotatingRight = 0;
+        TankGoesUp = 0;
+        TankGoesDown = 0;
 
     }
 
-    
 
-    
+
+
 
 
     function updatePhysics() {
@@ -310,13 +311,13 @@ window.onload = function () {
             if (scene.bulletMeshes[i].alive) {
                 scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
                 scene.bulletMeshes[i].quaternion.copy(scene.bulletBodies[i].quaternion);
-            
+
             } else {
                 scene.remove(bulletMeshes[i]);
                 cannonWorld.remove(bulletBodies[i]);
                 scene.bulletMeshes.splice(i, 1);
                 scene.bulletBodies.splice(i, 1);
-                
+
             }
 
         }
@@ -341,8 +342,8 @@ window.onload = function () {
 
     init();
 
-    net = new Network();
-    net.connect(window.location.hostname, window.location.port);
+    // net = new Network();
+    //  net.connect(window.location.hostname, window.location.port);
 
     render();
 }
