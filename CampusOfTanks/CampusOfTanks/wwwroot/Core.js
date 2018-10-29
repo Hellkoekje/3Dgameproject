@@ -6,7 +6,8 @@ window.onload = function () {
     var net;
 
     var cameraControls;
-    var TankDirection = 270 * Math.PI / 180;
+    //var TankDirection = 270 * Math.PI / 180;
+    var TankDirection = 0;
     var angularSpeed = 0.5;
     var TankSpeed = 0.5;
     var TankIsRotatingLeft = 0;
@@ -25,13 +26,13 @@ window.onload = function () {
         world.gravity.set(0, -9.82, 0);
         world.solver.iterations = 20;
         //THREE inits
-        camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
-        cameraControls = new THREE.OrbitControls(camera, renderer);
-        cameraControls.center = new THREE.Vector3(
+        camera = new three.perspectivecamera(70, window.innerwidth / window.innerheight, 1, 1500);
+        cameracontrols = new three.orbitcontrols(camera, renderer);
+        cameracontrols.center = new three.vector3(
             tank.position.x,
             tank.position.y,
             tank.position.z);
-        camera.rotation.x = 90 * Math.PI / 180;
+        camera.rotation.x = 90 * math.pi / 180;
         camera.position.set(tank.position.x - 75, tank.position.y + 50, tank.position.z);
         camera.lookAt(tank.position);
         cameraControls.update();
