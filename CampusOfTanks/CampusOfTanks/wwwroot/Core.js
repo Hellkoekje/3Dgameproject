@@ -136,7 +136,7 @@ window.onload = function () {
 
         scene.add(tank);
         tank.position.x = 0;
-        tank.position.y = -5;
+   
     
         
       
@@ -220,11 +220,11 @@ window.onload = function () {
             return;
         }
         if (TankIsMovingForward) { // go forward
-            moveForward(TankBackwardsSpeed);
+            moveForward(TankSpeed);
             return;
         }
         if (TankIsMovingBackwards) { // go backwards
-            moveForward(-TankSpeed);
+            moveForward(-TankBackwardsSpeed);
             return;
         }
         //key_down();
@@ -238,12 +238,12 @@ window.onload = function () {
 
         switch (event.keyCode) {
             case keys.UP:
-
-                TankIsMovingBackwards = 1;
+                TankIsMovingForward = 1;
+                
                 break;
 
             case keys.BOTTOM:
-                TankIsMovingForward = 1;
+                TankIsMovingBackwards = 1;
                 
                 break;
 

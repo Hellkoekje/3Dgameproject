@@ -47,7 +47,7 @@ class Projectile extends THREE.Object3D {
         //remove projectile from scene after 10s
         setTimeout(function () {
                 this.alive = false;
-                firedFrom.remove(this);
+                this.firedFrom.remove(this);
 
             },
             10000);
