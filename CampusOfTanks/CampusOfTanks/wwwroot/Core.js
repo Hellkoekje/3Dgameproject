@@ -8,7 +8,7 @@ window.onload = function () {
     var cameraControls;
     var TankDirection = 270 * Math.PI / 180;
     var angularSpeed = 0.5;
-    var TankSpeed = 0.075;
+    var TankSpeed = 0.5;
     var TankIsRotatingLeft = 0;
     var TankIsRotatingRight = 0;
     var TankIsMovingForward = 0;
@@ -16,7 +16,7 @@ window.onload = function () {
     var TankBackwardsSpeed = TankSpeed * 0.4;
 
     var tank = new Tank(), enemytank = new Tank();
-
+    
 
     function init() {
         //Cannon init
@@ -44,6 +44,8 @@ window.onload = function () {
         scene.bulletMeshes = [];
         //actual collidable physics objects (spheres) placed inside of visual mesh.
         scene.bulletBodies = [];
+        scene.tankMeshes = [];
+        scene.tankHitboxes = [];
         scene.cannonWorld = world;
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -132,19 +134,19 @@ window.onload = function () {
         ambientlight.intensity = 1;
         scene.add(ambientlight);
 
-
+        scene.add(tank);
         tank.position.x = 0;
         tank.position.y = -5;
-        //  tank.rotation.z = 90 * Math.PI / 180;
-        tank.rotation.y = 270 * Math.PI / 180;
-        scene.add(tank);
+    
+        
+      
 
         //enemy tank for hitbox tests
+        scene.add(enemytank);
         enemytank.position.x = 0;
         enemytank.position.z = -100;
-        // enemytank.rotation.z = 90 * Math.PI / 180;
-        //enemytank.rotation.y = 180 * Math.PI / 180;
-        scene.add(enemytank);
+       
+        
 
 
         /* cannonjs test
@@ -158,13 +160,7 @@ window.onload = function () {
         // We must add the contact materials to the world
         world.addContactMaterial(physicsContactMaterial);
 
-        var mass = 20, radius = 1.3;
-        var sphereShape = new CANNON.Sphere(radius);
-        spherebody = new CANNON.Body({ mass: mass, material: physicsMaterial });
-        spherebody.addShape(sphereShape);
-        spherebody.position.set(20, 100, 0);
-        //   spherebody.linearDamping = 0.9;
-        world.addBody(spherebody);
+     
         // Create a plane
         var groundShape = new CANNON.Plane();
         var groundBody = new CANNON.Body({ mass: 0, material: physicsMaterial });
@@ -173,10 +169,7 @@ window.onload = function () {
         groundBody.position.set(0, -5, 0);
         world.addBody(groundBody);
 
-        var spheregeo = new THREE.SphereGeometry(radius, 16, 16);
-        var spheremat = new THREE.MeshBasicMaterial({ color: 0xfffffff });
-        sphere = new THREE.Mesh(spheregeo, spheremat);
-        scene.add(sphere);
+   
 
 
         function onWindowResize() {
@@ -227,11 +220,11 @@ window.onload = function () {
             return;
         }
         if (TankIsMovingForward) { // go forward
-            moveForward(TankSpeed);
+            moveForward(TankBackwardsSpeed);
             return;
         }
         if (TankIsMovingBackwards) { // go backwards
-            moveForward(-TankBackwardsSpeed);
+            moveForward(-TankSpeed);
             return;
         }
         //key_down();
@@ -296,8 +289,7 @@ window.onload = function () {
         // Step the physics world
         world.step(1 / 60);
         // Copy coordinates from Cannon.js to Three.js
-        sphere.position.copy(spherebody.position);
-        sphere.quaternion.copy(spherebody.quaternion);
+      
         for (var i = 0; i < scene.bulletMeshes.length; i++) {
             if (scene.bulletMeshes[i].alive) {
                 scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
@@ -308,6 +300,12 @@ window.onload = function () {
             }
 
         }
+     /*   //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
+        for (var i = 0; i < scene.tankMeshes.length; i++) {
+            scene.tankHitboxes[i].position.copy(scene.tankMeshes[i].position);
+            scene.tankHitboxes[i].quaternion.copy(scene.tankMeshes[i].quaternion);
+        }*/
+
 
     }
 
