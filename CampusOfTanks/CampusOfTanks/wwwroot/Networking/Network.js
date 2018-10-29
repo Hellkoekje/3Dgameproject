@@ -24,12 +24,12 @@
         console.log("[NETWORK] I've received shit! " + message);
     }
 
+    send(message) {
+        this.socket.send(message);
+    }
+
     isAvailable() {
         return (this.socket != null && this.socket.readyState == 1);
     }
 
-    (content) {
-        this.socket.send(content);
-        this.count += this.factor;
-    }
 }

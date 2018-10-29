@@ -21,9 +21,9 @@ class Tank extends THREE.Group {
 
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
+        this.rotation.z = 90 * Math.PI / 180;
 
-
-        this.position.y = 3;
+        
         this.canShoot = true;
 
     }
@@ -45,7 +45,7 @@ class Tank extends THREE.Group {
                 var group = new THREE.Group();
                // object.scale.set(10,10,10);
              //   object.rotation.z = 90 * Math.PI / 180;
-               // object.rotation.y = Math.PI / 2;
+                object.rotation.y = Math.PI / 2;
                 group.add(object);
                 group.castShadow = true;
 
@@ -95,4 +95,5 @@ class Tank extends THREE.Group {
 
         }
     }
+
 }
