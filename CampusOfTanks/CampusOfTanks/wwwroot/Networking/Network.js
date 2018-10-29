@@ -24,11 +24,14 @@
         console.log("[NETWORK] I've received shit! " + message);
     }
 
-    send(message) {
+    send(message)
+    {
+        console.log("[NETWORK] Yo send shit; " + message);
         this.socket.send(message);
     }
 
-    isAvailable() {
+    isAvailable()
+    {
         return (this.socket != null && this.socket.readyState == 1);
     }
 

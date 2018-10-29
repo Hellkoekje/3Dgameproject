@@ -1,27 +1,38 @@
-﻿using System;
-using System.Text;
-
-namespace CampusofTanks.Server.Communication
+﻿namespace CampusofTanks.Server.Communication
 {
+    public struct GamePacketHeader
+    {
+        public string type;
+
+        public GamePacketHeader(string type)
+        {
+            this.type = type; 
+        }
+    }
+
+    public class GamePacketPayload
+    {
+        public string payload;
+
+        public GamePacketPayload(string payload)
+        {
+            this.payload = payload;
+        }
+    }
+
     public class GamePacket
     {
-        private byte[] buffer;
-        public byte[] Buffer
-        {
-            get
-            {
-                return buffer;
-            }
+        public GamePacketHeader Header;
+        public GamePacketPayload Payload;
 
-            protected set
-            {
-                buffer = value;
-            }
+        public GamePacket()
+        {
+
         }
 
-        public void SetString(string message)
-        {
-            buffer = Encoding.UTF8.GetBytes(message);
-        }
+        //public byte[] Get()
+        //{
+
+        //}
     }
 }
