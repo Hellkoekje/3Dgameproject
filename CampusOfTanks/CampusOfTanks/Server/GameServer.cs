@@ -41,13 +41,13 @@ namespace CampusofTanks.Server
 
                 if (sock != null)
                 {
-                    GamePacket packet = new GamePacket();
-                    packet.SetString("HELLO THERE CLIENT!");
+                    //GamePacket packet = new GamePacket();
+                    //packet.SetString("HELLO THERE CLIENT!");
 
-                    Task send = new Task(async () =>
-                    {
-                        await sock.Send(packet);
-                    });
+                    //Task send = new Task(async () =>
+                    //{
+                    //    await sock.Send(packet);
+                    //});
 
                     //send.Start();
                 }
