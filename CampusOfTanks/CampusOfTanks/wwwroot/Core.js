@@ -164,11 +164,8 @@ window.onload = function () {
         enemytank.rotation.y = 180 * Math.PI / 180;
         scene.add(enemytank);
 
-       
-
-
-
-
+        net = new Network();
+        net.connect(window.location.hostname, window.location.port);
 
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
@@ -177,12 +174,8 @@ window.onload = function () {
         }
     }
 
-
-
-
     function moveForward(speed)
     {
-
         var delta_z = speed * Math.cos(TankDirection);
         var delta_x = speed * Math.sin(TankDirection);
 
@@ -286,21 +279,13 @@ window.onload = function () {
         tank.position.z = delta_z;
         camera.lookAt(tank.position);
 
-
-        
-            TankIsMovingForward = 0;
-            TankIsMovingBackwards = 0;
-            TankIsRotatingLeft = 0;
-            TankIsRotatingRight = 0;
-            TankGoesUp = 0;
-            TankGoesDown = 0;
-
+        TankIsMovingForward = 0;
+        TankIsMovingBackwards = 0;
+        TankIsRotatingLeft = 0;
+        TankIsRotatingRight = 0;
+        TankGoesUp = 0;
+        TankGoesDown = 0;
     }
-
-    
-
-    
-
 
     function updatePhysics() {
         // Step the physics world
@@ -318,9 +303,7 @@ window.onload = function () {
                 scene.bulletBodies.splice(i, 1);
                 
             }
-
         }
-
     }
 
     function render() {
@@ -330,19 +313,11 @@ window.onload = function () {
         requestAnimationFrame(render);
         camera.lookAt(tank.position);
 
-
         cameraControls.update();
-
-
-
         renderer.render(scene, camera);
 
     }
 
     init();
-
-    net = new Network();
-    net.connect(window.location.hostname, window.location.port);
-
     render();
 }
