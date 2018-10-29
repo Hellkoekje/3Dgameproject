@@ -12,13 +12,10 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    
     max-width: 100%;
-    background-size: cover;
-    background-position: center;
     max-height: 100%;
-    background-repeat: no-repeat;
     background-image: url("pic/background.jpg");
+    background: no-repeat center center cover;
 }
 
 .container {
