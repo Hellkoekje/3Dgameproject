@@ -17,9 +17,9 @@ class Projectile extends THREE.Object3D {
 
     }
     biem() {
+        var selfref = this;
 
-        //spawns the projectile in front of the tank barrel, regardless of tank rotation.
-        this.applyMatrix(this.firedFrom.sphere.matrixWorld);
+        selfref.applyMatrix(this.firedFrom.sphere.matrixWorld);
         //Create collidable physics object to "attach" projectile to so we can simulate gravity and collisions.
 
        
@@ -46,8 +46,8 @@ class Projectile extends THREE.Object3D {
             this.velocity.z * -this.travelSpeed);
         //remove projectile from scene after 10s
         setTimeout(function () {
-                this.alive = false;
-                this.firedFrom.remove(this);
+                selfref.alive = false;
+              
 
             },
             10000);

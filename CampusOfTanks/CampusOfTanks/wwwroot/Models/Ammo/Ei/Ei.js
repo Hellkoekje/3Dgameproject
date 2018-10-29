@@ -4,16 +4,14 @@ class Ei extends Projectile {
         super(firedFrom);
         
         this.init();
-        console.log(this.position);
-        //this.position.set(firedFrom.worldToLocal(this.position));
-        console.log(firedFrom.worldToLocal(this.position));
+      
         this.delay = 2000;
 
         this.velocity = new THREE.Vector3(-Math.sin(firedFrom.rotation.y) * 2, 0, -Math.cos(firedFrom.rotation.y) * 2);
         this.travelSpeed = 150;
         this.mass = 10;
         this.radius = 2;
-        firedFrom.sphere.position.set(this.position.x + 9, this.position.y + 13, this.position.z + 35);
+        
     }
 
 

@@ -16,7 +16,7 @@ class Tank extends THREE.Group {
         );
         this.add(this.sphere);
         this.sphere.visible = false;
-    
+        this.sphere.position.set(this.position.x, this.position.y + 12, this.position.z + 35);
 
             
         //default ammo. 0 == appel, 1 == ei, 2 == bier

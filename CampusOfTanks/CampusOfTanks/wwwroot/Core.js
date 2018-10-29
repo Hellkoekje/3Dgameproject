@@ -296,6 +296,8 @@ window.onload = function () {
                 scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
                 scene.bulletMeshes[i].quaternion.copy(scene.bulletBodies[i].quaternion);
             } else {
+                scene.remove(scene.bulletMeshes[i]);
+                world.remove(scene.bulletBodies[i]);
                 scene.bulletMeshes.splice(i, 1);
                 scene.bulletBodies.splice(i, 1);
             }
