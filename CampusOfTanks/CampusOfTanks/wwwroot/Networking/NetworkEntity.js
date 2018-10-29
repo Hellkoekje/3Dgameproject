@@ -4,8 +4,8 @@
      * @param {Network} - The current network we want to send updates to.
      * @param {bool} remote - Is this entity a remote entity or are we controlling it locally?
      * @param {bool} dirty - True when the entity requires updates.
-     * @param {THREE.Vector3} - The starting position of this network entity.
-     * @param {THREE.Vector3} - The starting rotation of this network entity.
+     * @param {any} - The starting position of this network entity.
+     * @param {any} - The starting rotation of this network entity.
      */
     constructor(network, remote, position, rotation) {
         this.net = network;
@@ -15,13 +15,31 @@
 
         this.position = position;
         this.rotation = rotation;
+
+        console.log("cuntstructor");
+        this.entityId = this.requestEntityId();
     }
 
-    doHandshake() {
-        this.net.send("update");
+    requestEntityId() {
+        console.log("requesting entity shit");
+        var payload = {
+            px: this.position.x,
+            py: this.position.y,
+            pz: this.position.z,
+            rx: this.rotation.x,
+            ry: this.rotation.y,
+            rz: this.rotation.z,
+        }
+
+        var networkMsg = new NetworkMessage("request_entity_id", payload);
+        this.net.send(networkMsg.stringify());
     }
 
     setPosition(position) {
+
+    }
+
+    setRotation(rotation) {
 
     }
 }

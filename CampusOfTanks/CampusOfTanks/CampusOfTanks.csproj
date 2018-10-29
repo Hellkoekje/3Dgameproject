@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\Models\Tank\Test\**" />
+    <Content Remove="wwwroot\Models\Tank\Test\**" />
+    <EmbeddedResource Remove="wwwroot\Models\Tank\Test\**" />
+    <None Remove="wwwroot\Models\Tank\Test\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 

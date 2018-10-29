@@ -2,11 +2,12 @@
 
 window.onload = function () {
 
-    var camera, scene, renderer, world, sphere, spherebody;
+    var camera, scene, renderer, world;
     var net;
 
     var cameraControls;
-    var TankDirection = 270 * Math.PI / 180;
+    //var TankDirection = 270 * Math.PI / 180;
+    var TankDirection = 0;
     var angularSpeed = 0.5;
     var TankSpeed = 0.5;
     var TankIsRotatingLeft = 0;
@@ -14,9 +15,8 @@ window.onload = function () {
     var TankIsMovingForward = 0;
     var TankIsMovingBackwards = 0;
     var TankBackwardsSpeed = TankSpeed * 0.4;
-
     var tank = new Tank(), enemytank = new Tank();
-    
+
 
     function init() {
         //Cannon init
@@ -25,7 +25,7 @@ window.onload = function () {
         world.gravity.set(0, -9.82, 0);
         world.solver.iterations = 20;
         //THREE inits
-        camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
+        camera = new THREE.PerspectiveCamera(70, window.innerwidth / window.innerheight, 1, 1500);
         cameraControls = new THREE.OrbitControls(camera, renderer);
         cameraControls.center = new THREE.Vector3(
             tank.position.x,
@@ -120,7 +120,6 @@ window.onload = function () {
          world.addBody(wallBody);
          world.addBody(wall2Body);*/
 
-
         //Skybox
         scene.add(
             new THREE.Mesh(new THREE.SphereGeometry(750, 12, 12),
@@ -136,18 +135,17 @@ window.onload = function () {
 
         scene.add(tank);
         tank.position.x = 0;
+
    
     
         
       
 
+
         //enemy tank for hitbox tests
         scene.add(enemytank);
         enemytank.position.x = 0;
         enemytank.position.z = -100;
-       
-        
-
 
         /* cannonjs test
          */
@@ -160,7 +158,7 @@ window.onload = function () {
         // We must add the contact materials to the world
         world.addContactMaterial(physicsContactMaterial);
 
-     
+
         // Create a plane
         var groundShape = new CANNON.Plane();
         var groundBody = new CANNON.Body({ mass: 0, material: physicsMaterial });
@@ -169,7 +167,10 @@ window.onload = function () {
         groundBody.position.set(0, -5, 0);
         world.addBody(groundBody);
 
-   
+
+        net = new Network();
+        net.connect(window.location.hostname, window.location.port);
+
 
 
         function onWindowResize() {
@@ -182,8 +183,8 @@ window.onload = function () {
 
     function moveForward(speed) {
 
-        var delta_z = -speed * Math.cos(TankDirection);
-        var delta_x = -speed * Math.sin(TankDirection);
+        var delta_z = speed * Math.cos(TankDirection);
+        var delta_x = speed * Math.sin(TankDirection);
 
         var new_x = camera.position.x + delta_x;
         var new_z = camera.position.z + delta_z;
@@ -282,14 +283,14 @@ window.onload = function () {
     TankIsRotatingRight = 0;
     TankGoesUp = 0;
     TankGoesDown = 0;
-   
+
 
 
     function updatePhysics() {
         // Step the physics world
         world.step(1 / 60);
         // Copy coordinates from Cannon.js to Three.js
-      
+
         for (var i = 0; i < scene.bulletMeshes.length; i++) {
             if (scene.bulletMeshes[i].alive) {
                 scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
@@ -300,11 +301,11 @@ window.onload = function () {
             }
 
         }
-     /*   //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
-        for (var i = 0; i < scene.tankMeshes.length; i++) {
-            scene.tankHitboxes[i].position.copy(scene.tankMeshes[i].position);
-            scene.tankHitboxes[i].quaternion.copy(scene.tankMeshes[i].quaternion);
-        }*/
+        /*   //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
+           for (var i = 0; i < scene.tankMeshes.length; i++) {
+               scene.tankHitboxes[i].position.copy(scene.tankMeshes[i].position);
+               scene.tankHitboxes[i].quaternion.copy(scene.tankMeshes[i].quaternion);
+           }*/
 
 
     }
@@ -318,12 +319,32 @@ window.onload = function () {
         camera.lookAt(tank.position);
         cameraControls.update();
         renderer.render(scene, camera);
-
     }
 
+    function waitForNetReady(callback, count) {
+        // A five second timeout
+        if (count > 50) {
+            console.log("[NETWORK] Cannot establish network connection! :(");
+        }
 
-    // net = new Network();
-    //  net.connect(window.location.hostname, window.location.port);
+        if (!net.isAvailable()) {
+            setTimeout(function () {
+                count++;
+                waitForNetReady(callback, count);
+            }, 100);
+        }
+        else {
+            setTimeout(function () {
+                callback();
+            }, 1000);
+        }
+    }
+
     init();
-    render();
+
+    waitForNetReady(function () {
+        var entity = new NetworkEntity(net, true, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0));
+        render();
+    });
+
 }

@@ -21,7 +21,7 @@ class Tank extends THREE.Group {
             
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
-        
+
 
         
         this.canShoot = true;
@@ -39,22 +39,27 @@ class Tank extends THREE.Group {
 
     //load 3d model
     init() {
+
         var selfRef = this;
         var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
         var mtlLoader = new THREE.MTLLoader();
+
         mtlLoader.setPath('Models/Tank/');
-        var url = "Tiger_I.mtl";
+        var url = "shadowsword.mtl";
+
         mtlLoader.load(url, function (materials) {
             materials.preload();
 
             var objLoader = new THREE.OBJLoader();
             objLoader.setMaterials(materials);
+
             objLoader.setPath('Models/Tank/');
-            objLoader.load('Tiger_I.obj', function (object) {
+            objLoader.load('shadowsword.obj', function (object) {
+
                 var group = new THREE.Group();
-               object.scale.set(20,20,20);
+              // object.scale.set(20,20,20);
              //   object.rotation.z = 90 * Math.PI / 180;
-                object.rotation.y = Math.PI / 2;
+                //object.rotation.y = Math.PI / 2;
                 group.add(object);
                 group.castShadow = true;
 

@@ -19,43 +19,6 @@ namespace CampusofTanks.Server.Communication
             this.socket = socket;
         }
 
-        public void BeginReceiving()
-        {
-            if (receiveTask != null) return;
-
-            receiveTask = new Task(async () =>
-            {
-                while (true)
-                {
-                    Console.WriteLine(socket.State);
-
-                    Monitor.Enter(socket);
-
-                    try
-                    {
-                        byte[] buffer = new byte[4096];
-                        WebSocketReceiveResult result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-
-                        while (!result.CloseStatus.HasValue)
-                        {
-                            result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-                            Console.WriteLine(result);
-                        }
-
-                        await socket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
-
-                        //return new GamePacket();
-                    }
-                    finally
-                    {
-                        Monitor.Exit(socket);
-                    }
-                }
-            }, TaskCreationOptions.LongRunning);
-
-            receiveTask.Start();
-        }
-
         /// <summary>
         ///     Receive data from the client.
         /// </summary>
@@ -66,24 +29,25 @@ namespace CampusofTanks.Server.Communication
 
             try
             {
-                byte[] buffer = new byte[4096];
-                WebSocketReceiveResult result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                byte[] scratchpad = new byte[4096];
+                byte[] content = new byte[4096];
+                int contentSize = 0;
+                bool eof = false;
+                WebSocketReceiveResult result = null;
 
-                while (!result.CloseStatus.HasValue)
+                while (!eof) 
                 {
-                    result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                    result = await socket.ReceiveAsync(new ArraySegment<byte>(scratchpad), CancellationToken.None);
+                    Array.Copy(scratchpad, 0, content, contentSize, result.Count);
 
-                    string resultString = Encoding.UTF8.GetString(buffer).Trim().Remove(' ');
-
-                    if(!string.IsNullOrEmpty(resultString))
-                    {
-                        //Console.WriteLine(resultString);
-                    }
-
+                    contentSize += result.Count;
+                    eof = result.EndOfMessage;
                 }
 
-                await socket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+                Console.WriteLine("Yeah we are done, and the winner is...");
+                Console.WriteLine(Encoding.UTF8.GetString(content, 0, contentSize) + " with " + contentSize + " bytes!");
 
+                await socket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
                 return new GamePacket();
             }
             finally
@@ -96,32 +60,32 @@ namespace CampusofTanks.Server.Communication
         ///     Send a message to this client.
         /// </summary>
         /// <param name="packet">The message we want to send.</param>
-        public async Task Send(GamePacket packet)
-        {
-            ArraySegment<byte> messageSegment = new ArraySegment<byte>(packet.Buffer);
+        //public async Task Send(GamePacket packet)
+        //{
+        //    ArraySegment<byte> messageSegment = new ArraySegment<byte>(packet.Buffer);
 
-            //NOTE: Do not remove, without, the socket will not be able to send data 
-            //      when receiving multiple packets per frame.
-            Monitor.Enter(socket);
+        //    //NOTE: Do not remove, without, the socket will not be able to send data 
+        //    //      when receiving multiple packets per frame.
+        //    Monitor.Enter(socket);
 
-            try
-            {
-                try
-                {
-                    await socket.SendAsync(messageSegment, WebSocketMessageType.Text, true, CancellationToken.None);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Error while sending information to client:" + e.Message);
-                }
-            }
-            finally
-            {
-                //NOTE: Always assure we tell the socket should be released from the mutex.
-                //      i.e. when sending fails we want to assure we don't go into a deadlock.
-                Monitor.Exit(socket);
-            }
-        }
+        //    try
+        //    {
+        //        try
+        //        {
+        //            await socket.SendAsync(messageSegment, WebSocketMessageType.Text, true, CancellationToken.None);
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            Console.WriteLine("Error while sending information to client:" + e.Message);
+        //        }
+        //    }
+        //    finally
+        //    {
+        //        //NOTE: Always assure we tell the socket should be released from the mutex.
+        //        //      i.e. when sending fails we want to assure we don't go into a deadlock.
+        //        Monitor.Exit(socket);
+        //    }
+        //}
 
 
     }
