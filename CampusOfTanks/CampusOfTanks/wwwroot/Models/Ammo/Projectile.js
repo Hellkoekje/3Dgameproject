@@ -41,9 +41,9 @@ class Projectile extends THREE.Object3D {
 
         //shoot the body!
         spherebody.velocity.set(
-            this.velocity.x * this.travelSpeed,
+            this.velocity.x * -this.travelSpeed,
             this.velocity.y,
-            this.velocity.z * this.travelSpeed);
+            this.velocity.z * -this.travelSpeed);
         //remove projectile from scene after 10s
         setTimeout(function () {
                 this.alive = false;

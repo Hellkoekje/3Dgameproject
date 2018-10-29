@@ -11,8 +11,8 @@ class Appel extends Projectile {
         this.delay = 5000;
         this.velocity = new THREE.Vector3(-Math.sin(firedFrom.rotation.y), 0, -Math.cos(firedFrom.rotation.y));
         this.travelSpeed = 100;
-        this.mass = 15;
-        this.radius = 7;
+        this.mass = 10;
+        this.radius = 4;
     }
     
     init() {

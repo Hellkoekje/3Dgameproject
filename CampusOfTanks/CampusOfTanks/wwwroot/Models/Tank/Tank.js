@@ -9,23 +9,31 @@ class Tank extends THREE.Group {
 
         this.init();
         //invisible sphere which is always in front of the barrel of the tank, projectiles use this sphere's matrix to spawn in front of the barrel.
-        //super kut code maar wist niet hoe dit anders moest :/
+        
         this.sphere = new THREE.Mesh(
             new THREE.SphereGeometry(0.5, 8, 8),
             new THREE.MeshBasicMaterial({ transparent: true })
         );
         this.add(this.sphere);
         this.sphere.visible = false;
-        this.sphere.position.set(
-            this.position.x, this.position.y, this.position.z - 35
-        );
+    
 
+            
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
+        this.rotation.z = 90 * Math.PI / 180;
 
-
-        this.position.y = 3;
+        
         this.canShoot = true;
+
+    /*    //hitbox
+        this.hitBoxShape = new CANNON.Box(new CANNON.Vec3(30,30,30));
+        this.hitBoxBody = new CANNON.Body({ mass: 100, shape: this.hitBoxShape });
+        this.parent.tankMeshes.add(this);
+        this.parent.tankHitboxes.add(this.hitBoxBody);
+        this.parent.cannonWorld.add(this.hitboxBody);*/
+        //if false, remove from world
+        this.alive = true;
 
     }
 
@@ -44,7 +52,8 @@ class Tank extends THREE.Group {
             objLoader.setPath('Models/Tank/');
             objLoader.load('model.obj', function (object) {
                 var group = new THREE.Group();
-                object.scale.set(40, 40, 40);
+               // object.scale.set(10,10,10);
+             //   object.rotation.z = 90 * Math.PI / 180;
                 object.rotation.y = Math.PI / 2;
                 group.add(object);
                 group.castShadow = true;
@@ -74,7 +83,6 @@ class Tank extends THREE.Group {
             switch (this.ammoSelected) {
                 case 0:
                     projectile = new Appel(this);
-
                     break;
                 case 1:
                     projectile = new Ei(this);
@@ -85,6 +93,7 @@ class Tank extends THREE.Group {
 
 
             }
+            //fire the projectile!
             projectile.biem();
 
             //delay next shot by the shootingdelay of the chosen ammo.

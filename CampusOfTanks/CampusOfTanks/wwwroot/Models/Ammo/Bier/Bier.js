@@ -8,6 +8,7 @@ class Bier extends Projectile {
         this.travelSpeed = 300;
         this.mass = 15;
         this.radius = 7;
+        firedFrom.sphere.position.set(this.position.x + 9, this.position.y + 11, this.position.z + 35);
     }
 
     init() {

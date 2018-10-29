@@ -2,7 +2,7 @@
 class Ei extends Projectile {
     constructor(firedFrom) {
         super(firedFrom);
-        this.type = "ei";
+        
         this.init();
         console.log(this.position);
         //this.position.set(firedFrom.worldToLocal(this.position));
@@ -13,6 +13,7 @@ class Ei extends Projectile {
         this.travelSpeed = 150;
         this.mass = 10;
         this.radius = 2;
+        firedFrom.sphere.position.set(this.position.x + 9, this.position.y + 13, this.position.z + 35);
     }
 
 
