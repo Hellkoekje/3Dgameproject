@@ -303,7 +303,7 @@ window.onload = function () {
             }
 
         }
-        /*   //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
+        /*   //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body hitbox follows the mesh instead of the other way around as seen above.
            for (var i = 0; i < scene.tankMeshes.length; i++) {
                scene.tankHitboxes[i].position.copy(scene.tankMeshes[i].position);
                scene.tankHitboxes[i].quaternion.copy(scene.tankMeshes[i].quaternion);
