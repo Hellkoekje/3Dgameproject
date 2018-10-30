@@ -1,4 +1,4 @@
-﻿///<reference path="~/wwwroot/Core.js"/>
+﻿
 //class that represents a tank aka a player. This is the superclass for our different tanks.
 //TODO make subclasses that represent other types of tanks, one of which should move faster, one of which should shoot faster, and one of which should have higher hitpoints.
 //TODO and should have different models 
@@ -16,12 +16,12 @@ class Tank extends THREE.Group {
         );
         this.add(this.sphere);
         this.sphere.visible = false;
-    
+        this.sphere.position.set(this.position.x, this.position.y + 12, this.position.z + 35);
 
             
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
-        this.rotation.z = 90 * Math.PI / 180;
+
 
         
         this.canShoot = true;
@@ -39,22 +39,27 @@ class Tank extends THREE.Group {
 
     //load 3d model
     init() {
+
         var selfRef = this;
         var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
         var mtlLoader = new THREE.MTLLoader();
+
         mtlLoader.setPath('Models/Tank/');
-        var url = "materials.mtl";
+        var url = "shadowsword.mtl";
+
         mtlLoader.load(url, function (materials) {
             materials.preload();
 
             var objLoader = new THREE.OBJLoader();
             objLoader.setMaterials(materials);
+
             objLoader.setPath('Models/Tank/');
-            objLoader.load('model.obj', function (object) {
+            objLoader.load('shadowsword.obj', function (object) {
+
                 var group = new THREE.Group();
-               // object.scale.set(10,10,10);
+              // object.scale.set(20,20,20);
              //   object.rotation.z = 90 * Math.PI / 180;
-                object.rotation.y = Math.PI / 2;
+                //object.rotation.y = Math.PI / 2;
                 group.add(object);
                 group.castShadow = true;
 
