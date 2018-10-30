@@ -1,9 +1,11 @@
+
 ﻿
 
 window.onload = function () {
 
     var camera, scene, renderer, world;
     var net;
+
 
     var cameraControls;
     //var TankDirection = 270 * Math.PI / 180;
@@ -31,6 +33,7 @@ window.onload = function () {
             tank.position.x,
             tank.position.y,
             tank.position.z);
+
         camera.rotation.x = 90 * Math.PI / 180;
         camera.position.set(tank.position.x - 75, tank.position.y + 50, tank.position.z);
         camera.lookAt(tank.position);
@@ -40,6 +43,34 @@ window.onload = function () {
         controls.setZoomSpeed(1); // set zoom speed
         scene = new THREE.Scene();
 
+
+        //verlichting
+        //hemilight + derictional light voor een realistische belichting
+
+        var hemiLight = new THREE.HemisphereLight(0x7F7F7F, 0xFFFFFF, 0.8);
+
+        hemiLight.position.set(0, 80, 0);
+        scene.add(hemiLight);
+
+        var hemiLightHelper = new THREE.HemisphereLightHelper(hemiLight, 10);
+        scene.add(hemiLightHelper);
+
+       var dirLight = new THREE.DirectionalLight(0xFFFFFF, 1);
+        dirLight.color.setHSL(0.0, 0, 100);
+        dirLight.position.set(-4.714, 10, 4.714);
+        dirLight.position.multiplyScalar(50);
+        scene.add(dirLight);
+        dirLight.castShadow = true;
+
+        dirLight.shadow.mapSize.width = 2048;
+        dirLight.shadow.mapSize.height = 2048;
+
+        dirLight.shadow.camera.left = -550;
+        dirLight.shadow.camera.right = 550;
+        dirLight.shadow.camera.top = 550;
+        dirLight.shadow.camera.bottom = -550;
+        dirLight.shadow.camera.far = 1000;
+        dirLight.shadow.bias = -0.0001;
         //VISUAL meshes of bullets(apple,egg models.)
         scene.bulletMeshes = [];
         //actual collidable physics objects (spheres) placed inside of visual mesh.
@@ -74,6 +105,7 @@ window.onload = function () {
         var material = new THREE.MeshPhongMaterial({ map: texture });
         var plane = new THREE.Mesh(geometry, material);
 
+        plane.castShadow = false;
         plane.reveiveShadow = true;
         plane.position.x = 0;
         plane.position.y = -5;
@@ -120,6 +152,9 @@ window.onload = function () {
          world.addBody(wallBody);
          world.addBody(wall2Body);*/
 
+
+
+
         //Skybox
         scene.add(
             new THREE.Mesh(new THREE.SphereGeometry(750, 12, 12),
@@ -129,17 +164,15 @@ window.onload = function () {
                 }))
         );
 
-        var ambientlight = new THREE.AmbientLight(0xFFFFFF);
-        ambientlight.intensity = 1;
-        scene.add(ambientlight);
+
 
         scene.add(tank);
         tank.position.x = 0;
 
-   
-    
-        
-      
+
+
+
+
 
 
         //enemy tank for hitbox tests
@@ -174,99 +207,111 @@ window.onload = function () {
 
 
         function onWindowResize() {
+
+
+            
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+
         }
-    }
 
 
-    function moveForward(speed) {
+        function moveForward(speed) {
 
-        var delta_z = speed * Math.cos(TankDirection);
-        var delta_x = speed * Math.sin(TankDirection);
+            var delta_z = speed * Math.cos(TankDirection);
+            var delta_x = speed * Math.sin(TankDirection);
 
-        var new_x = camera.position.x + delta_x;
-        var new_z = camera.position.z + delta_z;
+            var new_x = camera.position.x + delta_x;
+            var new_z = camera.position.z + delta_z;
 
-        camera.position.x = new_x;
-        camera.position.z = new_z;
+            camera.position.x = new_x;
+            camera.position.z = new_z;
 
-        var new_dx = tank.position.x + delta_x;
-        var new_dz = tank.position.z + delta_z;
-        tank.position.x = new_dx;
-        tank.position.z = new_dz;
-        camera.lookAt(tank.position);
-    }
-
-    function setTankDirection() {
-        //direction changed.
-        //var delta_x = TankDirection;
-
-        //var new_dx = camera.position.x + delta_x;
-        tank.rotation.y = TankDirection;
-        camera.lookAt(tank.position);
-
-    }
-
-    function UpdateTank() {
-        if (TankIsRotatingLeft) { // rotate left
-            TankDirection += angularSpeed * Math.PI / 180;
+            var new_dx = tank.position.x + delta_x;
+            var new_dz = tank.position.z + delta_z;
+            tank.position.x = new_dx;
+            tank.position.z = new_dz;
+            camera.lookAt(tank.position);
         }
-        if (TankIsRotatingRight) { // rotate right
-            TankDirection -= angularSpeed * Math.PI / 180;
+
+        function setTankDirection() {
+            //direction changed.
+            //var delta_x = TankDirection;
+
+            //var new_dx = camera.position.x + delta_x;
+            tank.rotation.y = TankDirection;
+            camera.lookAt(tank.position);
+
         }
-        if (TankIsRotatingRight || TankIsRotatingLeft) {
-            setTankDirection();
-            return;
+
+        function UpdateTank() {
+            if (TankIsRotatingLeft) { // rotate left
+                TankDirection += angularSpeed * Math.PI / 180;
+            }
+            if (TankIsRotatingRight) { // rotate right
+                TankDirection -= angularSpeed * Math.PI / 180;
+            }
+            if (TankIsRotatingRight || TankIsRotatingLeft) {
+                setTankDirection();
+                return;
+            }
+            if (TankIsMovingForward) { // go forward
+                moveForward(TankSpeed);
+                return;
+            }
+            if (TankIsMovingBackwards) { // go backwards
+                moveForward(-TankBackwardsSpeed);
+                return;
+            }
+            //key_down();
+
         }
-        if (TankIsMovingForward) { // go forward
-            moveForward(TankSpeed);
-            return;
+
+        var a = false;
+
+        function key_down(event) {
+            keys = { LEFT: 65, UP: 87, RIGHT: 68, BOTTOM: 83, SPACE: 32, RELOAD: 82 };
+
+            switch (event.keyCode) {
+                case keys.UP:
+                    TankIsMovingForward = 1;
+
+                    break;
+
+                case keys.BOTTOM:
+                    TankIsMovingBackwards = 1;
+
+                    break;
+
+                case keys.LEFT:
+                    TankIsRotatingLeft = 1;
+                    break;
+
+                case keys.RIGHT:
+                    TankIsRotatingRight = 1;
+                    break;
+
+                case keys.SPACE:
+                    tank.fire();
+                    break;
+
+                case keys.RELOAD:
+                    tank.cycleAmmo();
+                    break;
+            }
         }
-        if (TankIsMovingBackwards) { // go backwards
-            moveForward(-TankBackwardsSpeed);
-            return;
+
+        function key_up() {
+
+            TankIsMovingForward = 0;
+            TankIsMovingBackwards = 0;
+            TankIsRotatingLeft = 0;
+            TankIsRotatingRight = 0;
+            TankGoesUp = 0;
+            TankGoesDown = 0;
         }
-        //key_down();
 
-    }
-
-    var a = false;
-
-    function key_down(event) {
-        keys = { LEFT: 65, UP: 87, RIGHT: 68, BOTTOM: 83, SPACE: 32, RELOAD: 82 };
-
-        switch (event.keyCode) {
-            case keys.UP:
-                TankIsMovingForward = 1;
-                
-                break;
-
-            case keys.BOTTOM:
-                TankIsMovingBackwards = 1;
-                
-                break;
-
-            case keys.LEFT:
-                TankIsRotatingLeft = 1;
-                break;
-
-            case keys.RIGHT:
-                TankIsRotatingRight = 1;
-                break;
-
-            case keys.SPACE:
-                tank.fire();
-                break;
-
-            case keys.RELOAD:
-                tank.cycleAmmo();
-                break;
-        }
-    }
-
-    function key_up() {
 
         TankIsMovingForward = 0;
         TankIsMovingBackwards = 0;
@@ -274,79 +319,73 @@ window.onload = function () {
         TankIsRotatingRight = 0;
         TankGoesUp = 0;
         TankGoesDown = 0;
-    }
-
-
-    TankIsMovingForward = 0;
-    TankIsMovingBackwards = 0;
-    TankIsRotatingLeft = 0;
-    TankIsRotatingRight = 0;
-    TankGoesUp = 0;
-    TankGoesDown = 0;
 
 
 
-    function updatePhysics() {
-        // Step the physics world
-        world.step(1 / 60);
-        // Copy coordinates from Cannon.js to Three.js
+        function updatePhysics() {
+            // Step the physics world
+            world.step(1 / 60);
+            // Copy coordinates from Cannon.js to Three.js
 
-        for (var i = 0; i < scene.bulletMeshes.length; i++) {
-            if (scene.bulletMeshes[i].alive) {
-                scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
-                scene.bulletMeshes[i].quaternion.copy(scene.bulletBodies[i].quaternion);
-            } else {
-                scene.remove(scene.bulletMeshes[i]);
-                world.remove(scene.bulletBodies[i]);
-                scene.bulletMeshes.splice(i, 1);
-                scene.bulletBodies.splice(i, 1);
+            for (var i = 0; i < scene.bulletMeshes.length; i++) {
+                if (scene.bulletMeshes[i].alive) {
+                    scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
+                    scene.bulletMeshes[i].quaternion.copy(scene.bulletBodies[i].quaternion);
+                } else {
+                    scene.remove(scene.bulletMeshes[i]);
+                    world.remove(scene.bulletBodies[i]);
+                    scene.bulletMeshes.splice(i, 1);
+                    scene.bulletBodies.splice(i, 1);
+                }
+
+            }
+            /*   //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
+               for (var i = 0; i < scene.tankMeshes.length; i++) {
+                   scene.tankHitboxes[i].position.copy(scene.tankMeshes[i].position);
+                   scene.tankHitboxes[i].quaternion.copy(scene.tankMeshes[i].quaternion);
+               }*/
+
+
+        }
+
+        function render() {
+
+
+            updatePhysics();
+            UpdateTank();
+            requestAnimationFrame(render);
+            camera.lookAt(tank.position);
+            cameraControls.update();
+            renderer.render(scene, camera);
+        }
+
+
+        function waitForNetReady(callback, count) {
+            // A five second timeout
+            if (count > 50) {
+                console.log("[NETWORK] Cannot establish network connection! :(");
             }
 
+            if (!net.isAvailable()) {
+                setTimeout(function () {
+                    count++;
+                    waitForNetReady(callback, count);
+                }, 100);
+            }
+            else {
+                setTimeout(function () {
+                    callback();
+                }, 1000);
+            }
         }
-        /*   //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body hitbox follows the mesh instead of the other way around as seen above.
-           for (var i = 0; i < scene.tankMeshes.length; i++) {
-               scene.tankHitboxes[i].position.copy(scene.tankMeshes[i].position);
-               scene.tankHitboxes[i].quaternion.copy(scene.tankMeshes[i].quaternion);
-           }*/
 
+        
+
+        waitForNetReady(function () {
+            var entity = new NetworkEntity(net, true, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0));
+            render();
+        });
 
     }
-
-    function render() {
-
-
-        updatePhysics();
-        UpdateTank();
-        requestAnimationFrame(render);
-        camera.lookAt(tank.position);
-        cameraControls.update();
-        renderer.render(scene, camera);
-    }
-
-    function waitForNetReady(callback, count) {
-        // A five second timeout
-        if (count > 50) {
-            console.log("[NETWORK] Cannot establish network connection! :(");
-        }
-
-        if (!net.isAvailable()) {
-            setTimeout(function () {
-                count++;
-                waitForNetReady(callback, count);
-            }, 100);
-        }
-        else {
-            setTimeout(function () {
-                callback();
-            }, 1000);
-        }
-    }
-
     init();
-
-    waitForNetReady(function () {
-        var entity = new NetworkEntity(net, true, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0));
-        render();
-    });
-
 }

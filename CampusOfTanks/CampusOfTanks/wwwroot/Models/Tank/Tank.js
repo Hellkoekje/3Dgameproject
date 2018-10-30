@@ -1,4 +1,4 @@
-﻿///<reference path="~/wwwroot/Core.js"/>
+﻿
 //class that represents a tank aka a player. This is the superclass for our different tanks.
 //TODO make subclasses that represent other types of tanks, one of which should move faster, one of which should shoot faster, and one of which should have higher hitpoints.
 //TODO and should have different models 
