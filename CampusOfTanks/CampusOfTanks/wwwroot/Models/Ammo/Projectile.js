@@ -23,7 +23,7 @@ class Projectile extends THREE.Object3D {
         //Create collidable physics object to "attach" projectile to so we can simulate gravity and collisions.
 
        
-        var physicsMaterial = new CANNON.Material("slipperyMaterial");
+        var physicsMaterial = new CANNON.Material("projectile");
 
         //create collidable sphere object with radius and mass based on projectile subclass property  
       
