@@ -1,4 +1,4 @@
-const game = new Game();
+gameInstance = new Game();
 
 window.onload = function () {
 
@@ -20,8 +20,9 @@ window.onload = function () {
     });
 
     //Initialize the "game" object.
-    game.setGameWindow(gameWindow);
-    game.setGameInput(gameInput);
+    gameInstance.setGameWindow(gameWindow);
+    gameInstance.setGameRenderer(gameRenderer)
+    gameInstance.setGameInput(gameInput);
 
 
 
@@ -80,6 +81,7 @@ window.onload = function () {
         camera.position.set(tank.position.x - 75, tank.position.y + 50, tank.position.z);
         camera.lookAt(tank.position);
         cameraControls.update();
+
         var controls = new THREE.ObjectControls(camera, window.domElement, tank);
         controls.setDistance(8, 200); // set min - max distance for zoom
         controls.setZoomSpeed(1); // set zoom speed
@@ -207,7 +209,6 @@ window.onload = function () {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-
         }
 
         function moveForward(speed) {
