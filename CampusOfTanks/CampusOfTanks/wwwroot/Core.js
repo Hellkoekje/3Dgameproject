@@ -1,5 +1,5 @@
 
-﻿
+
 
 window.onload = function () {
 
@@ -71,15 +71,15 @@ window.onload = function () {
         //verlichting
         //hemilight + derictional light voor een realistische belichting
 
-        var hemiLight = new THREE.HemisphereLight(0x7F7F7F, 0xFFFFFF, 0.8);
+        hemiLight = new THREE.HemisphereLight(0x7F7F7F, 0xFFFFFF, 0.8);
 
         hemiLight.position.set(0, 80, 0);
         scene.add(hemiLight);
 
-        var hemiLightHelper = new THREE.HemisphereLightHelper(hemiLight, 10);
+        hemiLightHelper = new THREE.HemisphereLightHelper(hemiLight, 10);
         scene.add(hemiLightHelper);
 
-       var dirLight = new THREE.DirectionalLight(0xFFFFFF, 1);
+        dirLight = new THREE.DirectionalLight(0xFFFFFF, 1);
         dirLight.color.setHSL(0.0, 0, 100);
         dirLight.position.set(-4.714, 10, 4.714);
         dirLight.position.multiplyScalar(50);
@@ -95,7 +95,18 @@ window.onload = function () {
         dirLight.shadow.camera.bottom = -550;
         dirLight.shadow.camera.far = 1000;
         dirLight.shadow.bias = -0.0001;
-        
+
+
+        //dit is de helper voor de directional light.
+        dirLightHeper = new THREE.DirectionalLightHelper(dirLight, 100, 0xFFFFFF);
+        scene.add(dirLightHeper);
+
+        //dit is de camera helper
+        var helper = new THREE.CameraHelper(dirLight.shadow.camera);
+        scene.add(helper);
+
+
+
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight + 5);
@@ -124,7 +135,7 @@ window.onload = function () {
         var plane = new THREE.Mesh(geometry, material);
 
         plane.castShadow = false;
-        plane.reveiveShadow = true;
+        plane.receiveShadow = true;
         plane.position.x = 0;
         plane.position.y = -5;
         plane.position.z = 0;
@@ -178,7 +189,7 @@ window.onload = function () {
         function onWindowResize() {
 
 
-            
+
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -349,7 +360,7 @@ window.onload = function () {
             }
         }
 
-        
+
 
         waitForNetReady(function () {
             var entity = new NetworkEntity(net, true, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0));
