@@ -15,13 +15,11 @@
 
         this.position = position;
         this.rotation = rotation;
-
-        console.log("cuntstructor");
         this.entityId = this.requestEntityId();
     }
 
     requestEntityId() {
-        console.log("requesting entity shit");
+
         var payload = {
             px: this.position.x,
             py: this.position.y,

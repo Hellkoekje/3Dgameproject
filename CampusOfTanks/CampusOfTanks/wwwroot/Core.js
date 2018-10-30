@@ -161,11 +161,8 @@ window.onload = function () {
         groundBody.position.set(0, -5, 0);
         world.addBody(groundBody);
 
-
         net = new Network();
         net.connect(window.location.hostname, window.location.port);
-
-
 
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
