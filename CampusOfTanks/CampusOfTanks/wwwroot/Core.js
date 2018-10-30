@@ -20,7 +20,7 @@ window.onload = function () {
     var tank, enemytank;
 
 
-    function init() {
+    function init() { //TODO deze spaghetti fix ik later ~hidde
         //Cannon init
         world = new CANNON.World();
         world.broadphase = new CANNON.NaiveBroadphase();
@@ -43,7 +43,7 @@ window.onload = function () {
         scene.tankHitboxes.push(tank.hitbox);
         world.addBody(tank.hitbox);
         scene.add(tank);
-        scene.add(tank.hitbox.testcube);
+        
         tank.position.x = 0;
 
         //enemy tank for hitbox tests
@@ -323,9 +323,11 @@ window.onload = function () {
                for (var cntr = 0; cntr < scene.tankMeshes.length; cntr++) {
                    scene.tankHitboxes[cntr].position.copy(scene.tankMeshes[cntr].position);
                    scene.tankHitboxes[cntr].quaternion.copy(scene.tankMeshes[cntr].quaternion);
-            }
-            tank.hitbox.position.y += 10;
-            
+                   scene.tankHitboxes[cntr].position.y += 10;
+                   scene.tankHitboxes[cntr].position.z += 10;
+               }
+           
+
 
         }
 

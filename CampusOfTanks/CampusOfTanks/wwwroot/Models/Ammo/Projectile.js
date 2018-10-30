@@ -29,6 +29,7 @@ class Projectile extends THREE.Object3D {
       
         var sphereShape = new CANNON.Sphere(this.radius);
         var spherebody = new CANNON.Body({ mass: this.mass, material: physicsMaterial });
+        spherebody.tank = selfref;
         spherebody.addShape(sphereShape);
         spherebody.position.set(this.position.x, this.position.y, this.position.z);
 
