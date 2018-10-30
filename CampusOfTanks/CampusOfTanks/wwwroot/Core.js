@@ -1,5 +1,47 @@
-window.onload = function ()
-{
+const game = new Game();
+
+window.onload = function () {
+
+    var gameWindow = new GameWindow(window, document);
+    var gameInput = new GameInput();
+    var gameRenderer = new GameRenderer(gameWindow);
+
+    //Register all the events.
+    window.addEventListener('resize', () => {
+        gameWindow.onResize(window.innerWidth, window.innerHeight);
+    });
+
+    window.addEventListener("keydown", (keyEvent) => {
+        gameInput.onKeydown(keyEvent);
+    });
+
+    window.addEventListener("keyup", (keyEvent) => {
+        gameInput.onKeydown(keyEvent);
+    });
+
+    //Initialize the "game" object.
+    game.setGameWindow(gameWindow);
+    game.setGameInput(gameInput);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     var camera, scene, renderer, world;
     var net;
 
@@ -16,12 +58,16 @@ window.onload = function ()
     var tank = new Tank(), enemytank = new Tank();
 
 
-    function init() {
+    function init()
+    {
         //Cannon init
         world = new CANNON.World();
         world.broadphase = new CANNON.NaiveBroadphase();
         world.gravity.set(0, -9.82, 0);
         world.solver.iterations = 20;
+
+
+
         //THREE inits
         camera = new THREE.PerspectiveCamera(70, window.innerwidth / window.innerheight, 1, 1500);
         cameraControls = new THREE.OrbitControls(camera, renderer);
@@ -44,7 +90,6 @@ window.onload = function ()
         //hemilight + derictional light voor een realistische belichting
 
         hemiLight = new THREE.HemisphereLight(0x7F7F7F, 0xFFFFFF, 0.8);
-
         hemiLight.position.set(0, 80, 0);
         scene.add(hemiLight);
 
@@ -84,6 +129,7 @@ window.onload = function ()
         scene.tankMeshes = [];
         scene.tankHitboxes = [];
         scene.cannonWorld = world;
+
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight + 5);
