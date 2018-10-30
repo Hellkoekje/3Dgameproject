@@ -84,20 +84,20 @@
         dirLight.shadow.mapSize.width = 2048;
         dirLight.shadow.mapSize.height = 2048;
 
-        var d = 50;
-        //dirLight.shadow.mapSize.width = 2048;  // default
-        //dirLight.shadow.mapSize.height = 2048; // default
         dirLight.shadow.camera.left = -550;
         dirLight.shadow.camera.right = 550;
         dirLight.shadow.camera.top = 550;
         dirLight.shadow.camera.bottom = -550;
         dirLight.shadow.camera.far = 1000;
         dirLight.shadow.bias = -0.0001;
-        dirLightHeper = new THREE.DirectionalLightHelper(dirLight, 100, 0xFFFFFF);
-        scene.add(dirLightHeper);  
 
-        var helper = new THREE.CameraHelper(dirLight.shadow.camera);
-        scene.add(helper);
+        //dit is de helper voor de directional light.
+        //dirLightHeper = new THREE.DirectionalLightHelper(dirLight, 100, 0xFFFFFF);
+        //scene.add(dirLightHeper);  
+
+        //dit is de camera helper
+        //var helper = new THREE.CameraHelper(dirLight.shadow.camera);
+        //scene.add(helper);
 
         //gui scherm
         var guiControls = new function () {
