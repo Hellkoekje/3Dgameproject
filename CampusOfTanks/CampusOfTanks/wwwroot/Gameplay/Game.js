@@ -7,7 +7,7 @@
         this.renderer = undefined;
     }
 
-    setReady(state) {
+    setReady() {
         this.readyState = true;
     }
 

@@ -3,6 +3,7 @@ gameInstance = new Game();
 window.onload = function () {
 
     var gameWindow = new GameWindow(window, document);
+    var gameCamera = new GameCamera();
     var gameInput = new GameInput();
     var gameRenderer = new GameRenderer(gameWindow);
 
@@ -21,8 +22,15 @@ window.onload = function () {
 
     //Initialize the "game" object.
     gameInstance.setGameWindow(gameWindow);
-    gameInstance.setGameRenderer(gameRenderer)
+    gameInstance.setGameRenderer(gameRenderer, 30);
     gameInstance.setGameInput(gameInput);
+    gameInstance.setReady();
+
+    //gameRenderer.createRenderer();
+    //gameRenderer.renderFrame();
+
+   
+
 
 
 
