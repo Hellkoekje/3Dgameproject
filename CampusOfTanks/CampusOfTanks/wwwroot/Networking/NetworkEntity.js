@@ -33,7 +33,8 @@
         this.net.send(networkMsg.stringify());
     }
 
-    setPosition(position) {
+    setPosition(position)
+    {
 
     }
 

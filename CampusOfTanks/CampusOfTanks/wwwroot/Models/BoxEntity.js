@@ -1,4 +1,4 @@
-﻿class BoxEntity extends Entity
+﻿class BoxEntity extends NetworkEntity
 {
     constructor(isReplicated) {
         super(isReplicated);

@@ -1,11 +1,7 @@
-
-
-
-window.onload = function () {
-
+window.onload = function ()
+{
     var camera, scene, renderer, world;
     var net;
-
 
     var cameraControls;
     //var TankDirection = 270 * Math.PI / 180;
@@ -125,47 +121,6 @@ window.onload = function () {
         plane.rotation.z = 0;
         scene.add(plane);
 
-        /* //Collision testing walls.
- 
-         //arr of meshes our ammo can collide with
-         var collidableMeshList = [];
- 
-         //walls that our ammo is going to collide with
-         var wallGeometry = new THREE.CubeGeometry(100, 100, 20, 1, 1, 1);
-         var wallMaterial = new THREE.MeshBasicMaterial({ color: 0x8888ff });
-         var wireMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
- 
-         var wallShape = new CANNON.Plane(100,100,20);
-         var wallBody = new CANNON.Body({ mass: 0, material: physicsMaterial });
-         var wall2Body = new CANNON.Body({ mass: 0, material: physicsMaterial });
-         wallBody.addShape(wallShape);
-         wall2Body.addShape(wallShape);
-       //  groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
-         
- 
-         var wall = new THREE.Mesh(wallGeometry, wallMaterial);
-         wall.position.set(100, 50, -100);
-         scene.add(wall);
-         collidableMeshList.push(wall);
-        
- 
-         var wall2 = new THREE.Mesh(wallGeometry, wallMaterial);
-         wall2.position.set(-150, 50, 0);
-         wall2.rotation.y = 3.14159 / 2;
-         scene.add(wall2);
-         collidableMeshList.push(wall2);
- 
-         wallBody.position.copy(wall.position);
-         wall2Body.position.copy(wall2.position);
-         wallBody.quaternion.copy(wall.quaternion);
-         wall2Body.quaternion.copy(wall2.quaternion);
-         world.addBody(wallBody);
-         world.addBody(wall2Body);*/
-
-
-
-
-        //Skybox
         scene.add(
             new THREE.Mesh(new THREE.SphereGeometry(750, 12, 12),
                 new THREE.MeshBasicMaterial({
@@ -174,18 +129,9 @@ window.onload = function () {
                 }))
         );
 
-
-
         scene.add(tank);
         tank.position.x = 0;
 
-
-
-
-
-
-
-        //enemy tank for hitbox tests
         scene.add(enemytank);
         enemytank.position.x = 0;
         enemytank.position.z = -100;
@@ -198,9 +144,9 @@ window.onload = function () {
             0.0, // friction coefficient
             0.3 // restitution
         );
+
         // We must add the contact materials to the world
         world.addContactMaterial(physicsContactMaterial);
-
 
         // Create a plane
         var groundShape = new CANNON.Plane();
@@ -210,19 +156,13 @@ window.onload = function () {
         groundBody.position.set(0, -5, 0);
         world.addBody(groundBody);
 
-        net = new Network();
-        net.connect(window.location.hostname, window.location.port);
-
-        function onWindowResize() {
-
-
-
+        function onWindowResize()
+        {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
 
         }
-
 
         function moveForward(speed) {
 
@@ -242,11 +182,8 @@ window.onload = function () {
             camera.lookAt(tank.position);
         }
 
-        function setTankDirection() {
-            //direction changed.
-            //var delta_x = TankDirection;
-
-            //var new_dx = camera.position.x + delta_x;
+        function setTankDirection()
+        {
             tank.rotation.y = TankDirection;
             camera.lookAt(tank.position);
 
@@ -271,8 +208,6 @@ window.onload = function () {
                 moveForward(-TankBackwardsSpeed);
                 return;
             }
-            //key_down();
-
         }
 
         var a = false;
@@ -283,26 +218,19 @@ window.onload = function () {
             switch (event.keyCode) {
                 case keys.UP:
                     TankIsMovingForward = 1;
-
                     break;
-
                 case keys.BOTTOM:
                     TankIsMovingBackwards = 1;
-
                     break;
-
                 case keys.LEFT:
                     TankIsRotatingLeft = 1;
                     break;
-
                 case keys.RIGHT:
                     TankIsRotatingRight = 1;
                     break;
-
                 case keys.SPACE:
                     tank.fire();
                     break;
-
                 case keys.RELOAD:
                     tank.cycleAmmo();
                     break;
@@ -310,7 +238,6 @@ window.onload = function () {
         }
 
         function key_up() {
-
             TankIsMovingForward = 0;
             TankIsMovingBackwards = 0;
             TankIsRotatingLeft = 0;
@@ -319,7 +246,6 @@ window.onload = function () {
             TankGoesDown = 0;
         }
 
-
         TankIsMovingForward = 0;
         TankIsMovingBackwards = 0;
         TankIsRotatingLeft = 0;
@@ -327,13 +253,12 @@ window.onload = function () {
         TankGoesUp = 0;
         TankGoesDown = 0;
 
-
-
-        function updatePhysics() {
+        function updatePhysics()
+        {
             // Step the physics world
             world.step(1 / 60);
-            // Copy coordinates from Cannon.js to Three.js
 
+            // Copy coordinates from Cannon.js to Three.js
             for (var i = 0; i < scene.bulletMeshes.length; i++) {
                 if (scene.bulletMeshes[i].alive) {
                     scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
@@ -346,18 +271,9 @@ window.onload = function () {
                 }
 
             }
-            /*   //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
-               for (var i = 0; i < scene.tankMeshes.length; i++) {
-                   scene.tankHitboxes[i].position.copy(scene.tankMeshes[i].position);
-                   scene.tankHitboxes[i].quaternion.copy(scene.tankMeshes[i].quaternion);
-               }*/
-
-
         }
 
         function render() {
-
-
             updatePhysics();
             UpdateTank();
             requestAnimationFrame(render);
@@ -365,34 +281,8 @@ window.onload = function () {
             cameraControls.update();
             renderer.render(scene, camera);
         }
-
-
-        function waitForNetReady(callback, count) {
-            // A five second timeout
-            if (count > 50) {
-                console.log("[NETWORK] Cannot establish network connection! :(");
-            }
-
-            if (!net.isAvailable()) {
-                setTimeout(function () {
-                    count++;
-                    waitForNetReady(callback, count);
-                }, 100);
-            }
-            else {
-                setTimeout(function () {
-                    callback();
-                }, 1000);
-            }
-        }
-
-
-
-        waitForNetReady(function () {
-            var entity = new NetworkEntity(net, true, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0));
-            render();
-        });
-
+        render();
     }
+
     init();
 }

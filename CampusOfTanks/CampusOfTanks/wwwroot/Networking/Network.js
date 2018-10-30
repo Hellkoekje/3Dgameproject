@@ -26,7 +26,16 @@
 
     send(message)
     {
-        console.log("[NETWORK] Yo send shit; " + message);
+        if (!this.isAvailable()) {
+            console.log("[NETWORK] Trying to send data on a closed socket!");
+            return;
+        }
+
+        if (!message === "") {
+            console.log("[NETWORK] Trying to send empty data, skipping");
+            return;
+        }
+
         this.socket.send(message);
     }
 
