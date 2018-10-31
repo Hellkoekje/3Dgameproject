@@ -1,0 +1,6 @@
+﻿class GameCamera {
+    constructor() {
+
+    }
+
+}
