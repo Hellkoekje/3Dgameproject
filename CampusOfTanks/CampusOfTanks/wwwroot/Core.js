@@ -3,6 +3,7 @@ gameInstance = new Game();
 window.onload = function () {
 
     var gameWindow = new GameWindow(window, document);
+    var gamePhysics = new GamePhysics(60);
     var gameCamera = new GameCamera();
     var gameInput = new GameInput();
     var gameRenderer = new GameRenderer(gameWindow);
@@ -21,10 +22,12 @@ window.onload = function () {
     });
 
     //Initialize the "game" object.
-    gameInstance.setGameWindow(gameWindow);
-    gameInstance.setGameRenderer(gameRenderer, 30);
-    gameInstance.setGameInput(gameInput);
-    gameInstance.setReady();
+    gameInstance.registerComponent("window", gameWindow);
+    gameInstance.registerComponent("renderer", gameRenderer);
+    gameInstance.registerComponent("physics", gamePhysics);
+    gameInstance.registerComponent("camera", gameCamera);
+    gameInstance.registerComponent("input", gameInput);
+
 
     //gameRenderer.createRenderer();
     //gameRenderer.renderFrame();

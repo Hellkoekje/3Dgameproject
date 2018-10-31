@@ -2,9 +2,7 @@
 {
     constructor() {
         this.readyState = false;
-        this.window = undefined;
-        this.input = undefined;
-        this.renderer = undefined;
+        this.components = [];
     }
 
     setReady() {
@@ -15,58 +13,31 @@
         return this.readyState;
     }
 
-    setGameWindow(window) {
-        if (typeof(this.window) !== "undefined") {
-            console.log("[GAME] Cannot have multiple game windows!");
+    registerComponent(key, value) {
+
+        if (value == "undefined") {
+            console.log("[GAME] Components cannot be undefined values.");
             return;
         }
 
-        this.window = window;
-    }
+        var keyExists = this.components[key] == "undefined";
 
-    getGameWindow() {
-        if (this.window) {
-            return this.window;
-        }
-
-        console.log("[GAME] Window does not exist (yet?)");
-        return undefined;
-    }
-
-    setGameInput(input) {
-        if (typeof(this.input) !== "undefined") {
-            console.log("[GAME] Cannot have multiple game input managers!");
+        if (keyExists) {
+            console.log("[GAME] This component is already registered.");
             return;
         }
 
-        this.input = input;
+        this.components[key] = value;
     }
 
-    getGameInput() {
-        if (this.input) {
-            return this.input;
+    fetchComponent(key) {
+        var keyExists = this.components[key] == "undefined";
+
+        if (!keyExists) {
+            console.log("[GAME] This component does not exist!");
+            return undefined;
         }
 
-        console.log("[GAME] Input does not exist (yet?)");
-        return undefined;
+        return this.components[key];
     }
-
-    setGameRenderer(renderer) {
-        if (typeof (this.renderer) !== "undefined") {
-            console.log("[GAME] Cannot have multiple game renderers!");
-            return;
-        }
-
-        this.renderer = renderer;
-    }
-
-    getGameRenderer() {
-        if (this.renderer) {
-            return this.renderer;
-        }
-
-        console.log("[GAME] Renderer does not exist (yet?)");
-        return undefined;
-    }
-
 }
