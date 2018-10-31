@@ -27,26 +27,22 @@ window.onload = function () {
         world.gravity.set(0, -9.82, 0);
         world.solver.iterations = 20;
         //THREE inits
+        
+        scene = new THREE.Scene();
+
+        //camera
+
         camera = new THREE.PerspectiveCamera(70, window.innerwidth / window.innerheight, 1, 1500);
         cameraControls = new THREE.OrbitControls(camera, renderer);
-        cameraControls.center = new THREE.Vector3(
-            tank.position.x,
-            tank.position.y,
-            tank.position.z);
 
         camera.rotation.x = 90 * Math.PI / 180;
-        camera.position.set(tank.position.x - 75, tank.position.y + 50, tank.position.z);
-        camera.lookAt(tank.position);
         cameraControls.update();
         var controls = new THREE.ObjectControls(camera, window.domElement, tank);
         controls.setDistance(8, 200); // set min - max distance for zoom
         controls.setZoomSpeed(1); // set zoom speed
-        scene = new THREE.Scene();
-
-
         //verlichting
         //hemilight + derictional light voor een realistische belichting
-
+                
         var hemiLight = new THREE.HemisphereLight(0x7F7F7F, 0xFFFFFF, 0.8);
 
         hemiLight.position.set(0, 80, 0);
@@ -164,17 +160,7 @@ window.onload = function () {
                 }))
         );
 
-
-
         scene.add(tank);
-        tank.position.x = 0;
-
-
-
-
-
-
-
         //enemy tank for hitbox tests
         scene.add(enemytank);
         enemytank.position.x = 0;
@@ -230,9 +216,12 @@ window.onload = function () {
 
             var new_dx = tank.position.x + delta_x;
             var new_dz = tank.position.z + delta_z;
+            
+
             tank.position.x = new_dx;
             tank.position.z = new_dz;
-            camera.lookAt(tank.position);
+
+            
         }
 
         function setTankDirection() {
@@ -241,7 +230,7 @@ window.onload = function () {
 
             //var new_dx = camera.position.x + delta_x;
             tank.rotation.y = TankDirection;
-            camera.lookAt(tank.position);
+            //camera.lookAt(tank.position);
 
         }
 
@@ -258,6 +247,7 @@ window.onload = function () {
             }
             if (TankIsMovingForward) { // go forward
                 moveForward(TankSpeed);
+                
                 return;
             }
             if (TankIsMovingBackwards) { // go backwards
@@ -298,7 +288,7 @@ window.onload = function () {
 
                 case keys.RELOAD:
                     tank.cycleAmmo();
-                    break;
+                    break;                            
             }
         }
 
@@ -347,16 +337,13 @@ window.onload = function () {
 
 
         }
-
-        function render() {
-
-
+        function render() {        
             updatePhysics();
             UpdateTank();
             requestAnimationFrame(render);
-            camera.lookAt(tank.position);
+            console.log();
             cameraControls.update();
-            renderer.render(scene, camera);
+            renderer.render(scene,camera);//camera toevoegen
         }
 
 
