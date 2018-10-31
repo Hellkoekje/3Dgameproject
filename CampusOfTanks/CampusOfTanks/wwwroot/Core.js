@@ -225,10 +225,11 @@ window.onload = function () {
         audioLoader.load('/sounds/Iron.mp3', function (buffer) {
             sound.setBuffer(buffer);
             sound.setLoop(true);
-            sound.setVolume(0.5);
+            sound.setVolume(0.025);
             sound.play();
         });
        
+
 
         //Skybox
 
