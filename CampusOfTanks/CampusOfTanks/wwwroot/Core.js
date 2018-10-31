@@ -187,8 +187,6 @@ window.onload = function () {
         plane.rotation.z = 0;
         scene.add(plane);
 
-<<<<<<< HEAD
-=======
         //muziek troep
         var listener = new THREE.AudioListener();
         camera.add(listener);
