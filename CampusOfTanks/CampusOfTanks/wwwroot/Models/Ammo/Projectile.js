@@ -13,35 +13,26 @@ class Projectile extends THREE.Object3D {
   
         this.alive = true;
         
-
+       this.physicsMaterial = new CANNON.Material("projectile");
+        this.hitbox;
+        this.damage;
 
     }
     biem() {
         var selfref = this;
 
         selfref.applyMatrix(this.firedFrom.sphere.matrixWorld);
-        //Create collidable physics object to "attach" projectile to so we can simulate gravity and collisions.
 
-       
-        var physicsMaterial = new CANNON.Material("projectile");
-
-        //create collidable sphere object with radius and mass based on projectile subclass property  
-      
-        var sphereShape = new CANNON.Sphere(this.radius);
-        var spherebody = new CANNON.Body({ mass: this.mass, material: physicsMaterial });
-        spherebody.tank = selfref;
-        spherebody.addShape(sphereShape);
-        spherebody.position.set(this.position.x, this.position.y, this.position.z);
-
-
-
+        this.hitbox = new ProjectileHitbox(this.mass, this.physicsMaterial, this);
+        this.hitbox.position.copy(selfref.position);
+        
         // add mesh and body to respective lists, so that we can copy the mesh into the body at every frame.
         this.firedFrom.parent.bulletMeshes.push(this);
-        this.firedFrom.parent.cannonWorld.addBody(spherebody);
-        this.firedFrom.parent.bulletBodies.push(spherebody);
+        this.firedFrom.parent.cannonWorld.addBody(this.hitbox);
+        this.firedFrom.parent.bulletBodies.push(this.hitbox);
 
         //shoot the body!
-        spherebody.velocity.set(
+        this.hitbox.velocity.set(
             this.velocity.x * -this.travelSpeed,
             this.velocity.y,
             this.velocity.z * -this.travelSpeed);

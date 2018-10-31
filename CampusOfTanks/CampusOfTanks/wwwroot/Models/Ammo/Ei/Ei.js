@@ -11,7 +11,7 @@ class Ei extends Projectile {
         this.travelSpeed = 150;
         this.mass = 10;
         this.radius = 2;
-        
+        this.damage = 25;
     }
 
 

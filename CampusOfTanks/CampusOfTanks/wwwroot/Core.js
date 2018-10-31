@@ -29,7 +29,7 @@ window.onload = function () {
     //gameRenderer.createRenderer();
     //gameRenderer.renderFrame();
 
-   
+
 
 
 
@@ -68,8 +68,7 @@ window.onload = function () {
 
 
 
-    function init()
-    {
+    function init() {
 
         //Cannon init
         world = new CANNON.World();
@@ -80,7 +79,7 @@ window.onload = function () {
 
 
         //THREE inits
-        
+
         scene = new THREE.Scene();
         //VISUAL meshes of bullets(apple,egg models.)
         scene.bulletMeshes = [];
@@ -90,13 +89,20 @@ window.onload = function () {
         scene.tankHitboxes = [];
         scene.cannonWorld = world;
         //tanks
-        tank = new Tank();
-        enemytank = new Tank();
+        //init tanks
+        tank = new Tank("Hidde");
+
+        enemytank = new Tank("Sjakie");
+
+        //add tank mesh and hitbox to array for physics logic
         scene.tankMeshes.push(tank);
         scene.tankHitboxes.push(tank.hitbox);
+        //add hitbox body to the CANNON world so we can apply physics
         world.addBody(tank.hitbox);
+
         scene.add(tank);
-        
+        scene.add(tank.cubemesh);
+
         tank.position.x = 0;
 
         //enemy tank for hitbox tests
@@ -106,6 +112,8 @@ window.onload = function () {
         scene.tankMeshes.push(enemytank);
         scene.tankHitboxes.push(enemytank.hitbox);
         world.addBody(enemytank.hitbox);
+
+
         camera = new THREE.PerspectiveCamera(70, window.innerwidth / window.innerheight, 1, 1500);
         cameraControls = new THREE.OrbitControls(camera, renderer);
         cameraControls.center = new THREE.Vector3(
@@ -121,7 +129,7 @@ window.onload = function () {
         var controls = new THREE.ObjectControls(camera, window.domElement, tank);
         controls.setDistance(8, 200); // set min - max distance for zoom
         controls.setZoomSpeed(1); // set zoom speed
-       
+
         //verlichting
         //hemilight + derictional light voor een realistische belichting
 
@@ -160,13 +168,6 @@ window.onload = function () {
 
 
 
-        //VISUAL meshes of bullets(apple,egg models.)
-        scene.bulletMeshes = [];
-        //actual collidable physics objects (spheres) placed inside of visual mesh.
-        scene.bulletBodies = [];
-        scene.tankMeshes = [];
-        scene.tankHitboxes = [];
-        scene.cannonWorld = world
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight + 5);
@@ -205,7 +206,7 @@ window.onload = function () {
         scene.add(plane);
 
 
-       
+
 
 
 
@@ -220,12 +221,7 @@ window.onload = function () {
         );
 
 
-        scene.add(tank);
-        tank.position.x = 0;
 
-        scene.add(enemytank);
-        enemytank.position.x = 0;
-        enemytank.position.z = -100;
 
 
         /* cannonjs test
@@ -236,6 +232,11 @@ window.onload = function () {
             0.0, // friction coefficient
             0.3 // restitution
         );
+
+
+
+
+
 
         // We must add the contact materials to the world
         world.addContactMaterial(physicsContactMaterial);
@@ -248,8 +249,7 @@ window.onload = function () {
         groundBody.position.set(0, -5, 0);
         world.addBody(groundBody);
 
-        function onWindowResize()
-        {
+        function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -273,8 +273,7 @@ window.onload = function () {
             camera.lookAt(tank.position);
         }
 
-        function setTankDirection()
-        {
+        function setTankDirection() {
             tank.rotation.y = TankDirection;
             camera.lookAt(tank.position);
 
@@ -344,8 +343,7 @@ window.onload = function () {
         TankGoesUp = 0;
         TankGoesDown = 0;
 
-        function updatePhysics()
-        {
+        function updatePhysics() {
             // Step the physics world
             world.step(1 / 60);
 
@@ -363,16 +361,29 @@ window.onload = function () {
 
             }
 
-               //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
-               for (var cntr = 0; cntr < scene.tankMeshes.length; cntr++) {
-                   scene.tankHitboxes[cntr].position.copy(scene.tankMeshes[cntr].position);
-                   scene.tankHitboxes[cntr].quaternion.copy(scene.tankMeshes[cntr].quaternion);
-                   scene.tankHitboxes[cntr].position.y += 10;
-                   scene.tankHitboxes[cntr].position.z += 10;
-               }
-           
+            //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
+            for (var cntr = 0; cntr < scene.tankMeshes.length; cntr++) {
+                var body = scene.tankHitboxes[cntr];
+                var tank = scene.tankMeshes[cntr];
+                if (tank.alive) {
 
+                    body.position.copy(tank.position);
+                    body.quaternion.copy(tank.quaternion);
+                    body.position.y += 5;
+                    // scene.tankHitboxes[cntr].position.z += 10;
+                    tank.cubemesh.position.copy(tank.hitbox.position);
+                    tank.cubemesh.quaternion.copy(tank.hitbox.quaternion);
 
+                }
+                else {
+                    scene.tankMeshes.splice(cntr, 1);
+                    scene.tankHitboxes.splice(cntr, 1);
+                    scene.remove(tank);
+                    world.remove(body);
+
+                }
+
+            }
 
         }
 
@@ -384,8 +395,12 @@ window.onload = function () {
             cameraControls.update();
             renderer.render(scene, camera);
         }
+
         render();
     }
 
+    
     init();
 }
+
+

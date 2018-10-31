@@ -3,20 +3,20 @@
 
 
 class Tank extends THREE.Group {
-    constructor() {
+    constructor(username) {
         super();
 
         this.init();
         //invisible sphere which is always in front of the barrel of the tank, projectiles use this sphere's matrix to spawn in front of the barrel.
-        
+        this.username = username;
         this.sphere = new THREE.Mesh(
             new THREE.SphereGeometry(0.5, 8, 8),
             new THREE.MeshBasicMaterial({ transparent: true })
         );
         this.add(this.sphere);
         this.sphere.visible = false;
-        this.sphere.position.set(this.position.x, this.position.y + 12, this.position.z + 35);
-
+        this.sphere.position.set(this.position.x, this.position.y + 12, this.position.z + 40);
+        this.hitpoints = 100;
             
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
@@ -25,18 +25,21 @@ class Tank extends THREE.Group {
         
         this.canShoot = true;
 
-    /*    //hitbox
-        this.hitBoxShape = new CANNON.Box(new CANNON.Vec3(30,30,30));
-        this.hitBoxBody = new CANNON.Body({ mass: 100, shape: this.hitBoxShape });
-        this.parent.tankMeshes.add(this);
-        this.parent.tankHitboxes.add(this.hitBoxBody);
-        this.parent.cannonWorld.add(this.hitboxBody);*/
+    
         //if false, remove from world
         this.alive = true;
         this.mass = 100;
         this.hitboxMaterial =  new CANNON.Material("tankhitbox");
         this.hitbox = new TankHitbox(this.mass, this.hitboxMaterial, this);
         this.position.y = -5;
+
+        //cube test
+
+         this.cubegeo = new THREE.BoxGeometry(20, 10, 30);
+         this.cubemat = new THREE.MeshBasicMaterial();
+        this.cubemesh = new THREE.Mesh(this.cubegeo, this.cubemat);
+        
+
     }
 
     //load 3d model
@@ -69,7 +72,7 @@ class Tank extends THREE.Group {
             });
         });
         camera.lookAt(selfRef);
-        self.castShadow = true;
+        selfRef.castShadow = true;
 
 
     }

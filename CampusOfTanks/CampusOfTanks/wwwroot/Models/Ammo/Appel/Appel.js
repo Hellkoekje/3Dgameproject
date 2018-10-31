@@ -13,6 +13,7 @@ class Appel extends Projectile {
         this.travelSpeed = 200;
         this.mass = 10;
         this.radius = 3;
+        this.damage = 50;
     }
     
     init() {

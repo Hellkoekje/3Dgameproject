@@ -8,9 +8,9 @@ class Bier extends Projectile {
         this.travelSpeed = 300;
         this.mass = 15;
         this.radius = 7;
-      
+        this.damage = 75;
         //this.applyMatrix(firedFrom.sphere.matrixWorld);
-        
+
     }
 
     init() {
