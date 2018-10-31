@@ -2,10 +2,29 @@
 class GameRenderer {
     constructor(framerate) {
         this.renderInstance = undefined;
-
-        this.framerate = framerate;
+        this.framerate = 1000 / framerate;
+        this.deltaTime = 0.0;
         this.lastFrameTime = Date.now();
+
+        this.fpsAccum = 0;
+        this.fpsCount = 0;
+        this.fps = 0;
     }
+
+
+    computeFPS(time) {
+        this.framerateAccumulator += time;
+
+        if (this.framerateAccumulator > 1000.0) {
+            var average = this.framerateAccumulator / this.framerateAccumulatorSize;
+            this.actualFramerate = average;
+            this.framerateAccumulator = 0.0;
+        }
+        else {
+            this.framerateAccumulatorSize++;
+        }
+    }
+
 
     createRenderer() {
         if (this.renderInstance) {
@@ -26,30 +45,56 @@ class GameRenderer {
         this.renderInstance = renderer;
     }
 
-    renderFrame() {
-        requestAnimationFrame(this.renderFrame);
-        var delta = Date.now() - this.lastFrameTime;
+    process() {
+        var now = Date.now();
+        var last = this.lastFrameTime;
+        var delta = now - last;
 
-        if (delta > (1000 / this.framerate)) {
+        if (delta > this.framerate) {
+            this.deltaTime = delta;
 
-            console.log("Updating!");
+            this.processFramerate(delta);
+            //this.processFrame();
 
-            if (!gameInstance.isReady()) {
-                console.log("[RENDERER] Trying to render whilest the game is not ready yet.");
-                return;
-            }
-
-            var world = gameInstance.getWorld();
-            var camera = gameInstance.getCamera();
-
-            if (!world || !camera) {
-                console.log("[RENDERER] Cannot render without world or camera object");
-                return;
-            }
-
-            renderer.render(world.getScene(), camera);
-            this.lastFrameTime = Date.now() - (delta % (1000 / this.framerate));
+            this.lastFrameTime = Date.now() - (delta % this.framerate);
         }
+    }
+
+    processFramerate(delta) {
+        this.fpsAccum += delta;
+        this.fpsCount++;
+
+
+        //Print out any slow frames (fps / 2.5 == slow frame)
+        if (delta > this.framerate * 5) {
+            console.log("[RENDERER] Warning: rendering is slow, high frame time: " + delta + " msec, expected: " + Math.round((this.framerate*2)))
+        }
+
+        //Print out the framerate.
+        if (this.fpsAccum > 1000.0) {
+            this.fps = 1000.0 / (this.fpsAccum / this.fpsCount);
+            console.log("[RENDERER] Framerate is " + Math.round(this.fps, 2) + " fps");
+
+            this.fpsAccum = 0.0;
+            this.fpsCount = 0;
+        }
+    }
+
+    processFrame() {
+        if (!gameInstance.isReady()) {
+            console.log("[RENDERER] Trying to render whilest the game is not ready yet.");
+            return;
+        }
+
+        var world = gameInstance.getWorld();
+        var camera = gameInstance.getCamera();
+
+        if (!world || !camera) {
+            console.log("[RENDERER] Cannot render without world or camera object");
+            return;
+        }
+
+        renderer.render(world.getScene(), camera);
     }
 
     getRenderer() {
@@ -62,6 +107,5 @@ class GameRenderer {
     }
 
     onResize(eventData) {
-        this
     }
 }

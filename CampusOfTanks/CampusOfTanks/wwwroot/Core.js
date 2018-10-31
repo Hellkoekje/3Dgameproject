@@ -2,11 +2,14 @@ gameInstance = new Game();
 
 window.onload = function () {
 
+    var framerate = 60;
+
     var gameWindow = new GameWindow(window, document);
-    var gamePhysics = new GamePhysics(60);
+    var gameWorld = new GameWorld();
+    var gamePhysics = new GamePhysics(20, framerate);
     var gameCamera = new GameCamera();
     var gameInput = new GameInput();
-    var gameRenderer = new GameRenderer(gameWindow);
+    var gameRenderer = new GameRenderer(framerate);
 
     //Register all the events.
     window.addEventListener('resize', () => {
@@ -23,14 +26,19 @@ window.onload = function () {
 
     //Initialize the "game" object.
     gameInstance.registerComponent("window", gameWindow);
+    gameInstance.registerComponent("world", gameWorld);
     gameInstance.registerComponent("renderer", gameRenderer);
     gameInstance.registerComponent("physics", gamePhysics);
     gameInstance.registerComponent("camera", gameCamera);
     gameInstance.registerComponent("input", gameInput);
 
-
+    //Do rendering shit!
     //gameRenderer.createRenderer();
-    //gameRenderer.renderFrame();
+
+    setInterval(function () {
+        gameRenderer.process();
+    }, 1);
+
 
    
 
@@ -75,10 +83,10 @@ window.onload = function () {
     {
 
         //Cannon init
-        world = new CANNON.World();
-        world.broadphase = new CANNON.NaiveBroadphase();
-        world.gravity.set(0, -9.82, 0);
-        world.solver.iterations = 20;
+        //world = new CANNON.World();
+        //world.broadphase = new CANNON.NaiveBroadphase();
+        //world.gravity.set(0, -9.82, 0);
+        //world.solver.iterations = 20;
 
 
 
@@ -95,8 +103,10 @@ window.onload = function () {
         //tanks
         tank = new Tank();
         enemytank = new Tank();
+
         scene.tankMeshes.push(tank);
         scene.tankHitboxes.push(tank.hitbox);
+
         world.addBody(tank.hitbox);
         scene.add(tank);
         
@@ -366,17 +376,13 @@ window.onload = function () {
 
             }
 
-               //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
-               for (var cntr = 0; cntr < scene.tankMeshes.length; cntr++) {
-                   scene.tankHitboxes[cntr].position.copy(scene.tankMeshes[cntr].position);
-                   scene.tankHitboxes[cntr].quaternion.copy(scene.tankMeshes[cntr].quaternion);
-                   scene.tankHitboxes[cntr].position.y += 10;
-                   scene.tankHitboxes[cntr].position.z += 10;
-               }
-           
-
-
-
+            //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
+            for (var cntr = 0; cntr < scene.tankMeshes.length; cntr++) {
+                scene.tankHitboxes[cntr].position.copy(scene.tankMeshes[cntr].position);
+                scene.tankHitboxes[cntr].quaternion.copy(scene.tankMeshes[cntr].quaternion);
+                scene.tankHitboxes[cntr].position.y += 10;
+                scene.tankHitboxes[cntr].position.z += 10;
+            }
         }
 
         function render() {

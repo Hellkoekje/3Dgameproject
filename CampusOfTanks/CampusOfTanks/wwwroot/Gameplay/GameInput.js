@@ -1,8 +1,6 @@
-﻿
-class GameInput {
+﻿class GameInput {
 
     constructor() {
-        console.log(gameInstance.isReady());
     }
 
     onKeyup(data) {

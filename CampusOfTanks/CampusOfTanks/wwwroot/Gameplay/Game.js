@@ -15,12 +15,12 @@
 
     registerComponent(key, value) {
 
-        if (value == "undefined") {
+        if (value === "undefined") {
             console.log("[GAME] Components cannot be undefined values.");
             return;
         }
 
-        var keyExists = this.components[key] == "undefined";
+        var keyExists = this.components[key] === "undefined";
 
         if (keyExists) {
             console.log("[GAME] This component is already registered.");
@@ -31,7 +31,7 @@
     }
 
     fetchComponent(key) {
-        var keyExists = this.components[key] == "undefined";
+        var keyExists = this.components[key] === "undefined";
 
         if (!keyExists) {
             console.log("[GAME] This component does not exist!");
