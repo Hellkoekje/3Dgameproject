@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+<?php echo 'homo'; ?>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
