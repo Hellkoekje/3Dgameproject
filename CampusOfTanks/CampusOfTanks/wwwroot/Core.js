@@ -2,10 +2,14 @@ gameInstance = new Game();
 
 window.onload = function () {
 
+    var framerate = 60;
+
     var gameWindow = new GameWindow(window, document);
+    var gameWorld = new GameWorld();
+    var gamePhysics = new GamePhysics(20, framerate);
     var gameCamera = new GameCamera();
     var gameInput = new GameInput();
-    var gameRenderer = new GameRenderer(gameWindow);
+    var gameRenderer = new GameRenderer(framerate);
 
     //Register all the events.
     window.addEventListener('resize', () => {
@@ -21,12 +25,16 @@ window.onload = function () {
     });
 
     //Initialize the "game" object.
-    gameInstance.setGameWindow(gameWindow);
-    gameInstance.setGameRenderer(gameRenderer, 30);
-    gameInstance.setGameInput(gameInput);
-    gameInstance.setReady();
+    gameInstance.registerComponent("window", gameWindow);
+    gameInstance.registerComponent("world", gameWorld);
+    gameInstance.registerComponent("renderer", gameRenderer);
+    gameInstance.registerComponent("physics", gamePhysics);
+    gameInstance.registerComponent("camera", gameCamera);
+    gameInstance.registerComponent("input", gameInput);
 
+    //Do rendering shit!
     //gameRenderer.createRenderer();
+
     //gameRenderer.renderFrame();
 
 
@@ -51,6 +59,11 @@ window.onload = function () {
 
 
 
+
+    setInterval(function () {
+        gameRenderer.process();
+    }, 1);
+       
     var camera, scene, renderer, world;
     var net;
 
@@ -89,6 +102,7 @@ window.onload = function () {
         scene.tankHitboxes = [];
         scene.cannonWorld = world;
         //tanks
+
         //init tanks
         tank = new Tank("Hidde");
 
@@ -98,6 +112,7 @@ window.onload = function () {
         scene.tankMeshes.push(tank);
         scene.tankHitboxes.push(tank.hitbox);
         //add hitbox body to the CANNON world so we can apply physics
+
         world.addBody(tank.hitbox);
 
         scene.add(tank);
@@ -116,14 +131,8 @@ window.onload = function () {
 
         camera = new THREE.PerspectiveCamera(70, window.innerwidth / window.innerheight, 1, 1500);
         cameraControls = new THREE.OrbitControls(camera, renderer);
-        cameraControls.center = new THREE.Vector3(
-            tank.position.x,
-            tank.position.y,
-            tank.position.z);
 
         camera.rotation.x = 90 * Math.PI / 180;
-        camera.position.set(tank.position.x - 75, tank.position.y + 50, tank.position.z);
-        camera.lookAt(tank.position);
         cameraControls.update();
 
         var controls = new THREE.ObjectControls(camera, window.domElement, tank);
@@ -205,10 +214,21 @@ window.onload = function () {
         plane.rotation.z = 0;
         scene.add(plane);
 
+        //muziek troep
+        var listener = new THREE.AudioListener();
+        camera.add(listener);
+
+        var sound = new THREE.Audio(listener);
 
 
-
-
+        var audioLoader = new THREE.AudioLoader();
+        audioLoader.load('/sounds/Iron.mp3', function (buffer) {
+            sound.setBuffer(buffer);
+            sound.setLoop(true);
+            sound.setVolume(0.5);
+            sound.play();
+        });
+       
 
         //Skybox
 
@@ -219,7 +239,6 @@ window.onload = function () {
                     side: THREE.DoubleSide
                 }))
         );
-
 
 
 
@@ -260,22 +279,16 @@ window.onload = function () {
             var delta_z = speed * Math.cos(TankDirection);
             var delta_x = speed * Math.sin(TankDirection);
 
-            var new_x = camera.position.x + delta_x;
-            var new_z = camera.position.z + delta_z;
-
-            camera.position.x = new_x;
-            camera.position.z = new_z;
-
             var new_dx = tank.position.x + delta_x;
             var new_dz = tank.position.z + delta_z;
+            
             tank.position.x = new_dx;
             tank.position.z = new_dz;
-            camera.lookAt(tank.position);
         }
 
         function setTankDirection() {
             tank.rotation.y = TankDirection;
-            camera.lookAt(tank.position);
+            //camera.lookAt(tank.position);
 
         }
 
@@ -292,6 +305,7 @@ window.onload = function () {
             }
             if (TankIsMovingForward) { // go forward
                 moveForward(TankSpeed);
+                
                 return;
             }
             if (TankIsMovingBackwards) { // go backwards
@@ -323,7 +337,7 @@ window.onload = function () {
                     break;
                 case keys.RELOAD:
                     tank.cycleAmmo();
-                    break;
+                    break;                            
             }
         }
 
@@ -363,6 +377,7 @@ window.onload = function () {
 
             //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
             for (var cntr = 0; cntr < scene.tankMeshes.length; cntr++) {
+
                 var body = scene.tankHitboxes[cntr];
                 var tank = scene.tankMeshes[cntr];
                 if (tank.alive) {
@@ -385,15 +400,20 @@ window.onload = function () {
 
             }
 
-        }
 
-        function render() {
+
+        }
+        function render() {        
             updatePhysics();
             UpdateTank();
             requestAnimationFrame(render);
-            camera.lookAt(tank.position);
+            console.log();
+            tank.add(camera);
+            camera.position.z = -50;
             cameraControls.update();
-            renderer.render(scene, camera);
+            camera.position.y = 30
+            camera.lookAt(tank.position);
+            renderer.render(scene,camera);//camera toevoegen
         }
 
         render();
