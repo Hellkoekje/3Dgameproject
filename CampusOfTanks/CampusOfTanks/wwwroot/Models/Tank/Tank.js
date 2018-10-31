@@ -1,7 +1,6 @@
 ﻿
 //class that represents a tank aka a player. This is the superclass for our different tanks.
-//TODO make subclasses that represent other types of tanks, one of which should move faster, one of which should shoot faster, and one of which should have higher hitpoints.
-//TODO and should have different models 
+
 
 class Tank extends THREE.Group {
     constructor() {
@@ -34,7 +33,10 @@ class Tank extends THREE.Group {
         this.parent.cannonWorld.add(this.hitboxBody);*/
         //if false, remove from world
         this.alive = true;
-
+        this.mass = 100;
+        this.hitboxMaterial =  new CANNON.Material("tankhitbox");
+        this.hitbox = new TankHitbox(this.mass, this.hitboxMaterial, this);
+        this.position.y = -5;
     }
 
     //load 3d model

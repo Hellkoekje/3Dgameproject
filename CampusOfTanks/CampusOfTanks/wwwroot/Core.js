@@ -67,11 +67,13 @@ window.onload = function () {
     var TankIsMovingForward = 0;
     var TankIsMovingBackwards = 0;
     var TankBackwardsSpeed = TankSpeed * 0.4;
-    var tank = new Tank(), enemytank = new Tank();
+    var tank, enemytank;
+
 
 
     function init()
     {
+
         //Cannon init
         world = new CANNON.World();
         world.broadphase = new CANNON.NaiveBroadphase();
@@ -81,6 +83,32 @@ window.onload = function () {
 
 
         //THREE inits
+        
+        scene = new THREE.Scene();
+        //VISUAL meshes of bullets(apple,egg models.)
+        scene.bulletMeshes = [];
+        //actual collidable physics objects (spheres) placed inside of visual mesh.
+        scene.bulletBodies = [];
+        scene.tankMeshes = [];
+        scene.tankHitboxes = [];
+        scene.cannonWorld = world;
+        //tanks
+        tank = new Tank();
+        enemytank = new Tank();
+        scene.tankMeshes.push(tank);
+        scene.tankHitboxes.push(tank.hitbox);
+        world.addBody(tank.hitbox);
+        scene.add(tank);
+        
+        tank.position.x = 0;
+
+        //enemy tank for hitbox tests
+        scene.add(enemytank);
+        enemytank.position.x = 0;
+        enemytank.position.z = -100;
+        scene.tankMeshes.push(enemytank);
+        scene.tankHitboxes.push(enemytank.hitbox);
+        world.addBody(enemytank.hitbox);
         camera = new THREE.PerspectiveCamera(70, window.innerwidth / window.innerheight, 1, 1500);
         cameraControls = new THREE.OrbitControls(camera, renderer);
         cameraControls.center = new THREE.Vector3(
@@ -96,9 +124,7 @@ window.onload = function () {
         var controls = new THREE.ObjectControls(camera, window.domElement, tank);
         controls.setDistance(8, 200); // set min - max distance for zoom
         controls.setZoomSpeed(1); // set zoom speed
-        scene = new THREE.Scene();
-
-
+       
         //verlichting
         //hemilight + derictional light voor een realistische belichting
 
@@ -126,6 +152,7 @@ window.onload = function () {
         dirLight.shadow.camera.far = 1000;
         dirLight.shadow.bias = -0.0001;
 
+
         //dit is de helper voor de directional light.
         dirLightHeper = new THREE.DirectionalLightHelper(dirLight, 100, 0xFFFFFF);
         scene.add(dirLightHeper);
@@ -135,14 +162,14 @@ window.onload = function () {
         scene.add(helper);
 
 
+
         //VISUAL meshes of bullets(apple,egg models.)
         scene.bulletMeshes = [];
         //actual collidable physics objects (spheres) placed inside of visual mesh.
         scene.bulletBodies = [];
         scene.tankMeshes = [];
         scene.tankHitboxes = [];
-        scene.cannonWorld = world;
-
+        scene.cannonWorld = world
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight + 5);
@@ -180,6 +207,13 @@ window.onload = function () {
         plane.rotation.z = 0;
         scene.add(plane);
 
+
+       
+
+
+
+        //Skybox
+
         scene.add(
             new THREE.Mesh(new THREE.SphereGeometry(750, 12, 12),
                 new THREE.MeshBasicMaterial({
@@ -188,12 +222,14 @@ window.onload = function () {
                 }))
         );
 
+
         scene.add(tank);
         tank.position.x = 0;
 
         scene.add(enemytank);
         enemytank.position.x = 0;
         enemytank.position.z = -100;
+
 
         /* cannonjs test
          */
@@ -329,6 +365,18 @@ window.onload = function () {
                 }
 
             }
+
+               //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
+               for (var cntr = 0; cntr < scene.tankMeshes.length; cntr++) {
+                   scene.tankHitboxes[cntr].position.copy(scene.tankMeshes[cntr].position);
+                   scene.tankHitboxes[cntr].quaternion.copy(scene.tankMeshes[cntr].quaternion);
+                   scene.tankHitboxes[cntr].position.y += 10;
+                   scene.tankHitboxes[cntr].position.z += 10;
+               }
+           
+
+
+
         }
 
         function render() {
