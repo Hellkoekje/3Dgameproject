@@ -1,11 +1,58 @@
-
-
+gameInstance = new Game();
 
 window.onload = function () {
 
+    var gameWindow = new GameWindow(window, document);
+    var gameCamera = new GameCamera();
+    var gameInput = new GameInput();
+    var gameRenderer = new GameRenderer(gameWindow);
+
+    //Register all the events.
+    window.addEventListener('resize', () => {
+        gameWindow.onResize(window.innerWidth, window.innerHeight);
+    });
+
+    window.addEventListener("keydown", (keyEvent) => {
+        gameInput.onKeydown(keyEvent);
+    });
+
+    window.addEventListener("keyup", (keyEvent) => {
+        gameInput.onKeydown(keyEvent);
+    });
+
+    //Initialize the "game" object.
+    gameInstance.setGameWindow(gameWindow);
+    gameInstance.setGameRenderer(gameRenderer, 30);
+    gameInstance.setGameInput(gameInput);
+    gameInstance.setReady();
+
+    //gameRenderer.createRenderer();
+    //gameRenderer.renderFrame();
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     var camera, scene, renderer, world;
     var net;
-
 
     var cameraControls;
     //var TankDirection = 270 * Math.PI / 180;
@@ -20,12 +67,18 @@ window.onload = function () {
     var tank, enemytank;
 
 
-    function init() { //TODO deze spaghetti fix ik later ~hidde
+
+    function init()
+    {
+
         //Cannon init
         world = new CANNON.World();
         world.broadphase = new CANNON.NaiveBroadphase();
         world.gravity.set(0, -9.82, 0);
         world.solver.iterations = 20;
+
+
+
         //THREE inits
         
         scene = new THREE.Scene();
@@ -64,6 +117,7 @@ window.onload = function () {
         camera.position.set(tank.position.x - 75, tank.position.y + 50, tank.position.z);
         camera.lookAt(tank.position);
         cameraControls.update();
+
         var controls = new THREE.ObjectControls(camera, window.domElement, tank);
         controls.setDistance(8, 200); // set min - max distance for zoom
         controls.setZoomSpeed(1); // set zoom speed
@@ -72,7 +126,6 @@ window.onload = function () {
         //hemilight + derictional light voor een realistische belichting
 
         hemiLight = new THREE.HemisphereLight(0x7F7F7F, 0xFFFFFF, 0.8);
-
         hemiLight.position.set(0, 80, 0);
         scene.add(hemiLight);
 
@@ -107,6 +160,13 @@ window.onload = function () {
 
 
 
+        //VISUAL meshes of bullets(apple,egg models.)
+        scene.bulletMeshes = [];
+        //actual collidable physics objects (spheres) placed inside of visual mesh.
+        scene.bulletBodies = [];
+        scene.tankMeshes = [];
+        scene.tankHitboxes = [];
+        scene.cannonWorld = world
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight + 5);
@@ -144,11 +204,13 @@ window.onload = function () {
         plane.rotation.z = 0;
         scene.add(plane);
 
+
        
 
 
 
         //Skybox
+
         scene.add(
             new THREE.Mesh(new THREE.SphereGeometry(750, 12, 12),
                 new THREE.MeshBasicMaterial({
@@ -158,6 +220,12 @@ window.onload = function () {
         );
 
 
+        scene.add(tank);
+        tank.position.x = 0;
+
+        scene.add(enemytank);
+        enemytank.position.x = 0;
+        enemytank.position.z = -100;
 
 
         /* cannonjs test
@@ -168,9 +236,9 @@ window.onload = function () {
             0.0, // friction coefficient
             0.3 // restitution
         );
+
         // We must add the contact materials to the world
         world.addContactMaterial(physicsContactMaterial);
-
 
         // Create a plane
         var groundShape = new CANNON.Plane();
@@ -180,22 +248,12 @@ window.onload = function () {
         groundBody.position.set(0, -5, 0);
         world.addBody(groundBody);
 
-
-        net = new Network();
-        net.connect(window.location.hostname, window.location.port);
-
-
-
-        function onWindowResize() {
-
-
-
+        function onWindowResize()
+        {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-
         }
-
 
         function moveForward(speed) {
 
@@ -215,11 +273,8 @@ window.onload = function () {
             camera.lookAt(tank.position);
         }
 
-        function setTankDirection() {
-            //direction changed.
-            //var delta_x = TankDirection;
-
-            //var new_dx = camera.position.x + delta_x;
+        function setTankDirection()
+        {
             tank.rotation.y = TankDirection;
             camera.lookAt(tank.position);
 
@@ -244,8 +299,6 @@ window.onload = function () {
                 moveForward(-TankBackwardsSpeed);
                 return;
             }
-            //key_down();
-
         }
 
         var a = false;
@@ -256,26 +309,19 @@ window.onload = function () {
             switch (event.keyCode) {
                 case keys.UP:
                     TankIsMovingForward = 1;
-
                     break;
-
                 case keys.BOTTOM:
                     TankIsMovingBackwards = 1;
-
                     break;
-
                 case keys.LEFT:
                     TankIsRotatingLeft = 1;
                     break;
-
                 case keys.RIGHT:
                     TankIsRotatingRight = 1;
                     break;
-
                 case keys.SPACE:
                     tank.fire();
                     break;
-
                 case keys.RELOAD:
                     tank.cycleAmmo();
                     break;
@@ -283,7 +329,6 @@ window.onload = function () {
         }
 
         function key_up() {
-
             TankIsMovingForward = 0;
             TankIsMovingBackwards = 0;
             TankIsRotatingLeft = 0;
@@ -292,7 +337,6 @@ window.onload = function () {
             TankGoesDown = 0;
         }
 
-
         TankIsMovingForward = 0;
         TankIsMovingBackwards = 0;
         TankIsRotatingLeft = 0;
@@ -300,13 +344,12 @@ window.onload = function () {
         TankGoesUp = 0;
         TankGoesDown = 0;
 
-
-
-        function updatePhysics() {
+        function updatePhysics()
+        {
             // Step the physics world
             world.step(1 / 60);
-            // Copy coordinates from Cannon.js to Three.js
 
+            // Copy coordinates from Cannon.js to Three.js
             for (var i = 0; i < scene.bulletMeshes.length; i++) {
                 if (scene.bulletMeshes[i].alive) {
                     scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
@@ -319,6 +362,7 @@ window.onload = function () {
                 }
 
             }
+
                //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
                for (var cntr = 0; cntr < scene.tankMeshes.length; cntr++) {
                    scene.tankHitboxes[cntr].position.copy(scene.tankMeshes[cntr].position);
@@ -329,11 +373,10 @@ window.onload = function () {
            
 
 
+
         }
 
         function render() {
-
-
             updatePhysics();
             UpdateTank();
             requestAnimationFrame(render);
@@ -341,34 +384,8 @@ window.onload = function () {
             cameraControls.update();
             renderer.render(scene, camera);
         }
-
-
-        function waitForNetReady(callback, count) {
-            // A five second timeout
-            if (count > 50) {
-                console.log("[NETWORK] Cannot establish network connection! :(");
-            }
-
-            if (!net.isAvailable()) {
-                setTimeout(function () {
-                    count++;
-                    waitForNetReady(callback, count);
-                }, 100);
-            }
-            else {
-                setTimeout(function () {
-                    callback();
-                }, 1000);
-            }
-        }
-
-
-
-        waitForNetReady(function () {
-            var entity = new NetworkEntity(net, true, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0));
-            render();
-        });
-
+        render();
     }
+
     init();
 }

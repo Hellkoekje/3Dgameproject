@@ -13,7 +13,7 @@
                     alert("oi m8 we got shot");
                     console.log(e.body);
                     console.log(e.contact);
-                    selfref.removeListener(this);
+                    
                 }
 
             });
@@ -21,7 +21,7 @@
     }
 
     init() {
-        var vec = new CANNON.Vec3(20, 10, 35);
+        var vec = new CANNON.Vec3(20, 10, 30);
         var shape = new CANNON.Box(vec);
         this.addShape(shape);
         this.position.copy(this.tank.position);
