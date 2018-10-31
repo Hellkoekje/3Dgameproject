@@ -38,30 +38,7 @@ window.onload = function () {
     setInterval(function () {
         gameRenderer.process();
     }, 1);
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+       
     var camera, scene, renderer, world;
     var net;
 
@@ -83,10 +60,10 @@ window.onload = function () {
     {
 
         //Cannon init
-        //world = new CANNON.World();
-        //world.broadphase = new CANNON.NaiveBroadphase();
-        //world.gravity.set(0, -9.82, 0);
-        //world.solver.iterations = 20;
+        world = new CANNON.World();
+        world.broadphase = new CANNON.NaiveBroadphase();
+        world.gravity.set(0, -9.82, 0);
+        world.solver.iterations = 20;
 
 
 
@@ -210,11 +187,6 @@ window.onload = function () {
         plane.rotation.z = 0;
         scene.add(plane);
 
-
-       
-
-
-
         //Skybox
 
         scene.add(
@@ -265,20 +237,11 @@ window.onload = function () {
             var delta_z = speed * Math.cos(TankDirection);
             var delta_x = speed * Math.sin(TankDirection);
 
-            var new_x = camera.position.x + delta_x;
-            var new_z = camera.position.z + delta_z;
-
-            camera.position.x = new_x;
-            camera.position.z = new_z;
-
             var new_dx = tank.position.x + delta_x;
             var new_dz = tank.position.z + delta_z;
             
-
             tank.position.x = new_dx;
             tank.position.z = new_dz;
-
-            
         }
 
         function setTankDirection()
@@ -385,7 +348,11 @@ window.onload = function () {
             UpdateTank();
             requestAnimationFrame(render);
             console.log();
+            tank.add(camera);
+            camera.position.z = -50;
             cameraControls.update();
+            camera.position.y = 30
+            camera.lookAt(tank.position);
             renderer.render(scene,camera);//camera toevoegen
         }
         render();
