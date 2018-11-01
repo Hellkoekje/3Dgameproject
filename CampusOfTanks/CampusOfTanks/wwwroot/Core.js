@@ -1,4 +1,7 @@
+registry = new Registry();
+
 window.onload = function () {
+
     var camera, scene, renderer, world;
     var net;
 
@@ -17,68 +20,47 @@ window.onload = function () {
 
 
     function init() {
-
-        //Cannon init
-        world = new CANNON.World();
-        world.broadphase = new CANNON.NaiveBroadphase();
-        world.gravity.set(0, -9.82, 0);
-        world.solver.iterations = 20;
-
-
-
-        //THREE inits
-
         scene = new THREE.Scene();
-        //VISUAL meshes of bullets(apple,egg models.)
-        scene.bulletMeshes = [];
-        //actual collidable physics objects (spheres) placed inside of visual mesh.
-        scene.bulletBodies = [];
-        scene.tankMeshes = [];
-        scene.tankHitboxes = [];
-        scene.cannonWorld = world;
-        //tanks
 
-        //init tanks
+        var physics = new Physics({
+            solverIterations: 20,
+            gravitationalPull: 9.81
+        });
+
+        registry.addComponent("physics", physics);
+
+        var input = new Input();
+        window.addEventListener('keydown', input._keyDownEvent);
+        window.addEventListener('keyup', input._keyUpEvent);
+
+        registry.addComponent("input", input);
+
+
+        // Friendly tank
         tank = new Tank("Hidde");
-
-        enemytank = new Tank("Sjakie");
-
-        //add tank mesh and hitbox to array for physics logic
-        scene.tankMeshes.push(tank);
-        scene.tankHitboxes.push(tank.hitbox);
-        //add hitbox body to the CANNON world so we can apply physics
-
-        world.addBody(tank.hitbox);
-
-        scene.add(tank);
-        scene.add(tank.cubemesh);
-
         tank.position.x = 0;
+        physics.addTank(tank, tank.hitbox, tank.hitbox);
+        scene.add(tank);
+        
 
-        //enemy tank for hitbox tests
-        scene.add(enemytank);
+        // Enemy tank
+        enemytank = new Tank("Sjakie");
         enemytank.position.x = 0;
         enemytank.position.z = -100;
-        scene.tankMeshes.push(enemytank);
-        scene.tankHitboxes.push(enemytank.hitbox);
-        world.addBody(enemytank.hitbox);
+        physics.addTank(enemytank, enemytank.hitbox, enemytank.hitbox);
+        scene.add(enemytank);
 
-
+        //Setup camera and controls.
         var aspect = window.innerWidth / window.innerHeight;
         camera = new THREE.PerspectiveCamera(70, aspect, 1, 1500);
-
-        cameraControls = new THREE.OrbitControls(camera, renderer);
-
         camera.rotation.x = 90 * Math.PI / 180;
+        cameraControls = new THREE.OrbitControls(camera, renderer);
         cameraControls.update();
-
         var controls = new THREE.ObjectControls(camera, window.domElement, tank);
         controls.setDistance(8, 200); // set min - max distance for zoom
         controls.setZoomSpeed(1); // set zoom speed
 
-        //verlichting
-        //hemilight + derictional light voor een realistische belichting
-
+        // Lights!
         hemiLight = new THREE.HemisphereLight(0x7F7F7F, 0xFFFFFF, 0.8);
         hemiLight.position.set(0, 80, 0);
         scene.add(hemiLight);
@@ -103,28 +85,26 @@ window.onload = function () {
         dirLight.shadow.camera.far = 1000;
         dirLight.shadow.bias = -0.0001;
 
-
         //dit is de helper voor de directional light.
         dirLightHeper = new THREE.DirectionalLightHelper(dirLight, 100, 0xFFFFFF);
         scene.add(dirLightHeper);
 
-        //dit is de camera helper
+        // Camera
         var helper = new THREE.CameraHelper(dirLight.shadow.camera);
         scene.add(helper);
 
-
-
+        // Renderer
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight + 5);
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
+        // Events 
         document.body.appendChild(renderer.domElement);
         window.addEventListener('resize', onWindowResize, false);
         window.addEventListener('keydown', key_down);
         window.addEventListener('keyup', key_up);
-
 
         //Plane stuff.
         var geometry = new THREE.PlaneGeometry(1000, 1000, 1000);
@@ -132,7 +112,6 @@ window.onload = function () {
         //Repeat plane texture! :D
         var texture = new THREE.TextureLoader().load("Textures/Ground.jpg",
             function (texture) {
-
                 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
                 texture.offset.set(0, 0);
                 texture.repeat.set(10, 10);
@@ -157,7 +136,6 @@ window.onload = function () {
 
         var sound = new THREE.Audio(listener);
 
-
         var audioLoader = new THREE.AudioLoader();
         audioLoader.load('/sounds/Iron.mp3', function (buffer) {
             sound.setBuffer(buffer);
@@ -165,11 +143,8 @@ window.onload = function () {
             sound.setVolume(0.025);
             sound.play();
         });
-       
-
-
+      
         //Skybox
-
         scene.add(
             new THREE.Mesh(new THREE.SphereGeometry(750, 12, 12),
                 new THREE.MeshBasicMaterial({
@@ -178,33 +153,25 @@ window.onload = function () {
                 }))
         );
 
-
-
-
-        /* cannonjs test
-         */
+        //Slippery physics material.
         var physicsMaterial = new CANNON.Material("slipperyMaterial");
-        var physicsContactMaterial = new CANNON.ContactMaterial(physicsMaterial,
-            physicsMaterial,
-            0.0, // friction coefficient
-            0.3 // restitution
-        );
+        var physicsContactMaterial = new CANNON.ContactMaterial(physicsMaterial, physicsMaterial, 0.0, 0.3);
+        physics.addPhysicsMaterial("slippery", physicsContactMaterial);
 
-
-
-
-
-
-        // We must add the contact materials to the world
-        world.addContactMaterial(physicsContactMaterial);
 
         // Create a plane
         var groundShape = new CANNON.Plane();
-        var groundBody = new CANNON.Body({ mass: 0, material: physicsMaterial });
+
+        var groundBody = new CANNON.Body({
+            mass: 0,
+            material: physics.getPhysicsMaterial("slippery")
+        });
+
         groundBody.addShape(groundShape);
         groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
         groundBody.position.set(0, -5, 0);
-        world.addBody(groundBody);
+
+        physics.addBody(groundBody);
 
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
@@ -295,54 +262,10 @@ window.onload = function () {
         TankGoesUp = 0;
         TankGoesDown = 0;
 
-        function updatePhysics() {
-            // Step the physics world
-            world.step(1 / 60);
+        
 
-            // Copy coordinates from Cannon.js to Three.js
-            for (var i = 0; i < scene.bulletMeshes.length; i++) {
-                if (scene.bulletMeshes[i].alive) {
-                    scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
-                    scene.bulletMeshes[i].quaternion.copy(scene.bulletBodies[i].quaternion);
-                } else {
-                    scene.remove(scene.bulletMeshes[i]);
-                    world.remove(scene.bulletBodies[i]);
-                    scene.bulletMeshes.splice(i, 1);
-                    scene.bulletBodies.splice(i, 1);
-                }
-
-            }
-
-            //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
-            for (var cntr = 0; cntr < scene.tankMeshes.length; cntr++) {
-
-                var body = scene.tankHitboxes[cntr];
-                var tanky = scene.tankMeshes[cntr];
-                if (tanky.alive) {
-
-                    body.position.copy(tanky.position);
-                    body.quaternion.copy(tanky.quaternion);
-                    body.position.y += 5;
-                    tanky.updateLabel();
-                    //tank.label.lookAt(camera.position);
-
-
-                }
-                else {
-                    scene.tankMeshes.splice(cntr, 1);
-                    scene.tankHitboxes.splice(cntr, 1);
-                    scene.remove(tanky);
-                    world.remove(body);
-
-                }
-
-            }
-
-
-
-        }
         function render() {        
-            updatePhysics();
+            physics.update();
             UpdateTank();
             requestAnimationFrame(render);
             console.log();
