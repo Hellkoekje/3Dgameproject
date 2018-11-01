@@ -43,6 +43,8 @@ window.onload = function () {
         scene.add(tank);
         scene.add(tank.cubemesh);
 
+        
+
         // Enemy tank
         enemytank = new Tank("Sjakie");
         enemytank.position.x = 0;
@@ -242,6 +244,7 @@ window.onload = function () {
                     break;
                 case keys.RELOAD:
                     tank.cycleAmmo();
+                    ShowAmmo();
                     break;                            
             }
         }
@@ -262,7 +265,23 @@ window.onload = function () {
         TankGoesUp = 0;
         TankGoesDown = 0;
 
-        function render() {        
+        function ShowAmmo(){
+            if (tank.ammoSelected == 0) {
+                console.log("apple");
+
+            }
+            if (tank.ammoSelected == 1) {
+                console.log("ei");
+
+            }
+            if (tank.ammoSelected == 2) {
+                console.log("bier");
+
+            }
+        }
+
+
+        function render() {  
             physics.update();
             UpdateTank();
             requestAnimationFrame(render);
@@ -272,7 +291,7 @@ window.onload = function () {
             cameraControls.update();
             camera.position.y = 30;
             camera.lookAt(tank.position);
-            renderer.render(scene,camera);//camera toevoegen
+            renderer.render(scene, camera);//camera toevoegen
         }
 
         render();
