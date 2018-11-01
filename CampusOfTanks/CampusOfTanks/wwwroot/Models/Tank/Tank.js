@@ -75,7 +75,7 @@ class Tank extends THREE.Group {
     updateLabel() {
         
        
-        this.context1.fillText(this.username + " " + this.hitpoints, 0, 50);
+        this.context1.fillText(this.username + " " + this.hitpoints+"HP", 0, 50);
 
         // canvas contents will be used for a texture
         this.labelTexture = new THREE.Texture(this.canvas1);
