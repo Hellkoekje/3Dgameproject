@@ -64,7 +64,9 @@ window.onload = function () {
         world.addBody(enemytank.hitbox);
 
 
-        camera = new THREE.PerspectiveCamera(70, window.innerwidth / window.innerheight, 1, 1500);
+        var aspect = window.innerWidth / window.innerHeight;
+        camera = new THREE.PerspectiveCamera(70, aspect, 1, 1500);
+
         cameraControls = new THREE.OrbitControls(camera, renderer);
 
         camera.rotation.x = 90 * Math.PI / 180;
