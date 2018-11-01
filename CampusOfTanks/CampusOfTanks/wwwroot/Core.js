@@ -386,7 +386,7 @@ window.onload = function () {
                     body.position.copy(tank.position);
                     body.quaternion.copy(tank.quaternion);
                     body.position.y += 5;
-                    // scene.tankHitboxes[cntr].position.z += 10;
+                   
                     tank.cubemesh.position.copy(tank.hitbox.position);
                     tank.cubemesh.quaternion.copy(tank.hitbox.quaternion);
 
@@ -412,7 +412,7 @@ window.onload = function () {
             tank.add(camera);
             camera.position.z = -50;
             cameraControls.update();
-            camera.position.y = 30
+            camera.position.y = 30;
             camera.lookAt(tank.position);
             renderer.render(scene,camera);//camera toevoegen
         }

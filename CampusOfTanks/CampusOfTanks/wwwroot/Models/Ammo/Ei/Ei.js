@@ -3,15 +3,16 @@ class Ei extends Projectile {
     constructor(firedFrom) {
         super(firedFrom);
         
-        this.init();
+ 
       
         this.delay = 2000;
 
         this.velocity = new THREE.Vector3(-Math.sin(firedFrom.rotation.y) * 2, 0, -Math.cos(firedFrom.rotation.y) * 2);
         this.travelSpeed = 150;
-        this.mass = 10;
+        this.mass = 30;
         this.radius = 2;
         this.damage = 25;
+        this.init();
     }
 
 
@@ -36,6 +37,8 @@ class Ei extends Projectile {
                 selfRef.add(object);
             });
         });
+        this.hitbox = new ProjectileSphereHitbox(this.mass, this.physicsMaterial, this);
+        this.hitbox.position.copy(selfRef.position);
     }
 
 }
