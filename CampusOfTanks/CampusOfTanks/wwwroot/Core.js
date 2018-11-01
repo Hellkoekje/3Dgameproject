@@ -6,6 +6,7 @@ window.onload = function () {
 
     function init() {
 
+        // Physics component.
         var physics = new Physics({
             solverIterations: 20,
             gravitationalPull: 9.81
@@ -13,6 +14,7 @@ window.onload = function () {
 
         registry.addComponent("physics", physics);
 
+        //Input component
         var input = new Input();
         window.addEventListener('keydown', (e) => input.keyDownEvent(e));
         window.addEventListener('keyup', (e) => input.keyUpEvent(e));
@@ -20,24 +22,19 @@ window.onload = function () {
 
         registry.addComponent("input", input);
 
-        var scene = new GameScene(false);
+        //Game window component
+        var gameWindow = new GameWindow(window, document);
+        window.addEventListener('resize', () => gameWindow.onWindowResize());
 
+        registry.addComponent("window", gameWindow);
+
+        //Scene component
+        var scene = new GameScene(false);
         registry.addComponent("scene", scene);
 
         //Setup camera and controls.
         var aspect = window.innerWidth / window.innerHeight;
         camera = new THREE.PerspectiveCamera(70, aspect, 1, 1500);
-
-        // Renderer
-        renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize(window.innerWidth, window.innerHeight + 5);
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-        // Events 
-        document.body.appendChild(renderer.domElement);
-        window.addEventListener('resize', onWindowResize, false);
 
         //muziek troep
         var listener = new THREE.AudioListener();
@@ -90,7 +87,7 @@ window.onload = function () {
             //camera.lookAt(tank.position);
 
             sound.setVolume(guiControls.setVolume);
-            renderer.render(scene.get(), camera);
+            gameWindow.update(scene.get(), camera);
         }
 
         render();
