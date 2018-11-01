@@ -32,7 +32,6 @@ window.onload = function () {
         physics.addTank(tank, tank.hitbox, tank.hitbox);
         scene.add(tank);
 
-
         // Enemy tank
         enemytank = new Tank("Sjakie", false);
         enemytank.position.x = 0;
@@ -43,9 +42,11 @@ window.onload = function () {
         //Setup camera and controls.
         var aspect = window.innerWidth / window.innerHeight;
         camera = new THREE.PerspectiveCamera(70, aspect, 1, 1500);
+
         camera.rotation.x = 90 * Math.PI / 180;
         cameraControls = new THREE.OrbitControls(camera, renderer);
         cameraControls.update();
+
         var controls = new THREE.ObjectControls(camera, window.domElement, tank);
         controls.setDistance(8, 200); // set min - max distance for zoom
         controls.setZoomSpeed(1); // set zoom speed
@@ -93,8 +94,6 @@ window.onload = function () {
         // Events 
         document.body.appendChild(renderer.domElement);
         window.addEventListener('resize', onWindowResize, false);
-        //window.addEventListener('keydown', key_down);
-        //window.addEventListener('keyup', key_up);
 
         //Plane stuff.
         var geometry = new THREE.PlaneGeometry(1000, 1000, 1000);
@@ -206,19 +205,18 @@ window.onload = function () {
             input.update();
             physics.update();
 
-            tank.add(camera);
-            camera.position.z = -50;
-            cameraControls.update();
-            camera.position.y = 30;
+            camera.position.x = tank.position.x;
+            camera.position.y = tank.position.y + 150;
+            camera.position.z = tank.position.z - 140;
             camera.lookAt(tank.position);
 
+            cameraControls.update();
             renderer.render(scene, camera);//camera toevoegen
         }
 
         render();
     }
 
-    
     init();
 }
 
