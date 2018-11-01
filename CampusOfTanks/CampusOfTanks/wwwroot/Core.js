@@ -2,12 +2,12 @@ registry = new Registry();
 
 window.onload = function () {
 
-    var camera, scene, renderer;
-    var cameraControls;
+    var camera, renderer;
     var tank, enemytank;
 
     function init() {
-        scene = new THREE.Scene();
+        var scene = new GameScene();
+        registry.addComponent("scene", scene);
 
         var physics = new Physics({
             solverIterations: 20,
@@ -39,14 +39,6 @@ window.onload = function () {
         //Setup camera and controls.
         var aspect = window.innerWidth / window.innerHeight;
         camera = new THREE.PerspectiveCamera(70, aspect, 1, 1500);
-
-        camera.rotation.x = 90 * Math.PI / 180;
-        cameraControls = new THREE.OrbitControls(camera, renderer);
-        cameraControls.update();
-
-        var controls = new THREE.ObjectControls(camera, window.domElement, tank);
-        controls.setDistance(8, 200); // set min - max distance for zoom
-        controls.setZoomSpeed(1); // set zoom speed
 
         // Lights!
         hemiLight = new THREE.HemisphereLight(0x7F7F7F, 0xFFFFFF, 0.8);
@@ -200,15 +192,15 @@ window.onload = function () {
             tank.updateLabel();
             physics.update();
 
+            ShowAmmo();
+
             camera.position.x = tank.position.x;
             camera.position.y = tank.position.y + 150;
             camera.position.z = tank.position.z - 140;
-
-            var tankPos = tank.position;
-            camera.lookAt(tankPos);
+            camera.lookAt(tank.position);
 
             sound.setVolume(guiControls.setVolume);
-            renderer.render(scene, camera);//camera toevoegen
+            renderer.render(scene.get(), camera);
         }
 
         render();

@@ -82,7 +82,6 @@
 
         this.mousePosition.set(mx, my);
 
-
         //camera.updateMatrixWorld();
         //raycaster.setFromCamera(mouse, camera);
         //var intersects = raycaster.intersectObjects(scene.children);
