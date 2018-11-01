@@ -129,7 +129,7 @@ window.onload = function () {
         audioLoader.load('/sounds/Iron.mp3', function (buffer) {
             sound.setBuffer(buffer);
             sound.setLoop(true);
-            sound.setVolume(0.025);
+            
             sound.play();
         });
 
@@ -138,13 +138,11 @@ window.onload = function () {
         var guiControls = new function () {
 
             this.setVolume = 0.025;
-            this.RotationZ = 0.01;
-            this.RotationY = 0.01;
+            
         }
         var datGUI = new dat.GUI();
-        datGUI.add(guiControls, 'setVolume', 0, 5);
-        datGUI.add(guiControls, 'RotationY', 0, 1);
-        datGUI.add(guiControls, 'RotationZ', 0, 1);
+        datGUI.add(guiControls, 'setVolume', 0, 1);
+        
 
         //Skybox
         scene.add(
@@ -210,6 +208,7 @@ window.onload = function () {
             camera.position.z = tank.position.z - 140;
             camera.lookAt(tank.position);
 
+            sound.setVolume(guiControls.setVolume);
             cameraControls.update();
             renderer.render(scene, camera);//camera toevoegen
         }
