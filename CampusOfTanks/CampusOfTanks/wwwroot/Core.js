@@ -6,15 +6,6 @@ window.onload = function () {
     var net;
 
     var cameraControls;
-    //var TankDirection = 270 * Math.PI / 180;
-    var TankDirection = 0;
-    var angularSpeed = 0.5;
-    var TankSpeed = 0.5;
-    var TankIsRotatingLeft = 0;
-    var TankIsRotatingRight = 0;
-    var TankIsMovingForward = 0;
-    var TankIsMovingBackwards = 0;
-    var TankBackwardsSpeed = TankSpeed * 0.4;
     var tank, enemytank;
 
 
@@ -178,94 +169,11 @@ window.onload = function () {
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
-        function moveForward(speed) {
-
-            var delta_z = speed * Math.cos(TankDirection);
-            var delta_x = speed * Math.sin(TankDirection);
-
-            var new_dx = tank.position.x + delta_x;
-            var new_dz = tank.position.z + delta_z;
-            
-            tank.position.x = new_dx;
-            tank.position.z = new_dz;
-        }
-
-        function setTankDirection() {
-            tank.rotation.y = TankDirection;
-            //camera.lookAt(tank.position);
-
-        }
-
-        function UpdateTank() {
-            if (TankIsRotatingLeft) { // rotate left
-                TankDirection += angularSpeed * Math.PI / 180;
-            }
-            if (TankIsRotatingRight) { // rotate right
-                TankDirection -= angularSpeed * Math.PI / 180;
-            }
-            if (TankIsRotatingRight || TankIsRotatingLeft) {
-                setTankDirection();
-                return;
-            }
-            if (TankIsMovingForward) { // go forward
-                moveForward(TankSpeed);
-                
-                return;
-            }
-            if (TankIsMovingBackwards) { // go backwards
-                moveForward(-TankBackwardsSpeed);
-                return;
-            }
-        }
-
-        var a = false;
-
-        function key_down(event) {
-            keys = { LEFT: 65, UP: 87, RIGHT: 68, BOTTOM: 83, SPACE: 32, RELOAD: 82 };
-
-            switch (event.keyCode) {
-                case keys.UP:
-                    TankIsMovingForward = 1;
-                    break;
-                case keys.BOTTOM:
-                    TankIsMovingBackwards = 1;
-                    break;
-                case keys.LEFT:
-                    TankIsRotatingLeft = 1;
-                    break;
-                case keys.RIGHT:
-                    TankIsRotatingRight = 1;
-                    break;
-                case keys.SPACE:
-                    tank.fire();
-                    break;
-                case keys.RELOAD:
-                    tank.cycleAmmo();
-                    break;                            
-            }
-        }
-
-        function key_up() {
-            TankIsMovingForward = 0;
-            TankIsMovingBackwards = 0;
-            TankIsRotatingLeft = 0;
-            TankIsRotatingRight = 0;
-            TankGoesUp = 0;
-            TankGoesDown = 0;
-        }
-
-        TankIsMovingForward = 0;
-        TankIsMovingBackwards = 0;
-        TankIsRotatingLeft = 0;
-        TankIsRotatingRight = 0;
-        TankGoesUp = 0;
-        TankGoesDown = 0;
-
         function render() {   
             input.update();
             physics.update();
 
-            UpdateTank();
+            //UpdateTank();
             requestAnimationFrame(render);
             tank.add(camera);
             camera.position.z = -50;
