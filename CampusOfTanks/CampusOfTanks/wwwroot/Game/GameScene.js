@@ -8,7 +8,7 @@
         this.constructEntities();
     }
 
-    get() {
+    getScene() {
         return this.scene;
     }
 

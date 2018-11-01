@@ -45,16 +45,16 @@
     update() {
         this.world.step(1 / 60);
 
+        var scene = registry.components.scene;
+        var sceneObj = scene.getScene();
+
         // Copy coordinates from Cannon.js to Three.js
         for (var i = 0; i < this.bulletMeshes.length; i++) {
             if (this.bulletMeshes[i].alive) {
                 this.bulletMeshes[i].position.copy(this.bulletHitboxes[i].position);
                 this.bulletMeshes[i].quaternion.copy(this.bulletHitboxes[i].quaternion);
             } else {
-
-                //TODO: Remove from scene
-                //this.remove(this.bulletMeshes[i]);
-
+                sceneObj.remove(this.bulletMeshes[i]);
                 this.world.remove(this.bulletHitboxes[i]);
                 this.bulletMeshes.splice(i, 1);
                 this.bulletHitboxes.splice(i, 1);
@@ -77,10 +77,7 @@
             else {
                 this.tankMeshes.splice(n, 1);
                 this.tankHitboxes.splice(n, 1);
-
-                //TODO: Remove tank from scene
-                //this.remove(tank);
-
+                sceneObj.remove(tank);
                 this.world.remove(body);
             }
         }

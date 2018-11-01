@@ -40,4 +40,10 @@
         this.camera.position.z = this.followingObject.position.z + this.offsetz;
         this.camera.lookAt(this.followingObject.position);
     }
+
+    resize() {
+        var window = registry.components.window;
+        camera.aspect = window.aspect();
+        camera.updateProjectionMatrix();
+    }
 }

@@ -73,11 +73,10 @@ window.onload = function () {
             //TODO: We probably want to manually update ALL entities.
             //tank.updateLabel();
 
-            var camera = gameCam.getCamera();
             gameCam.update();
             
             sound.setVolume(guiControls.setVolume);
-            gameWindow.update(scene.get(), camera);
+            gameWindow.update(scene.getScene(), gameCam.getCamera());
         }
 
         render();

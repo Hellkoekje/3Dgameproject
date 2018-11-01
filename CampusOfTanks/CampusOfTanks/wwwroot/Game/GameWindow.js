@@ -16,11 +16,9 @@
 
         var cam = registry.components.camera;
 
+        //Do a null check, in case the cam hasn't been added yet.
         if (cam) {
-            console.log("1");
-            var camera = cam.getCamera();
-            camera.aspect = this.aspect;
-            camera.updateProjectionMatrix();
+            cam.resize();
         }
 
         this.renderer.setSize(this.width, this.height);
