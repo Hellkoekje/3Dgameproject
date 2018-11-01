@@ -81,6 +81,7 @@
 
                 //TODO: Remove tank from scene
                 //this.remove(tank);
+
                 this.world.remove(body);
             }
         }

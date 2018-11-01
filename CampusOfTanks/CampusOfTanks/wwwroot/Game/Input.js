@@ -83,7 +83,6 @@
 
             //Check for key press.
             if (!keyLast && keyNow) {
-                console.log(i);
                 this.invokeKey(i, "press");
             }
 
@@ -107,7 +106,7 @@
 
     invokeKey(key, type) {
         for (var i = 0; i < this.keyCallbacks.length; i++) {
-            var data = this.keyCallbacks[i];
+             var data = this.keyCallbacks[i];
 
             if (data.keyCode == key && data.type == type) {
                 data.callback();
