@@ -27,14 +27,14 @@ window.onload = function () {
         registry.addComponent("input", input);
 
         // Friendly tank
-        tank = new Tank("Hidde");
+        tank = new Tank("Hidde", true);
         tank.position.x = 0;
         physics.addTank(tank, tank.hitbox, tank.hitbox);
         scene.add(tank);
-        scene.add(tank.cubemesh);
+
 
         // Enemy tank
-        enemytank = new Tank("Sjakie");
+        enemytank = new Tank("Sjakie", false);
         enemytank.position.x = 0;
         enemytank.position.z = -100;
         physics.addTank(enemytank, enemytank.hitbox, enemytank.hitbox);
@@ -133,7 +133,20 @@ window.onload = function () {
             sound.setVolume(0.025);
             sound.play();
         });
-      
+
+        //dat.gui
+       
+        var guiControls = new function () {
+
+            this.setVolume = 0.025;
+            this.RotationZ = 0.01;
+            this.RotationY = 0.01;
+        }
+        var datGUI = new dat.GUI();
+        datGUI.add(guiControls, 'setVolume', 0, 5);
+        datGUI.add(guiControls, 'RotationY', 0, 1);
+        datGUI.add(guiControls, 'RotationZ', 0, 1);
+
         //Skybox
         scene.add(
             new THREE.Mesh(new THREE.SphereGeometry(750, 12, 12),
@@ -169,8 +182,24 @@ window.onload = function () {
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
+        function ShowAmmo(){
+            if (tank.ammoSelected == 0) {
+                console.log("apple");
+
+            }
+            if (tank.ammoSelected == 1) {
+                console.log("ei");
+
+            }
+            if (tank.ammoSelected == 2) {
+                console.log("bier");
+
+            }
+        }
+
         function render() {   
             input.update();
+
             physics.update();
 
             //UpdateTank();
@@ -180,7 +209,7 @@ window.onload = function () {
             cameraControls.update();
             camera.position.y = 30;
             camera.lookAt(tank.position);
-            renderer.render(scene,camera);//camera toevoegen
+            renderer.render(scene, camera);//camera toevoegen
         }
 
         render();

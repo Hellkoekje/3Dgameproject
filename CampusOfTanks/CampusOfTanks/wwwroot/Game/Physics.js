@@ -71,9 +71,8 @@
                 body.position.copy(tank.position);
                 body.quaternion.copy(tank.quaternion);
                 body.position.y += 5;
-                // scene.tankHitboxes[cntr].position.z += 10;
-                tank.cubemesh.position.copy(tank.hitbox.position);
-                tank.cubemesh.quaternion.copy(tank.hitbox.quaternion);
+                tank.updateLabel();
+               
             }
             else {
                 this.tankMeshes.splice(n, 1);

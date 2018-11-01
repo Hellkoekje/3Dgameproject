@@ -1,12 +1,14 @@
 ﻿//class that represents a tank aka a player. This is the superclass for our different tanks.
 class Tank extends THREE.Group {
-    constructor(username) {
+
+    constructor(username, isLocal) {
         super();
+
+        this.username = username;
+        this.isLocal = isLocal;
 
         this.init();
         this.initInput();
-
-        this.username = username;
 
         //invisible sphere which is always in front of the barrel of the tank, projectiles use this sphere's matrix to spawn in front of the barrel.
         this.sphere = new THREE.Mesh(
@@ -17,10 +19,11 @@ class Tank extends THREE.Group {
         this.add(this.sphere);
         this.sphere.visible = false;
         this.sphere.position.set(this.position.x, this.position.y + 12, this.position.z + 40);
+        //amount of damage tank can take before getting rekt
         this.hitpoints = 100;
 
         this.speed = 3;
-        this.turnSpeed = 0.1;
+        this.turnSpeed = 0.075;
             
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
@@ -28,6 +31,7 @@ class Tank extends THREE.Group {
 
         //if false, remove from world
         this.alive = true;
+
         this.mass = 100;
         this.hitboxMaterial =  new CANNON.Material("tankhitbox");
         this.hitbox = new TankHitbox(this.mass, this.hitboxMaterial, this);
@@ -37,6 +41,7 @@ class Tank extends THREE.Group {
         this.cubegeo = new THREE.BoxGeometry(20, 10, 30);
         this.cubemat = new THREE.MeshBasicMaterial();
         this.cubemesh = new THREE.Mesh(this.cubegeo, this.cubemat);
+        this.createLabel();
     }
 
     initInput() {
@@ -49,31 +54,62 @@ class Tank extends THREE.Group {
             reload: 82
         };
 
-        var input = registry.components.input;
+        console.log(this.isLocal);
 
-        input.keyHeldAction(keys.forward, () => {
-            this.move(1);
-        });
+        if (this.isLocal) {
+            console.log("IM THE FUCKING LOCAL TANK" + this.username);
+            var input = registry.components.input;
+            input.keyHeldAction(keys.forward, () => { this.move(1); });
+            input.keyHeldAction(keys.backwards, () => { this.move(-1); });
+            input.keyHeldAction(keys.right, () => { this.turn(-1); });
+            input.keyHeldAction(keys.left, () => { this.turn(1); });
+            input.keyPressAction(keys.space, () => { this.fire(); });
+            input.keyPressAction(keys.reload, () => { this.cycleAmmo(); });
+        }
+      
+    }
 
-        input.keyHeldAction(keys.backwards, () => {
-            this.move(-1);
-        });
+    createLabel() {
 
-        input.keyHeldAction(keys.left, () => {
-            this.turn(-1);
-        });
+        //hitpoints and name label
+        var canvas1 = document.createElement('canvas');
+        var context1 = canvas1.getContext('2d');
+        context1.font = "Bold 40px Arial";
+        context1.fillStyle = "rgba(255,0,0,0.95)";
+        context1.fillText(this.username + " " + this.hitpoints, 0, 50);
 
-        input.keyHeldAction(keys.right, () => {
-            this.turn(1);
-        });
+        // canvas contents will be used for a texture
+        this.labelTexture = new THREE.Texture(canvas1);
+        this.labelTexture.needsUpdate = true;
 
-        input.keyPressAction(keys.space, () => {
-            this.fire();
-        });
+        this.labelMaterial = new THREE.MeshBasicMaterial({ map: this.labelTexture, side: THREE.DoubleSide });
+        this.labelMaterial.transparent = true;
 
-        input.keyPressAction(keys.reload, () => {
-            this.cycleAmmo();
-        });
+        this.label = new THREE.Mesh(
+            new THREE.PlaneGeometry(canvas1.width, canvas1.height),
+            this.labelMaterial
+        );
+        this.label.scale.set(0.2, 0.2, 0.2);
+        this.label.position.set(this.position.x, this.position.y + 20, this.position.z);
+        this.add(this.label);
+    }
+
+    updateLabel() {
+        
+        var canvas1 = document.createElement('canvas');
+        var context1 = canvas1.getContext('2d');
+        context1.font = "Bold 40px Arial";
+        context1.fillStyle = "rgba(255,0,0,0.95)";
+        context1.fillText(this.username + " " + this.hitpoints, 0, 50);
+
+        // canvas contents will be used for a texture
+        this.labelTexture = new THREE.Texture(canvas1);
+        this.labelTexture.needsUpdate = true;
+
+        this.labelMaterial = new THREE.MeshBasicMaterial({ map: this.labelTexture, side: THREE.DoubleSide });
+        this.labelMaterial.transparent = true;
+
+        this.label.material = this.labelMaterial;
     }
 
     //load 3d model

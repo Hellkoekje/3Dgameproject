@@ -10,7 +10,7 @@
     }
 
     init() {
-        var vec = new CANNON.Vec3(20, 10, 30);
+        var vec = new CANNON.Vec3(20, 15, 30);
         var shape = new CANNON.Box(vec);
         this.addShape(shape);
        // this.position.copy(this.tank.position);
