@@ -102,8 +102,8 @@ window.onload = function () {
         // Events 
         document.body.appendChild(renderer.domElement);
         window.addEventListener('resize', onWindowResize, false);
-        //window.addEventListener('keydown', key_down);
-        //window.addEventListener('keyup', key_up);
+        window.addEventListener('keydown', key_down);
+        window.addEventListener('keyup', key_up);
 
         //Plane stuff.
         var geometry = new THREE.PlaneGeometry(1000, 1000, 1000);
@@ -192,8 +192,6 @@ window.onload = function () {
 
         function setTankDirection() {
             tank.rotation.y = TankDirection;
-            //camera.lookAt(tank.position);
-
         }
 
         function UpdateTank() {
@@ -265,26 +263,24 @@ window.onload = function () {
         function ShowAmmo(){
             if (tank.ammoSelected == 0) {
                 console.log("apple");
-
+                tank.updateLabel();
             }
             if (tank.ammoSelected == 1) {
                 console.log("ei");
+                tank.updateLabel();
 
             }
             if (tank.ammoSelected == 2) {
                 console.log("bier");
+                tank.updateLabel();
 
             }
         }
 
-
-        function render() {  
-
         function render() {   
             input.update();
-
+            tank.updateLabel();
             physics.update();
-
             UpdateTank();
             requestAnimationFrame(render);
             tank.add(camera);

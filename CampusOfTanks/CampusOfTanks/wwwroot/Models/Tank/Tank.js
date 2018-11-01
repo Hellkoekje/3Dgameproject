@@ -27,7 +27,7 @@ class Tank extends THREE.Group {
             
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
-        
+        this.ammoselect = "Bier";
         this.canShoot = true;
 
         //if false, remove from world
@@ -40,7 +40,6 @@ class Tank extends THREE.Group {
 
       
         this.createLabel();
-
 
        
       
@@ -55,7 +54,7 @@ class Tank extends THREE.Group {
         var context1 = canvas1.getContext('2d');
         context1.font = "Bold 40px Arial";
         context1.fillStyle = "rgba(255,0,0,0.95)";
-        context1.fillText(this.username + " " + this.hitpoints, 0, 50);
+        context1.fillText(this.username + " " + this.hitpoints + " " + this.ammoselect , 0, 50);
 
         // canvas contents will be used for a texture
         this.labelTexture = new THREE.Texture(canvas1);
@@ -78,7 +77,7 @@ class Tank extends THREE.Group {
         var context1 = canvas1.getContext('2d');
         context1.font = "Bold 40px Arial";
         context1.fillStyle = "rgba(255,0,0,0.95)";
-        context1.fillText(this.username + " " + this.hitpoints, 0, 50);
+        context1.fillText(this.username + " " + this.hitpoints + " "+ this.ammoselect, 0, 50);
 
         // canvas contents will be used for a texture
         this.labelTexture = new THREE.Texture(canvas1);
@@ -88,7 +87,7 @@ class Tank extends THREE.Group {
         this.labelMaterial.transparent = true;
 
         this.label.material = this.labelMaterial;
-      
+
     }
 
     //load 3d model
@@ -127,9 +126,14 @@ class Tank extends THREE.Group {
     }
     //should be called when 'R' is pressed.
     cycleAmmo() {
-        if (this.ammoSelected < 2) this.ammoSelected++;
-        else this.ammoSelected = 0;
-
+        if (this.ammoSelected < 2) {
+            this.updateLabel();
+            this.ammoSelected++;
+        }
+        else {
+            this.updateLabel();
+            this.ammoSelected = 0;
+        }
 
     }
     //called when spacebar is pressed.
@@ -137,17 +141,24 @@ class Tank extends THREE.Group {
         if (this.canShoot) {
             var selfref = this;
             var projectile;
-
             //check the selected ammo, and fire it!
             switch (this.ammoSelected) {
                 case 0:
                     projectile = new Appel(this);
+                    this.ammoselect = "Appel";
+                    this.updateLabel();
                     break;
                 case 1:
                     projectile = new Ei(this);
+                    this.ammoselect = "Ei";
+                    this.updateLabel();
+
                     break;
                 case 2:
                     projectile = new Bier(this);
+                    this.ammoselect = "Bier";
+                    this.updateLabel();
+
                     break;
 
 
