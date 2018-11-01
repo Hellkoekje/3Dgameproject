@@ -256,7 +256,54 @@ window.onload = function () {
         TankGoesDown = 0;
 
         function updatePhysics() {
+<<<<<<< HEAD
             physics.update();
+=======
+            // Step the physics world
+            world.step(1 / 60);
+
+            // Copy coordinates from Cannon.js to Three.js
+            for (var i = 0; i < scene.bulletMeshes.length; i++) {
+                if (scene.bulletMeshes[i].alive) {
+                    scene.bulletMeshes[i].position.copy(scene.bulletBodies[i].position);
+                    scene.bulletMeshes[i].quaternion.copy(scene.bulletBodies[i].quaternion);
+                } else {
+                    scene.remove(scene.bulletMeshes[i]);
+                    world.remove(scene.bulletBodies[i]);
+                    scene.bulletMeshes.splice(i, 1);
+                    scene.bulletBodies.splice(i, 1);
+                }
+
+            }
+
+            //Copy coordinates from tank MESH to tank HITBOX, so the cannon.js body follows the mesh instead of the other way around.
+            for (var cntr = 0; cntr < scene.tankMeshes.length; cntr++) {
+
+                var body = scene.tankHitboxes[cntr];
+                var tank = scene.tankMeshes[cntr];
+                if (tank.alive) {
+
+                    body.position.copy(tank.position);
+                    body.quaternion.copy(tank.quaternion);
+                    body.position.y += 5;
+                   
+                    tank.cubemesh.position.copy(tank.hitbox.position);
+                    tank.cubemesh.quaternion.copy(tank.hitbox.quaternion);
+
+                }
+                else {
+                    scene.tankMeshes.splice(cntr, 1);
+                    scene.tankHitboxes.splice(cntr, 1);
+                    scene.remove(tank);
+                    world.remove(body);
+
+                }
+
+            }
+
+
+
+>>>>>>> 63db303710e0b5fd3ffefda36d4adb837900f710
         }
 
         function render() {        

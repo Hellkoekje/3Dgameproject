@@ -19,13 +19,14 @@
             function (e) {
                 
                 if (e.body.material.name === "projectile" && e.body.projectile.firedFrom !== selfref.tank) {
-                    alert("oi m8 we got shot by:"+ e.body.projectile.firedFrom.username);
-                    console.log(e.body);
-                    console.log(e.contact);
-                    console.log(this.tank);
+                    
 
+                    //lower our tanks HP by the damage of the projectile
                     this.tank.hitpoints -= e.body.projectile.damage;
-                    if (this.tank.hitpoints <= 0) this.tank.alive = false;
+                    if (this.tank.hitpoints <= 0) { // if hitpoints is below 0
+                        this.tank.alive = false;
+                        e.body.projectile.alive = false;
+                    } //then he ded
 
                 }
 
