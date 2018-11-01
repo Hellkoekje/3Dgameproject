@@ -142,20 +142,7 @@ window.onload = function () {
             sound.setVolume(0.025);
             sound.play();
         });
-
-        //dat.gui
-       
-        var guiControls = new function () {
-
-            this.setVolume = 0.025;
-            this.RotationZ = 0.01;
-            this.RotationY = 0.01;
-        }
-        var datGUI = new dat.GUI();
-        datGUI.add(guiControls, 'setVolume', 0, 5);
-        datGUI.add(guiControls, 'RotationY', 0, 1);
-        datGUI.add(guiControls, 'RotationZ', 0, 1);
-
+      
         //Skybox
         scene.add(
             new THREE.Mesh(new THREE.SphereGeometry(750, 12, 12),
