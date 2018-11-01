@@ -71,13 +71,13 @@ class GameRenderer {
         }
 
         //Print out the framerate.
-        if (this.fpsAccum > 1000.0) {
-            this.fps = 1000.0 / (this.fpsAccum / this.fpsCount);
-            console.log("[RENDERER] Framerate is " + Math.round(this.fps, 2) + " fps");
+        //if (this.fpsAccum > 1000.0) {
+        //    this.fps = 1000.0 / (this.fpsAccum / this.fpsCount);
+        //    console.log("[RENDERER] Framerate is " + Math.round(this.fps, 2) + " fps");
 
-            this.fpsAccum = 0.0;
-            this.fpsCount = 0;
-        }
+        //    this.fpsAccum = 0.0;
+        //    this.fpsCount = 0;
+        //}
     }
 
     processFrame() {
