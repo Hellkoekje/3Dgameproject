@@ -1,69 +1,4 @@
-gameInstance = new Game();
-
 window.onload = function () {
-
-    var framerate = 60;
-
-    var gameWindow = new GameWindow(window, document);
-    var gameWorld = new GameWorld();
-    var gamePhysics = new GamePhysics(20, framerate);
-    var gameCamera = new GameCamera();
-    var gameInput = new GameInput();
-    var gameRenderer = new GameRenderer(framerate);
-
-    //Register all the events.
-    window.addEventListener('resize', () => {
-        gameWindow.onResize(window.innerWidth, window.innerHeight);
-    });
-
-    window.addEventListener("keydown", (keyEvent) => {
-        gameInput.onKeydown(keyEvent);
-    });
-
-    window.addEventListener("keyup", (keyEvent) => {
-        gameInput.onKeydown(keyEvent);
-    });
-
-    //Initialize the "game" object.
-    gameInstance.registerComponent("window", gameWindow);
-    gameInstance.registerComponent("world", gameWorld);
-    gameInstance.registerComponent("renderer", gameRenderer);
-    gameInstance.registerComponent("physics", gamePhysics);
-    gameInstance.registerComponent("camera", gameCamera);
-    gameInstance.registerComponent("input", gameInput);
-
-    //Do rendering shit!
-    //gameRenderer.createRenderer();
-
-    //gameRenderer.renderFrame();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    setInterval(function () {
-        gameRenderer.process();
-    }, 1);
-       
     var camera, scene, renderer, world;
     var net;
 
@@ -129,7 +64,9 @@ window.onload = function () {
         world.addBody(enemytank.hitbox);
 
 
-        camera = new THREE.PerspectiveCamera(70, window.innerwidth / window.innerheight, 1, 1500);
+        var aspect = window.innerWidth / window.innerHeight;
+        camera = new THREE.PerspectiveCamera(70, aspect, 1, 1500);
+
         cameraControls = new THREE.OrbitControls(camera, renderer);
 
         camera.rotation.x = 90 * Math.PI / 180;

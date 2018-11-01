@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+<?php 
+include_once('includes/config/config.php');
+
+?>	
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -30,9 +34,9 @@
         <div class="col-md-8 nopadding">
             <!-- username forum with the buttons to send it. -->
             <div class="username">
-                <form id="myForm" action="#">
-                    <h2>Username:</h2><input type="text" name="Uname"><br><br>
-                    <input class="MyButton" type="button" value="Submit" onclick="window.location.href='Tanks.html'" /> <!--onclick="myFunction()"value="Submit"-->
+                <form id="myForm" method="post" action="includes/classes/playerClass.php">
+                    <h2>Username:</h2><input type="text" id="userInput" name="userInput"/><br><br>
+                    <input class="MyButton submit" name="submit" type="submit" value="Submit"/> <!--onclick="myFunction()"value="Submit"-->
                     <input class="MyButton" type="button" value="Back" onclick="window.location.href='index.html'" />
                 </form>
             </div>
