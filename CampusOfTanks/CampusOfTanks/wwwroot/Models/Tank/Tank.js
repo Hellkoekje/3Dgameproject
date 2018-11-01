@@ -6,6 +6,12 @@ class Tank extends THREE.Group {
     constructor(username) {
         super();
 
+
+        var input = registry.components.input;
+
+        //32 -> SPACE
+        input.keyPressAction(32, () => { this.fire(); });
+
         this.init();
         //invisible sphere which is always in front of the barrel of the tank, projectiles use this sphere's matrix to spawn in front of the barrel.
         this.username = username;

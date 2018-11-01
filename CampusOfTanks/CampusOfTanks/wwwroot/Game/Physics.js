@@ -55,7 +55,7 @@
                 //TODO: Remove from scene
                 //this.remove(this.bulletMeshes[i]);
 
-                this.world.remove(this.bulletBodies[i]);
+                this.world.remove(this.bulletHitboxes[i]);
                 this.bulletMeshes.splice(i, 1);
                 this.bulletHitboxes.splice(i, 1);
             }

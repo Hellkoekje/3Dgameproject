@@ -35,19 +35,6 @@ window.onload = function () {
 
         registry.addComponent("input", input);
 
-        input.keyHeldAction(74, () => {
-            console.log("Yay 74 was held!");
-        });
-
-        input.keyPressAction(74, () => {
-            console.log("Yay 74 was pressed!");
-        });
-
-        input.keyHeldAction(74, () => {
-            console.log("Yay 74 was released!");
-        });
-
-
         // Friendly tank
         tank = new Tank("Hidde");
         tank.position.x = 0;
