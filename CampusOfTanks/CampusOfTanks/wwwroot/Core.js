@@ -22,7 +22,7 @@ window.onload = function () {
         var input = new Input();
         window.addEventListener('keydown', (e) => input.keyDownEvent(e));
         window.addEventListener('keyup', (e) => input.keyUpEvent(e));
-        //document.addEventListener('mousemove', (e) => input.mouseMoveEvent(e));
+        document.addEventListener('mousemove', (e) => input.mouseMoveEvent(e));
 
         registry.addComponent("input", input);
 

@@ -75,8 +75,7 @@
         this.keyStates[key] = false;
     }
 
-    mouseMoveEvent(data) {
-        event.preventDefault();
+    mouseMoveEvent(event) {
         var mx = (event.clientX / window.innerWidth) * 2 - 1;
         var my = -(event.clientY / window.innerHeight) * 2 + 1;
 
