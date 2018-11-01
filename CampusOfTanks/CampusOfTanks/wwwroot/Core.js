@@ -2,13 +2,9 @@ registry = new Registry();
 
 window.onload = function () {
 
-    var camera, scene, renderer, world;
-    var net;
-
+    var camera, scene, renderer;
     var cameraControls;
     var tank, enemytank;
-
-
 
     function init() {
         scene = new THREE.Scene();
@@ -23,6 +19,7 @@ window.onload = function () {
         var input = new Input();
         window.addEventListener('keydown', (e) => input.keyDownEvent(e));
         window.addEventListener('keyup', (e) => input.keyUpEvent(e));
+        document.addEventListener('mousemove', (e) => input.mouseMoveEvent(e));
 
         registry.addComponent("input", input);
 
@@ -94,8 +91,6 @@ window.onload = function () {
         // Events 
         document.body.appendChild(renderer.domElement);
         window.addEventListener('resize', onWindowResize, false);
-        window.addEventListener('keydown', key_down);
-        window.addEventListener('keyup', key_up);
 
         //Plane stuff.
         var geometry = new THREE.PlaneGeometry(1000, 1000, 1000);
@@ -181,100 +176,15 @@ window.onload = function () {
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
-        function moveForward(speed) {
-
-            var delta_z = speed * Math.cos(TankDirection);
-            var delta_x = speed * Math.sin(TankDirection);
-
-            var new_dx = tank.position.x + delta_x;
-            var new_dz = tank.position.z + delta_z;
-            
-            tank.position.x = new_dx;
-            tank.position.z = new_dz;
-        }
-
-        function setTankDirection() {
-            tank.rotation.y = TankDirection;
-        }
-
-        function UpdateTank() {
-            if (TankIsRotatingLeft) { // rotate left
-                TankDirection += angularSpeed * Math.PI / 180;
-            }
-            if (TankIsRotatingRight) { // rotate right
-                TankDirection -= angularSpeed * Math.PI / 180;
-            }
-            if (TankIsRotatingRight || TankIsRotatingLeft) {
-                setTankDirection();
-                return;
-            }
-            if (TankIsMovingForward) { // go forward
-                moveForward(TankSpeed);
-                
-                return;
-            }
-            if (TankIsMovingBackwards) { // go backwards
-                moveForward(-TankBackwardsSpeed);
-                return;
-            }
-        }
-
-        var a = false;
-
-        function key_down(event) {
-            keys = { LEFT: 65, UP: 87, RIGHT: 68, BOTTOM: 83, SPACE: 32, RELOAD: 82 };
-
-            switch (event.keyCode) {
-                case keys.UP:
-                    TankIsMovingForward = 1;
-                    break;
-                case keys.BOTTOM:
-                    TankIsMovingBackwards = 1;
-                    break;
-                case keys.LEFT:
-                    TankIsRotatingLeft = 1;
-                    break;
-                case keys.RIGHT:
-                    TankIsRotatingRight = 1;
-                    break;
-                case keys.SPACE:
-                    tank.fire();
-                    break;
-                case keys.RELOAD:
-                    tank.cycleAmmo();
-                    ShowAmmo();
-                    break;                            
-            }
-        }
-
-        function key_up() {
-            TankIsMovingForward = 0;
-            TankIsMovingBackwards = 0;
-            TankIsRotatingLeft = 0;
-            TankIsRotatingRight = 0;
-            TankGoesUp = 0;
-            TankGoesDown = 0;
-        }
-
-        TankIsMovingForward = 0;
-        TankIsMovingBackwards = 0;
-        TankIsRotatingLeft = 0;
-        TankIsRotatingRight = 0;
-        TankGoesUp = 0;
-        TankGoesDown = 0;
-
         function ShowAmmo(){
-            if (tank.ammoSelected == 0) {
-                console.log("apple");
+            if (tank.ammoSelected === 0) {
                 tank.updateLabel();
             }
-            if (tank.ammoSelected == 1) {
-                console.log("ei");
+            if (tank.ammoSelected === 1) {
                 tank.updateLabel();
 
             }
-            if (tank.ammoSelected == 2) {
-                console.log("bier");
+            if (tank.ammoSelected === 2) {
                 tank.updateLabel();
 
             }
@@ -289,17 +199,15 @@ window.onload = function () {
             input.update();
             tank.updateLabel();
             physics.update();
-            UpdateTank();
-            requestAnimationFrame(render);
-            tank.add(camera);
-            camera.position.z = -50;
+
             camera.position.x = tank.position.x;
             camera.position.y = tank.position.y + 150;
             camera.position.z = tank.position.z - 140;
-            camera.lookAt(tank.position);
+
+            var tankPos = tank.position;
+            camera.lookAt(tankPos);
 
             sound.setVolume(guiControls.setVolume);
-            cameraControls.update();
             renderer.render(scene, camera);//camera toevoegen
         }
 

@@ -1,5 +1,6 @@
 ﻿class Input {
     constructor() {
+        this.mousePosition = new THREE.Vector2(0, 0);
         this.keyCallbacks = [];
         this.keyStatesCopy = [];
         this.keyStates = [];
@@ -72,6 +73,26 @@
         }
 
         this.keyStates[key] = false;
+    }
+
+    mouseMoveEvent(data) {
+        event.preventDefault();
+        var mx = (event.clientX / window.innerWidth) * 2 - 1;
+        var my = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        this.mousePosition.set(mx, my);
+
+
+        //camera.updateMatrixWorld();
+        //raycaster.setFromCamera(mouse, camera);
+        //var intersects = raycaster.intersectObjects(scene.children);
+
+        //if (intersects.length > 0) {
+
+        //}
+        //else {
+
+        //}
     }
 
     update() {
