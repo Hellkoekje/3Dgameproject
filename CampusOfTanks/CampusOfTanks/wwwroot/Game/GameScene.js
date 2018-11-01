@@ -110,6 +110,10 @@
         physics.addTank(tank, tank.hitbox, tank.hitbox);
         this.add(tank);
 
+        var camera = registry.components.camera;
+        camera.follow(tank);
+
+
         // Enemy tank
         var enemytank = new Tank("Sjakie", false);
         enemytank.position.x = 0;

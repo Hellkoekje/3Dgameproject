@@ -10,7 +10,7 @@
         this.fov = fov;
 
         this.camera = undefined;
-        this.target = undefined;
+        this.followingObject = undefined;
     }
 
     getCamera() {
@@ -23,18 +23,21 @@
         this.camera = new THREE.PerspectiveCamera(this.fov, window.aspect, this.near, this.far);
     }
 
-    setTarget(obj) {
-        this.target = obj;
+    follow(obj) {
+        console.log("hi");
+        this.followingObject = obj;
     }
 
     update() {
 
-        if (!this.target) return;
+        if (!this.followingObject) return;
 
-        camera.position.x = target.position.x + this.offsetx;
-        camera.position.y = target.position.y + this.offsety;
-        camera.position.z = target.position.z + this.offsetz;
+        this.camera.position.x = this.followingObject.position.x;
+        this.camera.position.y = this.followingObject.position.y + this.offsety;
+        this.camera.position.z = this.followingObject.position.z + this.offsetz;
 
-        camera.lookAt(target.position);
+        console.log(this.offsetz);
+
+        this.camera.lookAt(this.followingObject.position);
     }
 }
