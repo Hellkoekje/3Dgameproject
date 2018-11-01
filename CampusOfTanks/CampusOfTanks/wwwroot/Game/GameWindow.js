@@ -14,8 +14,14 @@
         this.height = window.innerHeight;
         this.aspect = this.width / this.height;
 
-        //camera.aspect = window.innerWidth / window.innerHeight;
-        //camera.updateProjectionMatrix();
+        var cam = registry.components.camera;
+
+        if (cam) {
+            console.log("1");
+            var camera = cam.getCamera();
+            camera.aspect = this.aspect;
+            camera.updateProjectionMatrix();
+        }
 
         this.renderer.setSize(this.width, this.height);
     }
