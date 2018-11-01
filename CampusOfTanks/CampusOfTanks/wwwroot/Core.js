@@ -317,21 +317,21 @@ window.onload = function () {
             for (var cntr = 0; cntr < scene.tankMeshes.length; cntr++) {
 
                 var body = scene.tankHitboxes[cntr];
-                var tank = scene.tankMeshes[cntr];
-                if (tank.alive) {
+                var tanky = scene.tankMeshes[cntr];
+                if (tanky.alive) {
 
-                    body.position.copy(tank.position);
-                    body.quaternion.copy(tank.quaternion);
+                    body.position.copy(tanky.position);
+                    body.quaternion.copy(tanky.quaternion);
                     body.position.y += 5;
-                   
-                    tank.cubemesh.position.copy(tank.hitbox.position);
-                    tank.cubemesh.quaternion.copy(tank.hitbox.quaternion);
+                    tanky.updateLabel();
+                    //tank.label.lookAt(camera.position);
+
 
                 }
                 else {
                     scene.tankMeshes.splice(cntr, 1);
                     scene.tankHitboxes.splice(cntr, 1);
-                    scene.remove(tank);
+                    scene.remove(tanky);
                     world.remove(body);
 
                 }
