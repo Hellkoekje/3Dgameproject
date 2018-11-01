@@ -54,10 +54,7 @@ class Tank extends THREE.Group {
             reload: 82
         };
 
-        console.log(this.isLocal);
-
         if (this.isLocal) {
-            console.log("IM THE FUCKING LOCAL TANK" + this.username);
             var input = registry.components.input;
             input.keyHeldAction(keys.forward, () => { this.move(1); });
             input.keyHeldAction(keys.backwards, () => { this.move(-1); });

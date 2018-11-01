@@ -198,17 +198,20 @@ window.onload = function () {
         }
 
         function render() {   
-            input.update();
 
+            setTimeout(function () {
+                requestAnimationFrame(render);
+            }, 1000 / 30);
+
+            input.update();
             physics.update();
 
-            //UpdateTank();
-            requestAnimationFrame(render);
             tank.add(camera);
             camera.position.z = -50;
             cameraControls.update();
             camera.position.y = 30;
             camera.lookAt(tank.position);
+
             renderer.render(scene, camera);//camera toevoegen
         }
 
