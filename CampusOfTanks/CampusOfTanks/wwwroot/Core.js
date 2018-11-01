@@ -12,6 +12,7 @@ window.onload = function () {
             gravitationalPull: 9.81
         });
 
+        //Physics; Slippery physics material.
         var physicsMaterial = new CANNON.Material("slipperyMaterial");
         var physicsContactMaterial = new CANNON.ContactMaterial(physicsMaterial, physicsMaterial, 0.0, 0.3);
         physics.addPhysicsMaterial("slippery", physicsContactMaterial);
@@ -44,27 +45,21 @@ window.onload = function () {
 
 
         //muziek troep
-        //var listener = new THREE.AudioListener();
-        //camera.add(listener);
+        var sound = new THREE.Audio(gameCam.cameraListener);
 
-        //var sound = new THREE.Audio(listener);
+        var audioLoader = new THREE.AudioLoader();
+        audioLoader.load('/sounds/Iron.mp3', function (buffer) {
+            sound.setBuffer(buffer);
+            sound.setLoop(true);
+            sound.play();
+        });
 
-        //var audioLoader = new THREE.AudioLoader();
-        //audioLoader.load('/sounds/Iron.mp3', function (buffer) {
-        //    sound.setBuffer(buffer);
-        //    sound.setLoop(true);
-        //    sound.play();
-        //});
+        var guiControls = new function () {
+            this.setVolume = 0.025;
+        };
 
-        //var guiControls = new function () {
-        //    this.setVolume = 0.025;
-        //};
-
-        //var datGUI = new dat.GUI();
-        //datGUI.add(guiControls, 'setVolume', 0, 1);
-
-
-        //Slippery physics material.
+        var datGUI = new dat.GUI();
+        datGUI.add(guiControls, 'setVolume', 0, 1);
 
         function render() {
 
@@ -74,13 +69,14 @@ window.onload = function () {
 
             input.update();
             physics.update();
-            gameCam.update();
 
             //TODO: We probably want to manually update ALL entities.
             //tank.updateLabel();
 
-            //sound.setVolume(guiControls.setVolume);
             var camera = gameCam.getCamera();
+            gameCam.update();
+            
+            sound.setVolume(guiControls.setVolume);
             gameWindow.update(scene.get(), camera);
         }
 
