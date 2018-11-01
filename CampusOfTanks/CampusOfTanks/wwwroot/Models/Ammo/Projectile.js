@@ -24,18 +24,9 @@ class Projectile extends THREE.Object3D {
 
         selfref.applyMatrix(this.firedFrom.sphere.matrixWorld);
         this.hitbox.position.copy(selfref.position);
-<<<<<<< HEAD
 
-         var physx = registry.components.physics;
+        var physx = registry.components.physics;
         physx.addBullet(this, this.hitbox, this.hitbox);
-=======
-        
-        
-        // add mesh and body to respective lists, so that we can copy the mesh into the body at every frame.
-        this.firedFrom.parent.bulletMeshes.push(this);
-        this.firedFrom.parent.cannonWorld.addBody(this.hitbox);
-        this.firedFrom.parent.bulletBodies.push(this.hitbox);
->>>>>>> 63db303710e0b5fd3ffefda36d4adb837900f710
 
         //shoot the body!
         this.hitbox.velocity.set(
