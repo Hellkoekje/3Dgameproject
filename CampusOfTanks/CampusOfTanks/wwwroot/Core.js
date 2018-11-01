@@ -30,18 +30,17 @@ window.onload = function () {
         registry.addComponent("physics", physics);
 
         var input = new Input();
-        window.addEventListener('keydown', input._keyDownEvent);
-        window.addEventListener('keyup', input._keyUpEvent);
+        window.addEventListener('keydown', (e) => input.keyDownEvent(e));
+        window.addEventListener('keyup', (e) => input.keyUpEvent(e));
 
         registry.addComponent("input", input);
-
 
         // Friendly tank
         tank = new Tank("Hidde");
         tank.position.x = 0;
         physics.addTank(tank, tank.hitbox, tank.hitbox);
         scene.add(tank);
-        scene.add(tank.cubemesh);
+        
 
         // Enemy tank
         enemytank = new Tank("Sjakie");
@@ -103,8 +102,8 @@ window.onload = function () {
         // Events 
         document.body.appendChild(renderer.domElement);
         window.addEventListener('resize', onWindowResize, false);
-        window.addEventListener('keydown', key_down);
-        window.addEventListener('keyup', key_up);
+        //window.addEventListener('keydown', key_down);
+        //window.addEventListener('keyup', key_up);
 
         //Plane stuff.
         var geometry = new THREE.PlaneGeometry(1000, 1000, 1000);
@@ -275,11 +274,14 @@ window.onload = function () {
         TankGoesUp = 0;
         TankGoesDown = 0;
 
-        function render() {        
+
+        function render() {   
+            input.update();
+
             physics.update();
+
             UpdateTank();
             requestAnimationFrame(render);
-            console.log();
             tank.add(camera);
             camera.position.z = -50;
             cameraControls.update();
