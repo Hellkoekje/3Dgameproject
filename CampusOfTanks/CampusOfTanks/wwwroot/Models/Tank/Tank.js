@@ -1,29 +1,29 @@
-﻿
-//class that represents a tank aka a player. This is the superclass for our different tanks.
-
-
+﻿//class that represents a tank aka a player. This is the superclass for our different tanks.
 class Tank extends THREE.Group {
-    constructor(username,isLocal) {
+
+    constructor(username, isLocal) {
         super();
 
-
-        var input = registry.components.input;
-
-        //32 -> SPACE
-        input.keyPressAction(32, () => { this.fire(); });
+        this.username = username;
+        this.isLocal = isLocal;
 
         this.init();
+        this.initInput();
+
         //invisible sphere which is always in front of the barrel of the tank, projectiles use this sphere's matrix to spawn in front of the barrel.
-        this.username = username;
         this.sphere = new THREE.Mesh(
             new THREE.SphereGeometry(0.5, 8, 8),
             new THREE.MeshBasicMaterial({ transparent: true })
         );
+
         this.add(this.sphere);
         this.sphere.visible = false;
         this.sphere.position.set(this.position.x, this.position.y + 12, this.position.z + 40);
         //amount of damage tank can take before getting rekt
         this.hitpoints = 100;
+
+        this.speed = 3;
+        this.turnSpeed = 0.075;
             
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
@@ -38,13 +38,33 @@ class Tank extends THREE.Group {
         this.hitbox = new TankHitbox(this.mass, this.hitboxMaterial, this);
         this.position.y = -5;
 
-      
+        //cube test
+        this.cubegeo = new THREE.BoxGeometry(20, 10, 30);
+        this.cubemat = new THREE.MeshBasicMaterial();
+        this.cubemesh = new THREE.Mesh(this.cubegeo, this.cubemat);
         this.createLabel();
+    }
 
-       
+    initInput() {
+        var keys = {
+            left: 65,
+            forward: 87,
+            right: 68,
+            backwards: 83,
+            space: 32,
+            reload: 82
+        };
+
+        if (this.isLocal) {
+            var input = registry.components.input;
+            input.keyHeldAction(keys.forward, () => { this.move(1); });
+            input.keyHeldAction(keys.backwards, () => { this.move(-1); });
+            input.keyHeldAction(keys.right, () => { this.turn(-1); });
+            input.keyHeldAction(keys.left, () => { this.turn(1); });
+            input.keyPressAction(keys.space, () => { this.fire(); });
+            input.keyPressAction(keys.reload, () => { this.cycleAmmo(); });
+        }
       
-
-
     }
 
     createLabel() {
@@ -71,6 +91,7 @@ class Tank extends THREE.Group {
         this.label.position.set(this.position.x, this.position.y + 20, this.position.z);
         this.add(this.label);
     }
+
     updateLabel() {
         
         var canvas1 = document.createElement('canvas');
@@ -87,7 +108,6 @@ class Tank extends THREE.Group {
         this.labelMaterial.transparent = true;
 
         this.label.material = this.labelMaterial;
-
     }
 
     //load 3d model
@@ -121,8 +141,6 @@ class Tank extends THREE.Group {
         });
         camera.lookAt(selfRef);
         selfRef.castShadow = true;
-
-
     }
     //should be called when 'R' is pressed.
     cycleAmmo() {
@@ -175,4 +193,21 @@ class Tank extends THREE.Group {
         }
     }
 
+    move(dir) {
+        this.translateZ(dir * this.speed);
+    }
+
+    turn(dir) {
+        this.rotateY(dir * this.turnSpeed);
+    }
+
+    getDirection(dx, dy, dz) {
+        var matrix = new THREE.Matrix4();
+        matrix.extractRotation(this.matrix);
+
+        var direction = new THREE.Vector3(dx, dy, dz);
+        direction.applyMatrix4(matrix);
+
+        return direction.addScalar(this.speed);
+    }
 }

@@ -6,15 +6,6 @@ window.onload = function () {
     var net;
 
     var cameraControls;
-    //var TankDirection = 270 * Math.PI / 180;
-    var TankDirection = 0;
-    var angularSpeed = 0.5;
-    var TankSpeed = 0.5;
-    var TankIsRotatingLeft = 0;
-    var TankIsRotatingRight = 0;
-    var TankIsMovingForward = 0;
-    var TankIsMovingBackwards = 0;
-    var TankBackwardsSpeed = TankSpeed * 0.4;
     var tank, enemytank;
 
 
@@ -36,14 +27,13 @@ window.onload = function () {
         registry.addComponent("input", input);
 
         // Friendly tank
-        tank = new Tank("Hidde");
+        tank = new Tank("Hidde", true);
         tank.position.x = 0;
         physics.addTank(tank, tank.hitbox, tank.hitbox);
         scene.add(tank);
-        
 
         // Enemy tank
-        enemytank = new Tank("Sjakie");
+        enemytank = new Tank("Sjakie", false);
         enemytank.position.x = 0;
         enemytank.position.z = -100;
         physics.addTank(enemytank, enemytank.hitbox, enemytank.hitbox);
@@ -52,9 +42,11 @@ window.onload = function () {
         //Setup camera and controls.
         var aspect = window.innerWidth / window.innerHeight;
         camera = new THREE.PerspectiveCamera(70, aspect, 1, 1500);
+
         camera.rotation.x = 90 * Math.PI / 180;
         cameraControls = new THREE.OrbitControls(camera, renderer);
         cameraControls.update();
+
         var controls = new THREE.ObjectControls(camera, window.domElement, tank);
         controls.setDistance(8, 200); // set min - max distance for zoom
         controls.setZoomSpeed(1); // set zoom speed
@@ -139,10 +131,21 @@ window.onload = function () {
         audioLoader.load('/sounds/Iron.mp3', function (buffer) {
             sound.setBuffer(buffer);
             sound.setLoop(true);
-            sound.setVolume(0.025);
+            
             sound.play();
         });
-      
+
+        //dat.gui
+       
+        var guiControls = new function () {
+
+            this.setVolume = 0.025;
+            
+        }
+        var datGUI = new dat.GUI();
+        datGUI.add(guiControls, 'setVolume', 0, 1);
+        
+
         //Skybox
         scene.add(
             new THREE.Mesh(new THREE.SphereGeometry(750, 12, 12),
@@ -278,6 +281,11 @@ window.onload = function () {
         }
 
         function render() {   
+
+            setTimeout(function () {
+                requestAnimationFrame(render);
+            }, 1000 / 30);
+
             input.update();
             tank.updateLabel();
             physics.update();
@@ -285,16 +293,19 @@ window.onload = function () {
             requestAnimationFrame(render);
             tank.add(camera);
             camera.position.z = -50;
-            cameraControls.update();
-            camera.position.y = 30;
+            camera.position.x = tank.position.x;
+            camera.position.y = tank.position.y + 150;
+            camera.position.z = tank.position.z - 140;
             camera.lookAt(tank.position);
+
+            sound.setVolume(guiControls.setVolume);
+            cameraControls.update();
             renderer.render(scene, camera);//camera toevoegen
         }
 
         render();
     }
 
-    
     init();
 }
 
