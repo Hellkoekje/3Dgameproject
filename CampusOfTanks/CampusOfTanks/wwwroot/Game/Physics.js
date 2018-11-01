@@ -55,7 +55,7 @@
                 //TODO: Remove from scene
                 //this.remove(this.bulletMeshes[i]);
 
-                this.world.remove(this.bulletBodies[i]);
+                this.world.remove(this.bulletHitboxes[i]);
                 this.bulletMeshes.splice(i, 1);
                 this.bulletHitboxes.splice(i, 1);
             }
@@ -71,9 +71,8 @@
                 body.position.copy(tank.position);
                 body.quaternion.copy(tank.quaternion);
                 body.position.y += 5;
-                // scene.tankHitboxes[cntr].position.z += 10;
-                tank.cubemesh.position.copy(tank.hitbox.position);
-                tank.cubemesh.quaternion.copy(tank.hitbox.quaternion);
+                tank.updateLabel();
+               
             }
             else {
                 this.tankMeshes.splice(n, 1);
@@ -81,6 +80,7 @@
 
                 //TODO: Remove tank from scene
                 //this.remove(tank);
+
                 this.world.remove(body);
             }
         }

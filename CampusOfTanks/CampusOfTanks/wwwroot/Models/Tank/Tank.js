@@ -3,8 +3,14 @@
 
 
 class Tank extends THREE.Group {
-    constructor(username) {
+    constructor(username,isLocal) {
         super();
+
+
+        var input = registry.components.input;
+
+        //32 -> SPACE
+        input.keyPressAction(32, () => { this.fire(); });
 
         this.init();
         //invisible sphere which is always in front of the barrel of the tank, projectiles use this sphere's matrix to spawn in front of the barrel.
@@ -16,30 +22,73 @@ class Tank extends THREE.Group {
         this.add(this.sphere);
         this.sphere.visible = false;
         this.sphere.position.set(this.position.x, this.position.y + 12, this.position.z + 40);
+        //amount of damage tank can take before getting rekt
         this.hitpoints = 100;
             
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
-
-
         
         this.canShoot = true;
 
-    
         //if false, remove from world
         this.alive = true;
+
         this.mass = 100;
         this.hitboxMaterial =  new CANNON.Material("tankhitbox");
         this.hitbox = new TankHitbox(this.mass, this.hitboxMaterial, this);
         this.position.y = -5;
 
-        //cube test
+      
+        this.createLabel();
 
-         this.cubegeo = new THREE.BoxGeometry(20, 10, 30);
-         this.cubemat = new THREE.MeshBasicMaterial();
-        this.cubemesh = new THREE.Mesh(this.cubegeo, this.cubemat);
+
+       
+      
+
+
+    }
+
+    createLabel() {
+
+        //hitpoints and name label
+        var canvas1 = document.createElement('canvas');
+        var context1 = canvas1.getContext('2d');
+        context1.font = "Bold 40px Arial";
+        context1.fillStyle = "rgba(255,0,0,0.95)";
+        context1.fillText(this.username + " " + this.hitpoints, 0, 50);
+
+        // canvas contents will be used for a texture
+        this.labelTexture = new THREE.Texture(canvas1);
+        this.labelTexture.needsUpdate = true;
+
+        this.labelMaterial = new THREE.MeshBasicMaterial({ map: this.labelTexture, side: THREE.DoubleSide });
+        this.labelMaterial.transparent = true;
+
+        this.label = new THREE.Mesh(
+            new THREE.PlaneGeometry(canvas1.width, canvas1.height),
+            this.labelMaterial
+        );
+        this.label.scale.set(0.2, 0.2, 0.2);
+        this.label.position.set(this.position.x, this.position.y + 20, this.position.z);
+        this.add(this.label);
+    }
+    updateLabel() {
         
+        var canvas1 = document.createElement('canvas');
+        var context1 = canvas1.getContext('2d');
+        context1.font = "Bold 40px Arial";
+        context1.fillStyle = "rgba(255,0,0,0.95)";
+        context1.fillText(this.username + " " + this.hitpoints, 0, 50);
 
+        // canvas contents will be used for a texture
+        this.labelTexture = new THREE.Texture(canvas1);
+        this.labelTexture.needsUpdate = true;
+
+        this.labelMaterial = new THREE.MeshBasicMaterial({ map: this.labelTexture, side: THREE.DoubleSide });
+        this.labelMaterial.transparent = true;
+
+        this.label.material = this.labelMaterial;
+      
     }
 
     //load 3d model
