@@ -3,7 +3,7 @@
 
 
 class Tank extends THREE.Group {
-    constructor(username,isLocal) {
+    constructor(username) {
         super();
 
 
@@ -51,21 +51,21 @@ class Tank extends THREE.Group {
     createLabel() {
 
         //hitpoints and name label
-        var canvas1 = document.createElement('canvas');
-        var context1 = canvas1.getContext('2d');
-        context1.font = "Bold 40px Arial";
-        context1.fillStyle = "rgba(255,0,0,0.95)";
-        context1.fillText(this.username + " " + this.hitpoints, 0, 50);
+        this.canvas1 = document.createElement('canvas');
+        this.context1 = this.canvas1.getContext('2d');
+        this.context1.font = "Bold 40px Arial";
+        this.context1.fillStyle = "rgba(255,0,0,0.95)";
+        this.context1.fillText(this.username + " " + this.hitpoints, 0, 50);
 
         // canvas contents will be used for a texture
-        this.labelTexture = new THREE.Texture(canvas1);
+        this.labelTexture = new THREE.Texture(this.canvas1);
         this.labelTexture.needsUpdate = true;
 
         this.labelMaterial = new THREE.MeshBasicMaterial({ map: this.labelTexture, side: THREE.DoubleSide });
         this.labelMaterial.transparent = true;
 
         this.label = new THREE.Mesh(
-            new THREE.PlaneGeometry(canvas1.width, canvas1.height),
+            new THREE.PlaneGeometry(this.canvas1.width, this.canvas1.height),
             this.labelMaterial
         );
         this.label.scale.set(0.2, 0.2, 0.2);
@@ -74,20 +74,18 @@ class Tank extends THREE.Group {
     }
     updateLabel() {
         
-        var canvas1 = document.createElement('canvas');
-        var context1 = canvas1.getContext('2d');
-        context1.font = "Bold 40px Arial";
-        context1.fillStyle = "rgba(255,0,0,0.95)";
-        context1.fillText(this.username + " " + this.hitpoints, 0, 50);
+       
+        this.context1.fillText(this.username + " " + this.hitpoints, 0, 50);
 
         // canvas contents will be used for a texture
-        this.labelTexture = new THREE.Texture(canvas1);
-        this.labelTexture.needsUpdate = true;
+        this.labelTexture = new THREE.Texture(this.canvas1);
+        
 
         this.labelMaterial = new THREE.MeshBasicMaterial({ map: this.labelTexture, side: THREE.DoubleSide });
         this.labelMaterial.transparent = true;
 
         this.label.material = this.labelMaterial;
+        
       
     }
 
