@@ -6,14 +6,15 @@ class Appel extends Projectile {
     constructor(firedFrom) {
         super(firedFrom);
         
-        this.init();
+        
        
         this.delay = 5000;
         this.velocity = new THREE.Vector3(-Math.sin(firedFrom.rotation.y), 0, -Math.cos(firedFrom.rotation.y));
         this.travelSpeed = 200;
-        this.mass = 10;
-        this.radius = 3;
+        this.mass = 30;
+        this.radius = 5;
         this.damage = 50;
+        this.init();
     }
     
     init() {
@@ -38,6 +39,8 @@ class Appel extends Projectile {
             });
         });
 
+        this.hitbox = new ProjectileSphereHitbox(this.mass, this.physicsMaterial, this);
+        this.hitbox.position.copy(selfRef.position);
     }
 
 }

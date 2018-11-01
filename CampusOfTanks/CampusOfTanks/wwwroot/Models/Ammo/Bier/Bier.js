@@ -2,14 +2,14 @@
 class Bier extends Projectile {
     constructor(firedFrom = Tank) {
         super(firedFrom);
-        this.init();
         this.delay = 7000;
         this.velocity = new THREE.Vector3(-Math.sin(firedFrom.rotation.y), 0, -Math.cos(firedFrom.rotation.y));
         this.travelSpeed = 300;
-        this.mass = 15;
-        this.radius = 7;
-        this.damage = 75;
-        //this.applyMatrix(firedFrom.sphere.matrixWorld);
+        this.mass = 30;
+        //size of the hitbox
+        this.size = new CANNON.Vec3(1.75, 2.5, 1.75);
+        this.damage = 20;
+        this.init();
 
     }
 
@@ -34,5 +34,9 @@ class Bier extends Projectile {
                 selfRef.add(object);
             });
         });
+
+        this.hitbox = new ProjectileBoxHitbox(this.mass,this.physicsMaterial, this);
+        this.hitbox.position.copy(selfRef.position);
+
     }
 }
