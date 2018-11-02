@@ -60,6 +60,10 @@ window.onload = function () {
         var datGUI = new dat.GUI();
         datGUI.add(guiControls, 'setVolume', 0, 1);
 
+        document.getElementById("AMMO").style.bottom = "100px";
+        document.getElementById("AMMO").style.position = "absolute";
+        
+ 
         function render() {
             input.update();
             physics.update();

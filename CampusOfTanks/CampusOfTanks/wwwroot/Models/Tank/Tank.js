@@ -29,6 +29,8 @@ class Tank extends THREE.Group {
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
         this.ammoselect = "Bier";
+        this.images = ["Images/appel.jpg","Images/ei.jpg","Images/bier.jpg"];
+        document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
         this.canShoot = true;
 
         //if false, remove from world
@@ -44,6 +46,8 @@ class Tank extends THREE.Group {
         this.cubemat = new THREE.MeshBasicMaterial();
         this.cubemesh = new THREE.Mesh(this.cubegeo, this.cubemat);
         this.createLabel();
+
+        
     }
 
     initInput() {
@@ -110,6 +114,9 @@ class Tank extends THREE.Group {
 
         this.label.material = this.labelMaterial;
 
+        
+       
+
     }
 
     //load 3d model
@@ -149,10 +156,14 @@ class Tank extends THREE.Group {
         if (this.ammoSelected < 2) {
             this.updateLabel();
             this.ammoSelected++;
+            document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
+
         }
         else {
             this.updateLabel();
             this.ammoSelected = 0;
+            document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
+
         }
 
     }
