@@ -2,8 +2,6 @@ registry = new Registry();
 
 window.onload = function () {
 
-    var camera, renderer;
-
     function init() {
 
         // Physics component.
@@ -21,7 +19,7 @@ window.onload = function () {
 
         //Input component
         var input = new Input();
-        window.addEventListener('keydown', (e) => input.keyDownEvent(e));
+        window.addEventListener('keydown', (e) => { input.keyDownEvent(e); });
         window.addEventListener('keyup', (e) => input.keyUpEvent(e));
         document.addEventListener('mousemove', (e) => input.mouseMoveEvent(e));
 
@@ -42,7 +40,6 @@ window.onload = function () {
         //Scene component
         var scene = new GameScene(false);
         registry.addComponent("scene", scene);
-
 
         //muziek troep
         var sound = new THREE.Audio(gameCam.cameraListener);

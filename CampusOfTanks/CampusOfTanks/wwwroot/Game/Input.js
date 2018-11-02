@@ -103,6 +103,7 @@
             //Check for key press.
             if (!keyLast && keyNow) {
                 this.invokeKey(i, "press");
+                this.invokeKey(i, "held");
             }
 
             //Check for key release.
