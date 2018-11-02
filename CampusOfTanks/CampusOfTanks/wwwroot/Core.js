@@ -24,14 +24,6 @@ window.onload = function () {
         document.addEventListener('mousemove', (e) => input.mouseMoveEvent(e));
         document.addEventListener('mousewheel', (e) => input.mouseWheelEvent(e));
 
-        input.mouseScrollUp((m) => {
-            console.log("scrolling up by " + m + " units");
-        });
-
-        input.mouseScrollDown((m) => {
-            console.log("scrolling down by " + m + " units");
-        });
-
         registry.addComponent("input", input);
 
         //Camera component
