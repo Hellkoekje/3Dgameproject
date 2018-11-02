@@ -3,10 +3,6 @@ class Tank extends GameObject {
     constructor(username, isLocal) {
         super();
 
-        this.registerUpdate(() => {
-            this.lookAtMouse();
-        });
-
         this.username = username;
         this.isLocal = isLocal;
 
@@ -62,6 +58,10 @@ class Tank extends GameObject {
             input.keyHeldAction(keys.left, () => { this.turn(1); });
             input.keyPressAction(keys.space, () => { this.fire(); });
             input.keyPressAction(keys.reload, () => { this.cycleAmmo(); });
+
+            this.registerUpdate(() => {
+                this.lookAtMouse();
+            });
         }
     }
 
@@ -92,19 +92,9 @@ class Tank extends GameObject {
     }
 
     lookAtMouse() {
-        console.log(this.position);
-        //var mouse = registry.components.input;
-        //var coords = mouse.mouseWorldPosition;
-
-        ////var angle = Math.atan2(coords.z - this.position.z, coords.x - this.position.x);
-        ////angle = angle * (180 / Math.PI);
-        ////if (angle < 0) {
-        ////    angle = 360 - (-angle);
-        ////}
-
-        //console.log(this.group);
-
-        ////this.lookAt(coords);
+        var mouse = registry.components.input;
+        var coords = mouse.mouseWorldPosition;
+        this.lookAt(coords.x, coords.y, coords.z);
     }
 
     updateLabel() {
@@ -124,7 +114,7 @@ class Tank extends GameObject {
     init() {
 
         var selfRef = this;
-        var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
+        //var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
         var mtlLoader = new THREE.MTLLoader();
 
         mtlLoader.setPath('Models/Tank/');
@@ -150,7 +140,7 @@ class Tank extends GameObject {
             });
         });
 
-        camera.lookAt(this);
+        //camera.lookAt(this);
         this.castShadow = true;
     }
     //should be called when 'R' is pressed.

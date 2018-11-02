@@ -3,7 +3,7 @@
         this.raycaster = new THREE.Raycaster();
 
         this.mousePosition = new THREE.Vector2(0, 0);
-        this.mouseWorldPosition = new THREE.Vector2(0, 0);
+        this.mouseWorldPosition = new THREE.Vector3(0, 0, 0);
         this.mouseHitObject = undefined;
 
         this.keyCallbacks = [];
