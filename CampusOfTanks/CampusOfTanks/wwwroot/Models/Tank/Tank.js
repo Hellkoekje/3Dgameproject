@@ -23,17 +23,19 @@ class Tank extends GameObject {
 
         this.speed = 50;
         this.turnSpeed = 1;
-            
+
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
         this.ammoselect = "Bier";
+        this.images = ["Images/appel.jpg", "Images/ei.jpg", "Images/bier.jpg"];
+        document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
         this.canShoot = true;
 
         //if false, remove from world
         this.alive = true;
 
         this.mass = 100;
-        this.hitboxMaterial =  new CANNON.Material("tankhitbox");
+        this.hitboxMaterial = new CANNON.Material("tankhitbox");
         this.hitbox = new TankHitbox(this.mass, this.hitboxMaterial, this);
         this.position.y = -5;
 
@@ -99,11 +101,11 @@ class Tank extends GameObject {
     }
 
     updateLabel() {
-        this.context1.fillText(this.username + " " + this.hitpoints+"HP", 0, 50);
+        this.context1.fillText(this.username + " " + this.hitpoints + "HP", 0, 50);
 
         // canvas contents will be used for a texture
         this.labelTexture = new THREE.Texture(this.canvas1);
-        
+
 
         this.labelMaterial = new THREE.MeshBasicMaterial({ map: this.labelTexture, side: THREE.DoubleSide });
         this.labelMaterial.transparent = true;
@@ -146,10 +148,12 @@ class Tank extends GameObject {
         if (this.ammoSelected < 2) {
             this.updateLabel();
             this.ammoSelected++;
+            document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
         }
         else {
             this.updateLabel();
             this.ammoSelected = 0;
+            document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
         }
 
     }
@@ -163,18 +167,18 @@ class Tank extends GameObject {
                 case 0:
                     projectile = new Appel(this);
                     this.ammoselect = "Appel";
-                 
+
                     break;
                 case 1:
                     projectile = new Ei(this);
                     this.ammoselect = "Ei";
-                   
+
 
                     break;
                 case 2:
                     projectile = new Bier(this);
                     this.ammoselect = "Bier";
-                  
+
 
                     break;
 
