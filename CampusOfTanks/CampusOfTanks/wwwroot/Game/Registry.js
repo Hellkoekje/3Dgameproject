@@ -4,7 +4,7 @@
     }
 
     addComponent(name, comp) {
-        console.log("[REGISTERY] Added " + name + " to the registry");
+        console.log("[REGISTRY] Added " + name + " to the registry");
         this.components[name] = comp;
     }
 }
