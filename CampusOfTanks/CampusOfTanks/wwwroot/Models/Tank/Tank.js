@@ -3,8 +3,6 @@ class Tank extends GameObject {
     constructor(username, isLocal) {
         super();
 
-        super.registerUpdate(this.update);
-
         this.username = username;
         this.isLocal = isLocal;
 
@@ -39,7 +37,6 @@ class Tank extends GameObject {
         this.hitbox = new TankHitbox(this.mass, this.hitboxMaterial, this);
         this.position.y = -5;
 
-       
         this.createLabel();
     }
 
@@ -92,10 +89,6 @@ class Tank extends GameObject {
         this.add(this.label);
     }
 
-    update() {
-        //console.log("tanky tick");
-    }
-
     updateLabel() {
         this.context1.fillText(this.username + " " + this.hitpoints+"HP", 0, 50);
 
@@ -110,7 +103,6 @@ class Tank extends GameObject {
 
     }
 
-    //load 3d model
     init() {
 
         var selfRef = this;
