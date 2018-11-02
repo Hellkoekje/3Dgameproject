@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <title>Campus of Tanks</title>
-
     <!-- Style Sheets -->
     <!-- Website Stylesheet. -->
     <link rel="stylesheet" type="text/css" href="StyleSheet.css" />
@@ -14,14 +14,14 @@
 
 </head>
 <body>
+    
     <div class="container">
-        <!-- Navbar -->
         <div class="navbar">
             <nav class="navbar navbar-expand-md navbar-dark bg-dark">
                 <div class="collapse navbar-collapse" id="Navbar">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="index.html">Campus of Tanks<span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="#">Campus of Tanks<span class="sr-only">(current)</span></a>
                         </li>
                     </ul>
                 </div>
@@ -29,31 +29,30 @@
         </div>
         <div class="col-md-2 nopadding"></div>
         <div class="col-md-8 nopadding">
-            <!-- Logo of the game. -->
-            <div class="pic">
-                <img class="pic" src="pic/Logocampusoftanks.png" />
-            </div>
-            <!-- Title of the game. -->
-            <div class="name">
-                <h1> Campus of Tanks</h1>
-            </div>
+		<h1> Hi Score top 10! </h1>
+		
+		<?php  
+		include_once('includes/classes/hiscoreClass.php');
+		
+		?>
 
-            <!-- buttons for joining match or exit the game. -->
-            <div class="buttons">
-                <form>
-                    <input class="MyButton" type="button" value="Join Game" onclick="window.location.href='username.php'" />
-                    <input class="MyButton" type="button" value="Exit" onclick="window.location.href='www.google.com'" />
-                </form>
-            </div>
+
+
+            <script>
+                function myFunction() {
+                    document.getElementById("#").submit();
+                }
+            </script>
+
         </div>
         <div class="col-md-2 nopadding"></div>
+    <!-- closing the main container here.-->    
     </div>
-
-
-
+    
     <!-- loading scripts as last. this is so the website is more and faster responsive. -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
 </body>
 </html>

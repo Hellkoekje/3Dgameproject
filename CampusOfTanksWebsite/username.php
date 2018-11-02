@@ -1,7 +1,8 @@
+<!-- including the config file to connect with the online database. -->
 <?php 
 include_once('includes/config/config.php');
-
 ?>	
+
 <!DOCTYPE html>
 <html>
 <head>
