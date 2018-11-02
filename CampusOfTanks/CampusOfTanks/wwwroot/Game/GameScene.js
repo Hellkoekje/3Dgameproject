@@ -58,7 +58,7 @@
         var physics = registry.components.physics;
 
         //Skybox
-        this.add(new THREE.Mesh(new THREE.SphereGeometry(750, 12, 12),
+        this.add(new THREE.Mesh(new THREE.SphereGeometry(1500, 24, 24),
                 new THREE.MeshBasicMaterial({
                     map: new THREE.TextureLoader().load("Textures/skybox.jpg"),
                     side: THREE.DoubleSide

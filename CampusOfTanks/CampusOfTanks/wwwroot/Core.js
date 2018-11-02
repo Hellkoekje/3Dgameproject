@@ -27,7 +27,7 @@ window.onload = function () {
         registry.addComponent("input", input);
 
         //Camera component
-        var gameCam = new Camera(1, 1500, 70, 0, 150, -140);
+        var gameCam = new Camera(1, 2500, 70, 0, 150, -140);
         registry.addComponent("camera", gameCam);
 
         //Game window component
