@@ -202,14 +202,4 @@ class Tank extends THREE.Group {
     turn(dir) {
         this.rotateY(dir * this.turnSpeed);
     }
-
-    getDirection(dx, dy, dz) {
-        var matrix = new THREE.Matrix4();
-        matrix.extractRotation(this.matrix);
-
-        var direction = new THREE.Vector3(dx, dy, dz);
-        direction.applyMatrix4(matrix);
-
-        return direction.addScalar(this.speed);
-    }
 }
