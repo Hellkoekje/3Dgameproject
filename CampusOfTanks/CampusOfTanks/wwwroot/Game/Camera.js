@@ -12,6 +12,20 @@
         this.camera = undefined;
         this.cameraListener = undefined;
         this.followingObject = undefined;
+
+        this.followingPosition = this.cameraPosition;
+        this.cameraPosition = new THREE.Vector3(100, 100, 100);
+
+        var input = registry.components.input;
+
+        input.mouseScrollUp((m) => {
+            this.zoomCamera("in", m);
+        });
+
+        input.mouseScrollDown((m) => {
+            this.zoomCamera("out", m);
+        });
+
     }
 
     getCamera() {
