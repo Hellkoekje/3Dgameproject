@@ -1,8 +1,7 @@
+math = new MathCustom();
 registry = new Registry();
 
 window.onload = function () {
-
-    var camera, renderer;
 
     function init() {
 
@@ -21,14 +20,15 @@ window.onload = function () {
 
         //Input component
         var input = new Input();
-        window.addEventListener('keydown', (e) => input.keyDownEvent(e));
+        window.addEventListener('keydown', (e) => { input.keyDownEvent(e); });
         window.addEventListener('keyup', (e) => input.keyUpEvent(e));
         document.addEventListener('mousemove', (e) => input.mouseMoveEvent(e));
+        document.addEventListener('mousewheel', (e) => input.mouseWheelEvent(e));
 
         registry.addComponent("input", input);
 
         //Camera component
-        var gameCam = new Camera(1, 1500, 70, 0, 150, -140);
+        var gameCam = new Camera(1, 2500, 70, 0, 150, -140);
         registry.addComponent("camera", gameCam);
 
         //Game window component
@@ -42,7 +42,6 @@ window.onload = function () {
         //Scene component
         var scene = new GameScene(false);
         registry.addComponent("scene", scene);
-
 
         //muziek troep
         var sound = new THREE.Audio(gameCam.cameraListener);
@@ -62,11 +61,6 @@ window.onload = function () {
         datGUI.add(guiControls, 'setVolume', 0, 1);
 
         function render() {
-
-            setTimeout(function () {
-                requestAnimationFrame(render);
-            }, 1000 / 30);
-
             input.update();
             physics.update();
 
@@ -77,6 +71,7 @@ window.onload = function () {
             
             sound.setVolume(guiControls.setVolume);
             gameWindow.update(scene.getScene(), gameCam.getCamera());
+            requestAnimationFrame(render);
         }
 
         render();

@@ -1,7 +1,10 @@
 ﻿class Input {
     constructor() {
         this.mousePosition = new THREE.Vector2(0, 0);
+
         this.keyCallbacks = [];
+        this.mouseCallbacks = [];
+
         this.keyStatesCopy = [];
         this.keyStates = [];
 
@@ -44,6 +47,20 @@
             callback: callback,
             type: "release",
             keyCode: key
+        });
+    }
+
+    mouseScrollUp(callback) {
+        this.mouseCallbacks.push({
+            type: "scroll-up",
+            callback: callback
+        });
+    }
+
+    mouseScrollDown(callback) {
+        this.mouseCallbacks.push({
+            type: "scroll-down",
+            callback: callback
         });
     }
 
@@ -93,6 +110,25 @@
         //}
     }
 
+    mouseWheelEvent(event) {
+        var dy = event.deltaY;
+        var magnitude = Math.round(dy / 100);
+        var type = "";
+
+        if (magnitude < 0) {
+            type = "up";
+        }
+        else if (magnitude > 0) {
+            type = "down";
+        }
+
+        this.invokeMouseEvent({
+            type: "scroll-" + type,
+            magnitude: magnitude
+        });
+    }
+
+
     update() {
 
         for (var i = 0; i < 256; i++)
@@ -103,6 +139,7 @@
             //Check for key press.
             if (!keyLast && keyNow) {
                 this.invokeKey(i, "press");
+                this.invokeKey(i, "held");
             }
 
             //Check for key release.
@@ -129,6 +166,16 @@
 
             if (data.keyCode == key && data.type == type) {
                 data.callback();
+            }
+        }
+    }
+
+    invokeMouseEvent(mouse) {
+        for (var i = 0; i < this.mouseCallbacks.length; i++) {
+            var data = this.mouseCallbacks[i];
+
+            if (mouse.type == data.type) {
+                data.callback(mouse.magnitude);
             }
         }
     }
