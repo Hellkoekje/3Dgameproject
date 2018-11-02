@@ -22,10 +22,15 @@ window.onload = function () {
         window.addEventListener('keydown', (e) => { input.keyDownEvent(e); });
         window.addEventListener('keyup', (e) => input.keyUpEvent(e));
         document.addEventListener('mousemove', (e) => input.mouseMoveEvent(e));
-        window.addEventListener("scroll", (e) =>
-            {
-                console.log("I'm scrolling!");
-            });
+        document.addEventListener('mousewheel', (e) => input.mouseWheelEvent(e));
+
+        input.mouseScrollUp((m) => {
+            console.log("scrolling up by " + m + " units");
+        });
+
+        input.mouseScrollDown((m) => {
+            console.log("scrolling down by " + m + " units");
+        });
 
         registry.addComponent("input", input);
 
