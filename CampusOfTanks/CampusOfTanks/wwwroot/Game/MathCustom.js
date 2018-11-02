@@ -1,21 +1,21 @@
 ﻿class MathCustom {
-    lerp1d(ax, bx, t)
+    lerp1d(a, b, t)
     {
-        return (1 - t) * ax + t * bx;
+        return a * (1 - t) + b * t;
     }
 
-    lerp2d(ax, ay, bx, by, t) {
+    lerp2d(v0, v1, t) {
         return new THREE.Vector2(
-            this.lerp1d(ax, bx),
-            this.lerp1d(ay, by)
+            this.lerp1d(v0.x, v1.x, t),
+            this.lerp1d(v0.y, v1.x, t)
         );
     }
 
-    lerp3d(ax, ay, bx, by, t) {
+    lerp3d(v0, v1, t) {
         return new THREE.Vector3(
-            this.lerp1d(ax, bx),
-            this.lerp1d(ay, by),
-            this.lerp1d(az, bz),
+            this.lerp1d(v0.x, v1.x, t),
+            this.lerp1d(v0.y, v1.y, t),
+            this.lerp1d(v0.z, v1.z, t),
         );
     }
 }

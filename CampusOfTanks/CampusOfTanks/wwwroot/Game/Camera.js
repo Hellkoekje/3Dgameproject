@@ -16,7 +16,11 @@
 
         this.camera = undefined;
         this.cameraListener = undefined;
+
         this.followingObject = undefined;
+
+        this.followingPosition = this.cameraPosition;
+        this.cameraPosition = new THREE.Vector3(100, 100, 100);
 
         var input = registry.components.input;
 
@@ -65,16 +69,27 @@
 
     follow(obj) {
         this.followingObject = obj;
+
+        this.cameraPosition = this.followingObject.position;
+        this.followingPosition = this.followingObject.position;
     }
 
     update() {
 
         if (!this.followingObject) return;
+        
+        this.followingPosition = this.followingObject.position;
 
-        this.camera.position.x = this.followingObject.position.x; + (this.offsetx * this.zoom);
-        this.camera.position.y = this.followingObject.position.y + (this.offsety * this.zoom);
-        this.camera.position.z = this.followingObject.position.z + (this.offsetz * this.zoom);
-        this.camera.lookAt(this.followingObject.position);
+        var followingPos = new THREE.Vector3(
+            this.followingPosition.x + this.offsetx * this.zoom,
+            this.followingPosition.y + this.offsety * this.zoom,
+            this.followingPosition.z + this.offsetz * this.zoom
+        );
+
+        var position = math.lerp3d(this.cameraPosition, followingPos, 0.8);
+
+        this.camera.position.copy(position);
+        this.camera.lookAt(this.followingPosition);
     }
 
     resize() {

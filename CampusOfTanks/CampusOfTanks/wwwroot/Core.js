@@ -61,11 +61,6 @@ window.onload = function () {
         datGUI.add(guiControls, 'setVolume', 0, 1);
 
         function render() {
-
-            setTimeout(function () {
-                requestAnimationFrame(render);
-            }, 1000 / 30);
-
             input.update();
             physics.update();
 
@@ -76,6 +71,7 @@ window.onload = function () {
             
             sound.setVolume(guiControls.setVolume);
             gameWindow.update(scene.getScene(), gameCam.getCamera());
+            requestAnimationFrame(render);
         }
 
         render();
