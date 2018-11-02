@@ -22,6 +22,10 @@ window.onload = function () {
         window.addEventListener('keydown', (e) => { input.keyDownEvent(e); });
         window.addEventListener('keyup', (e) => input.keyUpEvent(e));
         document.addEventListener('mousemove', (e) => input.mouseMoveEvent(e));
+        window.addEventListener("scroll", (e) =>
+            {
+                console.log("I'm scrolling!");
+            });
 
         registry.addComponent("input", input);
 
