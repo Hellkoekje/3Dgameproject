@@ -1,7 +1,5 @@
 ﻿//class that represents a tank aka a player. This is the superclass for our different tanks.
-class Tank extends THREE.Group {
-
-
+class Tank extends GameObject {
     constructor(username, isLocal) {
         super();
 
@@ -23,8 +21,8 @@ class Tank extends THREE.Group {
         //amount of damage tank can take before getting rekt
         this.hitpoints = 100;
 
-        this.speed = 3;
-        this.turnSpeed = 0.075;
+        this.speed = 50;
+        this.turnSpeed = 1;
             
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
@@ -41,10 +39,6 @@ class Tank extends THREE.Group {
         this.hitbox = new TankHitbox(this.mass, this.hitboxMaterial, this);
         this.position.y = -5;
 
-        //cube test
-        this.cubegeo = new THREE.BoxGeometry(20, 10, 30);
-        this.cubemat = new THREE.MeshBasicMaterial();
-        this.cubemesh = new THREE.Mesh(this.cubegeo, this.cubemat);
         this.createLabel();
 
         
@@ -68,14 +62,16 @@ class Tank extends THREE.Group {
             input.keyHeldAction(keys.left, () => { this.turn(1); });
             input.keyPressAction(keys.space, () => { this.fire(); });
             input.keyPressAction(keys.reload, () => { this.cycleAmmo(); });
+
+            this.registerUpdate(() => {
+                this.lookAtMouse();
+            });
         }
-      
     }
 
     createLabel() {
 
         //hitpoints and name label
-
         this.canvas1 = document.createElement('canvas');
         this.context1 = this.canvas1.getContext('2d');
         this.context1.font = "Bold 40px Arial";
@@ -99,10 +95,13 @@ class Tank extends THREE.Group {
         this.add(this.label);
     }
 
-    updateLabel() {
-        
+    lookAtMouse() {
+        var mouse = registry.components.input;
+        var coords = mouse.mouseWorldPosition;
+        this.lookAt(coords.x, coords.y, coords.z);
+    }
 
-       
+    updateLabel() {
         this.context1.fillText(this.username + " " + this.hitpoints+"HP", 0, 50);
 
         // canvas contents will be used for a texture
@@ -119,11 +118,10 @@ class Tank extends THREE.Group {
 
     }
 
-    //load 3d model
     init() {
 
         var selfRef = this;
-        var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
+        //var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
         var mtlLoader = new THREE.MTLLoader();
 
         mtlLoader.setPath('Models/Tank/');
@@ -148,8 +146,9 @@ class Tank extends THREE.Group {
                 selfRef.add(group);
             });
         });
-        camera.lookAt(selfRef);
-        selfRef.castShadow = true;
+
+        //camera.lookAt(this);
+        this.castShadow = true;
     }
     //should be called when 'R' is pressed.
     cycleAmmo() {
@@ -177,18 +176,18 @@ class Tank extends THREE.Group {
                 case 0:
                     projectile = new Appel(this);
                     this.ammoselect = "Appel";
-                    this.updateLabel();
+                 
                     break;
                 case 1:
                     projectile = new Ei(this);
                     this.ammoselect = "Ei";
-                    this.updateLabel();
+                   
 
                     break;
                 case 2:
                     projectile = new Bier(this);
                     this.ammoselect = "Bier";
-                    this.updateLabel();
+                  
 
                     break;
 
@@ -207,10 +206,10 @@ class Tank extends THREE.Group {
     }
 
     move(dir) {
-        this.translateZ(dir * this.speed);
+        this.translateZ(dir * this.speed * this.deltaTime);
     }
 
     turn(dir) {
-        this.rotateY(dir * this.turnSpeed);
+        this.rotateY(dir * this.turnSpeed * this.deltaTime);
     }
 }

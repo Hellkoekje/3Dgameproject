@@ -39,6 +39,9 @@ window.onload = function () {
 
         gameCam.intializeCamera();
 
+        var gameObjectCollection = new GameObjectCollection();
+        registry.addComponent("gameobjects", gameObjectCollection);
+
         //Scene component
         var scene = new GameScene(false);
         registry.addComponent("scene", scene);
@@ -64,13 +67,17 @@ window.onload = function () {
         document.getElementById("AMMO").style.position = "absolute";
         
  
+        var clock = new THREE.Clock(true);
+
         function render() {
+            var delta = clock.getDelta();
+
             input.update();
             physics.update();
 
             //TODO: We probably want to manually update ALL entities.
             //tank.updateLabel();
-
+            gameObjectCollection.update(delta);
             gameCam.update();
             
             sound.setVolume(guiControls.setVolume);

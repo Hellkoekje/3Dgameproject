@@ -18,15 +18,17 @@
     }
 
     addBullet(mesh, hitbox, body) {
+        this.world.addBody(body);
         this.bulletMeshes.push(mesh);
         this.bulletHitboxes.push(hitbox);
-        this.world.addBody(body);
+        
     }
 
     addTank(mesh, hitbox, body) {
+        this.world.addBody(body);
         this.tankMeshes.push(mesh);
         this.tankHitboxes.push(hitbox);
-        this.world.addBody(body);
+        
     }
 
     addBody(body) {
@@ -71,8 +73,9 @@
                 body.position.copy(tank.position);
                 body.quaternion.copy(tank.quaternion);
                 body.position.y += 5;
-                tank.updateLabel();
                
+                //  tank.updateLabel();
+
             }
             else {
                 this.tankMeshes.splice(n, 1);

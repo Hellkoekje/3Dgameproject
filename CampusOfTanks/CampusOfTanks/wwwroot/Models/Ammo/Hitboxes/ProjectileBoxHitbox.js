@@ -8,13 +8,13 @@
     }
 
     init() {
+        var selfref = this;
         var boxShape = new CANNON.Box(this.projectile.size);
         this.addShape(boxShape);
         this.addEventListener("collide",
             function (e) {
                 this.projectile.alive = false;
-
-
+                //console.log(e.body.tank.rotation);
             });
 
     }

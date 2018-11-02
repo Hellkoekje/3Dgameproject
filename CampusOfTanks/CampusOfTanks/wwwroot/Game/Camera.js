@@ -18,7 +18,6 @@
         this.cameraListener = undefined;
 
         this.followingObject = undefined;
-
         this.followingPosition = this.cameraPosition;
         this.cameraPosition = new THREE.Vector3(100, 100, 100);
 
