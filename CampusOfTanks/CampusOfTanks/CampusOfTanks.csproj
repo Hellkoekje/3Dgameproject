@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\js\dat.gui\" />
+    <Folder Include="wwwroot\js\SpriteText\" />
   </ItemGroup>
 
 </Project>
