@@ -27,6 +27,8 @@ class Tank extends GameObject {
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
         this.ammoselect = "Bier";
+        this.images = ["Images/appel.jpg","Images/ei.jpg","Images/bier.jpg"];
+        document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
         this.canShoot = true;
 
         //if false, remove from world
@@ -38,6 +40,8 @@ class Tank extends GameObject {
         this.position.y = -5;
 
         this.createLabel();
+
+        
     }
 
     initInput() {
@@ -111,6 +115,9 @@ class Tank extends GameObject {
         this.label.material.map = this.labelTexture;
 
 
+        
+       
+
     }
 
     init() {
@@ -150,10 +157,14 @@ class Tank extends GameObject {
         if (this.ammoSelected < 2) {
             this.updateLabel();
             this.ammoSelected++;
+            document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
+
         }
         else {
             this.updateLabel();
             this.ammoSelected = 0;
+            document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
+
         }
 
     }
