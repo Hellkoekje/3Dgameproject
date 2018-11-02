@@ -23,8 +23,8 @@ class Tank extends GameObject {
         //amount of damage tank can take before getting rekt
         this.hitpoints = 100;
 
-        this.speed = 3;
-        this.turnSpeed = 0.075;
+        this.speed = 1;
+        this.turnSpeed = 0.025;
             
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
@@ -194,10 +194,10 @@ class Tank extends GameObject {
     }
 
     move(dir) {
-        this.translateZ(dir * this.speed);
+        this.translateZ(dir * this.speed * this.deltaTime);
     }
 
     turn(dir) {
-        this.rotateY(dir * this.turnSpeed);
+        this.rotateY(dir * this.turnSpeed * this.deltaTime);
     }
 }

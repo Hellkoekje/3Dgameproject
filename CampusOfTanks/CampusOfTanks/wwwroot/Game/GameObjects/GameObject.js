@@ -3,6 +3,7 @@
     constructor() {
         super();
         this.updateFunctions = [];
+        this.deltaTime = 1.0;
 
         var gameObjectCollection = registry.components.gameobjects;
         gameObjectCollection.add(this);
@@ -13,8 +14,9 @@
     }
 
     update(deltaTime) {
+        this.deltaTime = deltaTime;
         for (var i = 0; i < this.updateFunctions.length; i++) {
-            this.updateFunctions[i](deltaTime);
+            this.updateFunctions[i]();
         }
     }
 }
