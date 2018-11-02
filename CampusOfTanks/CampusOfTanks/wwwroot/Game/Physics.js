@@ -74,7 +74,7 @@
                 body.quaternion.copy(tank.quaternion);
                 body.position.y += 5;
                
-                //  tank.updateLabel();
+                  tank.updateLabel();
 
             }
             else {

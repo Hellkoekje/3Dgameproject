@@ -27,6 +27,8 @@ class Tank extends GameObject {
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
         this.ammoselect = "Bier";
+        this.images = ["Images/appel.jpg","Images/ei.jpg","Images/bier.jpg"];
+        document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
         this.canShoot = true;
 
         //if false, remove from world
@@ -38,6 +40,8 @@ class Tank extends GameObject {
         this.position.y = -5;
 
         this.createLabel();
+
+        
     }
 
     initInput() {
@@ -66,28 +70,31 @@ class Tank extends GameObject {
     createLabel() {
 
         //hitpoints and name label
-        this.canvas1 = document.createElement('canvas');
-        this.context1 = this.canvas1.getContext('2d');
-        this.context1.font = "Bold 40px Arial";
-        this.context1.fillStyle = "rgba(255,0,0,0.95)";
-        this.context1.fillText(this.username + " " + this.hitpoints, 0, 50);
+
+        var canvas1 = document.createElement('canvas');
+        var context1 = canvas1.getContext('2d');
+        context1.font = "Bold 40px Arial";
+        context1.fillStyle = "rgba(255,0,0,0.95)";
+        context1.fillText(this.username + " " + this.hitpoints, 0, 50);
+
 
 
         // canvas contents will be used for a texture
         this.labelTexture = new THREE.Texture(this.canvas1);
         this.labelTexture.needsUpdate = true;
 
-        this.labelMaterial = new THREE.MeshBasicMaterial({ map: this.labelTexture, side: THREE.DoubleSide });
-        this.labelMaterial.transparent = true;
+        this.labelMaterial = new THREE.SpriteMaterial({ map: this.labelTexture });
+        this.labelMaterial.needsUpdate = true;
+        this.labelMaterial.map.needsUpdate = true;
+     
 
-        this.label = new THREE.Mesh(
-            new THREE.PlaneGeometry(this.canvas1.width, this.canvas1.height),
-            this.labelMaterial
-        );
-        this.label.scale.set(0.2, 0.2, 0.2);
+        this.label = new THREE.Sprite(this.labelMaterial);
+        this.label.scale.set(100, 100, 100);
         this.label.position.set(this.position.x, this.position.y + 20, this.position.z);
         this.add(this.label);
+       
     }
+
 
     lookAtMouse() {
         var mouse = registry.components.input;
@@ -101,14 +108,16 @@ class Tank extends GameObject {
     updateLabel() {
         this.context1.fillText(this.username + " " + this.hitpoints+"HP", 0, 50);
 
+
         // canvas contents will be used for a texture
-        this.labelTexture = new THREE.Texture(this.canvas1);
+        this.labelTexture = new THREE.Texture(canvas1);
+
+
+        this.label.material.map = this.labelTexture;
+
+
         
-
-        this.labelMaterial = new THREE.MeshBasicMaterial({ map: this.labelTexture, side: THREE.DoubleSide });
-        this.labelMaterial.transparent = true;
-
-        this.label.material = this.labelMaterial;
+       
 
     }
 
@@ -146,10 +155,14 @@ class Tank extends GameObject {
         if (this.ammoSelected < 2) {
             this.updateLabel();
             this.ammoSelected++;
+            document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
+
         }
         else {
             this.updateLabel();
             this.ammoSelected = 0;
+            document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
+
         }
 
     }

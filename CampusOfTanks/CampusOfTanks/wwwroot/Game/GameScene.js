@@ -57,6 +57,14 @@
         //Get dependencies from registry.
         var physics = registry.components.physics;
 
+        //DeKuip level
+
+      /*  var level = new Level();
+        level.position.y = 10;
+        this.add(level);*/
+        
+
+
         //Skybox
         this.add(new THREE.Mesh(new THREE.SphereGeometry(1500, 24, 24),
                 new THREE.MeshBasicMaterial({

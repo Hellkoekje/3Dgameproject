@@ -53,6 +53,10 @@ window.onload = function () {
         registry.addComponent("gui", gui);
 
 
+        document.getElementById("AMMO").style.bottom = "100px";
+        document.getElementById("AMMO").style.position = "absolute";
+        
+ 
         var clock = new THREE.Clock(true);
 
         function render() {
