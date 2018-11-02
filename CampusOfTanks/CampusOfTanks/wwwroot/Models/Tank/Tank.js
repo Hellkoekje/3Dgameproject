@@ -3,6 +3,10 @@ class Tank extends GameObject {
     constructor(username, isLocal) {
         super();
 
+        this.registerUpdate(() => {
+            this.lookAtMouse();
+        });
+
         this.username = username;
         this.isLocal = isLocal;
 
@@ -21,8 +25,8 @@ class Tank extends GameObject {
         //amount of damage tank can take before getting rekt
         this.hitpoints = 100;
 
-        this.speed = 1;
-        this.turnSpeed = 0.025;
+        this.speed = 50;
+        this.turnSpeed = 1;
             
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
@@ -59,13 +63,11 @@ class Tank extends GameObject {
             input.keyPressAction(keys.space, () => { this.fire(); });
             input.keyPressAction(keys.reload, () => { this.cycleAmmo(); });
         }
-      
     }
 
     createLabel() {
 
         //hitpoints and name label
-
         this.canvas1 = document.createElement('canvas');
         this.context1 = this.canvas1.getContext('2d');
         this.context1.font = "Bold 40px Arial";
@@ -87,6 +89,22 @@ class Tank extends GameObject {
         this.label.scale.set(0.2, 0.2, 0.2);
         this.label.position.set(this.position.x, this.position.y + 20, this.position.z);
         this.add(this.label);
+    }
+
+    lookAtMouse() {
+        console.log(this.position);
+        //var mouse = registry.components.input;
+        //var coords = mouse.mouseWorldPosition;
+
+        ////var angle = Math.atan2(coords.z - this.position.z, coords.x - this.position.x);
+        ////angle = angle * (180 / Math.PI);
+        ////if (angle < 0) {
+        ////    angle = 360 - (-angle);
+        ////}
+
+        //console.log(this.group);
+
+        ////this.lookAt(coords);
     }
 
     updateLabel() {
@@ -131,8 +149,9 @@ class Tank extends GameObject {
                 selfRef.add(group);
             });
         });
-        camera.lookAt(selfRef);
-        selfRef.castShadow = true;
+
+        camera.lookAt(this);
+        this.castShadow = true;
     }
     //should be called when 'R' is pressed.
     cycleAmmo() {
