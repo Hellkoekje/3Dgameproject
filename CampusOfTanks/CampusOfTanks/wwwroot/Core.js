@@ -46,17 +46,12 @@ window.onload = function () {
         var scene = new GameScene(false);
         registry.addComponent("scene", scene);
 
-        var audio = new Audio();
+        var audio = new Audio(0.001);
         registry.addComponent("audio", audio);
-        //muziek troep
-        var sound = new THREE.Audio(gameCam.cameraListener);
 
-        var guiControls = new function () {
-            this.setVolume = 0.025;
-        };
+        var gui = new Gui();
+        registry.addComponent("gui", gui);
 
-        var datGUI = new dat.GUI();
-        datGUI.add(guiControls, 'setVolume', 0, 1);
 
         var clock = new THREE.Clock(true);
 
@@ -69,7 +64,6 @@ window.onload = function () {
             gameObjectCollection.update(delta);
             gameCam.update();
             
-            sound.setVolume(guiControls.setVolume);
             gameWindow.update(scene.getScene(), gameCam.getCamera());
             requestAnimationFrame(render);
         }
