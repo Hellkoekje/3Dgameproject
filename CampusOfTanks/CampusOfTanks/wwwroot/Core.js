@@ -1,3 +1,4 @@
+math = new MathCustom();
 registry = new Registry();
 
 window.onload = function () {

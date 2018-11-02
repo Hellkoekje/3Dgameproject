@@ -34,6 +34,7 @@
     }
 
     zoomCamera(type, magnitude) {
+        //Make sure we don't pass negative numbers.
         var magn = Math.abs(magnitude);
 
         //Adjust the zoom.
