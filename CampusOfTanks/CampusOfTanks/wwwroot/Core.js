@@ -46,15 +46,10 @@ window.onload = function () {
         var scene = new GameScene(false);
         registry.addComponent("scene", scene);
 
+        var audio = new Audio();
+        registry.addComponent("audio", audio);
         //muziek troep
         var sound = new THREE.Audio(gameCam.cameraListener);
-
-        var audioLoader = new THREE.AudioLoader();
-        audioLoader.load('/sounds/Iron.mp3', function (buffer) {
-            sound.setBuffer(buffer);
-            sound.setLoop(true);
-            sound.play();
-        });
 
         var guiControls = new function () {
             this.setVolume = 0.025;
@@ -71,8 +66,6 @@ window.onload = function () {
             input.update();
             physics.update();
 
-            //TODO: We probably want to manually update ALL entities.
-            //tank.updateLabel();
             gameObjectCollection.update(delta);
             gameCam.update();
             

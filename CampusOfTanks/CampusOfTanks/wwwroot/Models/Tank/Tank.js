@@ -54,8 +54,6 @@ class Tank extends GameObject {
             var input = registry.components.input;
             input.keyHeldAction(keys.forward, () => { this.move(1); });
             input.keyHeldAction(keys.backwards, () => { this.move(-1); });
-            input.keyHeldAction(keys.right, () => { this.turn(-1); });
-            input.keyHeldAction(keys.left, () => { this.turn(1); });
             input.keyPressAction(keys.space, () => { this.fire(); });
             input.keyPressAction(keys.reload, () => { this.cycleAmmo(); });
 
@@ -94,7 +92,10 @@ class Tank extends GameObject {
     lookAtMouse() {
         var mouse = registry.components.input;
         var coords = mouse.mouseWorldPosition;
-        this.lookAt(coords.x, coords.y, coords.z);
+
+        if (this.position.distanceTo(coords) >= 15) {
+            this.lookAt(coords.x, coords.y, coords.z);
+        }
     }
 
     updateLabel() {
@@ -130,9 +131,6 @@ class Tank extends GameObject {
             objLoader.load('shadowsword.obj', function (object) {
 
                 var group = new THREE.Group();
-              // object.scale.set(20,20,20);
-             //   object.rotation.z = 90 * Math.PI / 180;
-                //object.rotation.y = Math.PI / 2;
                 group.add(object);
                 group.castShadow = true;
 
@@ -196,9 +194,5 @@ class Tank extends GameObject {
 
     move(dir) {
         this.translateZ(dir * this.speed * this.deltaTime);
-    }
-
-    turn(dir) {
-        this.rotateY(dir * this.turnSpeed * this.deltaTime);
     }
 }
