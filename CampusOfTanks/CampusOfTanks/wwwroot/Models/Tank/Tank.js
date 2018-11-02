@@ -96,7 +96,7 @@ class Tank extends GameObject {
     }
 
     update() {
-        console.log("tanky tick");
+        //console.log("tanky tick");
     }
 
     updateLabel() {
