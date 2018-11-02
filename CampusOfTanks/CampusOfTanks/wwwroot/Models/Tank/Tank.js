@@ -39,10 +39,7 @@ class Tank extends THREE.Group {
         this.hitbox = new TankHitbox(this.mass, this.hitboxMaterial, this);
         this.position.y = -5;
 
-        //cube test
-        this.cubegeo = new THREE.BoxGeometry(20, 10, 30);
-        this.cubemat = new THREE.MeshBasicMaterial();
-        this.cubemesh = new THREE.Mesh(this.cubegeo, this.cubemat);
+       
         this.createLabel();
     }
 
@@ -166,18 +163,18 @@ class Tank extends THREE.Group {
                 case 0:
                     projectile = new Appel(this);
                     this.ammoselect = "Appel";
-                    this.updateLabel();
+                 
                     break;
                 case 1:
                     projectile = new Ei(this);
                     this.ammoselect = "Ei";
-                    this.updateLabel();
+                   
 
                     break;
                 case 2:
                     projectile = new Bier(this);
                     this.ammoselect = "Bier";
-                    this.updateLabel();
+                  
 
                     break;
 

@@ -43,7 +43,7 @@
 
     resize() {
         var window = registry.components.window;
-        camera.aspect = window.aspect();
-        camera.updateProjectionMatrix();
+        this.camera.aspect = window.aspect;
+        this.camera.updateProjectionMatrix();
     }
 }

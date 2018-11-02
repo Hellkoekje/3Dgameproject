@@ -12,7 +12,7 @@ class Projectile extends THREE.Object3D {
         this.castShadow = true;
   
         this.alive = true;
-        
+        this.velocity = new THREE.Vector3(0, 0, 1).applyQuaternion(this.firedFrom.quaternion);
         this.physicsMaterial = new CANNON.Material("projectile");
         this.hitbox;
         this.damage;
@@ -30,9 +30,9 @@ class Projectile extends THREE.Object3D {
 
         //shoot the body!
         this.hitbox.velocity.set(
-            this.velocity.x * -this.travelSpeed,
+            this.velocity.x * this.travelSpeed,
             this.velocity.y,
-            this.velocity.z * -this.travelSpeed);
+            this.velocity.z * this.travelSpeed);
 
         //remove projectile from scene after 10s
         setTimeout(function () {

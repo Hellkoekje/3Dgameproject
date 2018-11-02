@@ -3,8 +3,8 @@ class Bier extends Projectile {
     constructor(firedFrom = Tank) {
         super(firedFrom);
         this.delay = 7000;
-        this.velocity = new THREE.Vector3(-Math.sin(firedFrom.rotation.y), 0, -Math.cos(firedFrom.rotation.y));
-        this.travelSpeed = 300;
+    
+        this.travelSpeed = 500;
         this.mass = 30;
         //size of the hitbox
         this.size = new CANNON.Vec3(1.75, 2.5, 1.75);
