@@ -1,9 +1,9 @@
 ﻿//class that represents a tank aka a player. This is the superclass for our different tanks.
-class Tank extends THREE.Group {
-
-
+class Tank extends GameObject {
     constructor(username, isLocal) {
         super();
+
+        super.registerUpdate(this.update);
 
         this.username = username;
         this.isLocal = isLocal;
@@ -95,10 +95,11 @@ class Tank extends THREE.Group {
         this.add(this.label);
     }
 
-    updateLabel() {
-        
+    update() {
+        console.log("tanky tick");
+    }
 
-       
+    updateLabel() {
         this.context1.fillText(this.username + " " + this.hitpoints+"HP", 0, 50);
 
         // canvas contents will be used for a texture

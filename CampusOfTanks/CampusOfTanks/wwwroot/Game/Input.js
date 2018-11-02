@@ -1,6 +1,10 @@
 ﻿class Input {
     constructor() {
+        this.raycaster = new THREE.Raycaster();
+
         this.mousePosition = new THREE.Vector2(0, 0);
+        this.mouseWorldPosition = new THREE.Vector2(0, 0);
+        this.mouseHitObject = undefined;
 
         this.keyCallbacks = [];
         this.mouseCallbacks = [];
@@ -97,17 +101,26 @@
         var my = -(event.clientY / window.innerHeight) * 2 + 1;
 
         this.mousePosition.set(mx, my);
+        var gameScene = registry.components.scene;
+        var gameCam = registry.components.camera;
 
-        //camera.updateMatrixWorld();
-        //raycaster.setFromCamera(mouse, camera);
-        //var intersects = raycaster.intersectObjects(scene.children);
+        var camera = gameCam.getCamera();
+        var scene = gameScene.getScene();
 
-        //if (intersects.length > 0) {
+        camera.updateMatrixWorld();
+        this.raycaster.setFromCamera(this.mousePosition, camera);
+        var intersects = this.raycaster.intersectObjects(scene.children);
 
-        //}
-        //else {
-
-        //}
+        //Check if we hit something.
+        if (intersects.length > 0) {
+            var first = intersects[0];
+            this.mouseWorldPosition.set(first.point.x, first.point.y, first.point.z);
+            this.mouseHitObject = first.object;
+        }
+        else {
+            this.mouseWorldPosition.set(0, 0, 0);
+            this.mouseHitObject = undefined;
+        }
     }
 
     mouseWheelEvent(event) {
