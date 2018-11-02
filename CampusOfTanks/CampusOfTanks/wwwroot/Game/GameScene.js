@@ -90,7 +90,7 @@
         var groundShape = new CANNON.Plane();
         var groundBody = new CANNON.Body({
             mass: 0,
-            material: physics.getPhysicsMaterial("slippery")
+            material: physics.getPhysicsMaterial("groundMaterial")
         });
 
         groundBody.addShape(groundShape);
@@ -109,7 +109,7 @@
         tank.position.x = 0;
         physics.addTank(tank, tank.hitbox, tank.hitbox);
         this.add(tank);
-
+   
         var camera = registry.components.camera;
         camera.follow(tank);
 
@@ -120,5 +120,6 @@
         enemytank.position.z = -100;
         physics.addTank(enemytank, enemytank.hitbox, enemytank.hitbox);
         this.add(enemytank);
+       
     }
 }

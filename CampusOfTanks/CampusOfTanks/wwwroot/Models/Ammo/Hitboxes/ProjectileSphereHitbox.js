@@ -16,7 +16,7 @@
         this.addEventListener("collide", function (e) {
             //upon collision remove this
             this.projectile.alive = false;
-
+            console.log(e.body);
 
         });
         
