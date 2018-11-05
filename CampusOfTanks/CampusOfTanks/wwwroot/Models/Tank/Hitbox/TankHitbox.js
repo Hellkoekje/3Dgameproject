@@ -24,6 +24,7 @@
                        
                         //lower our tanks HP by the damage of the projectile
                         this.tank.hitpoints -= e.body.projectile.damage;
+                        this.tank.updateLabel();
                         if (this.tank.hitpoints <= 0) { // if hitpoints is below 0
                             this.tank.alive = false;
                             e.body.projectile.alive = false;
