@@ -6,12 +6,12 @@ class Appel extends Projectile {
     constructor(firedFrom) {
         super(firedFrom);
 
-        this.delay = 5000;
+        this.delay = 1000;
        
-        this.travelSpeed = 400;
+        this.travelSpeed = 500;
         this.mass = 30;
         this.radius = 5;
-        this.damage = 50;
+        this.damage = 70;
         this.init();
     }
     
