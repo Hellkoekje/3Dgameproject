@@ -29,6 +29,7 @@
         });
 
         input.mouseScrollDown((m) => {
+            console.log("yo");
             this.zoomCamera("out", m);
         });
 

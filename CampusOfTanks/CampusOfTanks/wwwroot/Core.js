@@ -22,12 +22,14 @@ window.onload = function () {
         window.addEventListener('keydown', (e) => { input.keyDownEvent(e); });
         window.addEventListener('keyup', (e) => input.keyUpEvent(e));
         document.addEventListener('mousemove', (e) => input.mouseMoveEvent(e));
-        document.addEventListener('mousewheel', (e) => input.mouseWheelEvent(e));
+        document.addEventListener('mousewheel', (e) => input.mouseWheelEvent(e, 0));
+        document.addEventListener('wheel', (e) => input.mouseWheelEvent(e, 1));
+
 
         registry.addComponent("input", input);
 
         //Camera component
-        var gameCam = new Camera(1, 2500, 70, 0, 150, -140);
+        var gameCam = new Camera(1, 2500, 70, 0, 240, -100);
         registry.addComponent("camera", gameCam);
 
         //Game window component

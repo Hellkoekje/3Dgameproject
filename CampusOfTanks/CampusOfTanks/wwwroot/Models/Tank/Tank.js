@@ -9,7 +9,7 @@ class Tank extends GameObject {
         this.init();
         this.initInput();
 
-        this.warmupTime = 120; //60 ticks, 60 fps == 1 second.
+        this.warmupTime = 80; //60 ticks, 60 fps == 1 second.
         this.movementSpeed = 50;
         this.turnSpeed = 1.2;
 

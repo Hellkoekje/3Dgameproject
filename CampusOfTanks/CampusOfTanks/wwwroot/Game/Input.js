@@ -142,21 +142,23 @@
         }
     }
 
-    mouseWheelEvent(event) {
+    mouseWheelEvent(event, browser) {
         var dy = event.deltaY;
-        var magnitude = Math.round(dy / 100);
+
         var type = "";
 
-        if (magnitude < 0) {
+        if (dy < 0) {
             type = "up";
         }
-        else if (magnitude > 0) {
+        else if (dy > 0) {
             type = "down";
         }
 
+        console.log(type);
+
         this.invokeMouseEvent({
             type: "scroll-" + type,
-            magnitude: magnitude
+            magnitude: dy
         });
     }
 
