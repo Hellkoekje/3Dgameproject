@@ -29,7 +29,6 @@
         });
 
         input.mouseScrollDown((m) => {
-            console.log("yo");
             this.zoomCamera("out", m);
         });
 
@@ -79,7 +78,8 @@
         if (!this.followingObject) return;
 
         var backwards = new THREE.Vector3(0, 200 * this.zoom, -200 * this.zoom);
-        this.followingPosition = this.followingObject.matrix.multiplyVector3(backwards);
+        var matrix = this.followingObject.matrix;
+        this.followingPosition = backwards.applyMatrix4(matrix);
 
         var position = math.lerp3d(this.cameraPosition, this.followingPosition, 0.8);
         this.camera.position.copy(position);

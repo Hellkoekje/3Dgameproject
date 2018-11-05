@@ -32,7 +32,6 @@ class Appel extends Projectile {
                 object.rotation.y = Math.PI / 2;
                
                 selfRef.castShadow = true;
-
                 selfRef.add(object);
             });
         });

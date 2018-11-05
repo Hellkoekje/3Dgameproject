@@ -154,8 +154,6 @@
             type = "down";
         }
 
-        console.log(type);
-
         this.invokeMouseEvent({
             type: "scroll-" + type,
             magnitude: dy
