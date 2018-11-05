@@ -4,9 +4,6 @@
         this.tank = tank;
         this.init();
         this.selfref = this;
-
-    
-
     }
 
     init() {

@@ -39,12 +39,6 @@ class Tank extends GameObject {
         this.hitbox = new TankHitbox(this.mass, this.hitboxMaterial, this);
         this.position.y = -5;
 
-     
-
-      
-
-
-
         this.createLabel();
     }
 
@@ -111,16 +105,11 @@ class Tank extends GameObject {
             context.fillStyle = "rgba(255, 0, 0, 0.95)";
         context.fillText(this.username + " " + this.hitpoints + "HP", 0, 50);
 
-
-
         // canvas contents will be used for a texture
         var labelTexture = new THREE.Texture(canvas1);
         this.label.material.map.dispose();
         this.label.material.map = labelTexture;
         this.label.material.map.needsUpdate = true;
-
-            
-
 
     }
 
@@ -189,22 +178,15 @@ class Tank extends GameObject {
                 case 0:
                     projectile = new Appel(this);
                     this.ammoselect = "Appel";
-
                     break;
                 case 1:
                     projectile = new Ei(this);
                     this.ammoselect = "Ei";
-
-
                     break;
                 case 2:
                     projectile = new Bier(this);
                     this.ammoselect = "Bier";
-
-
                     break;
-
-
             }
             //fire the projectile!
             projectile.biem();
