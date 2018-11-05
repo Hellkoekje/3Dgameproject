@@ -96,7 +96,7 @@ class Tank extends GameObject {
         var coords = mouse.mouseWorldPosition;
 
         if (this.position.distanceTo(coords) >= 15) {
-            this.lookAt(coords.x, coords.y, coords.z);
+            this.lookAt(coords.x, this.position.y, coords.z);
         }
     }
 
