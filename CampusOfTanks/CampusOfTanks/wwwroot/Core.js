@@ -4,7 +4,6 @@ registry = new Registry();
 window.onload = function () {
 
     function init() {
-
         // Physics component.
         var physics = new Physics({
             solverIterations: 20,
@@ -37,8 +36,10 @@ window.onload = function () {
 
         registry.addComponent("window", gameWindow);
 
+        //Intialize camera after the window is created.
         gameCam.intializeCamera();
 
+        //Game object collection component.
         var gameObjectCollection = new GameObjectCollection();
         registry.addComponent("gameobjects", gameObjectCollection);
 
@@ -46,17 +47,17 @@ window.onload = function () {
         var scene = new GameScene(false);
         registry.addComponent("scene", scene);
 
+        //Audio component
         var audio = new Audio(0.001);
         registry.addComponent("audio", audio);
 
+        //GUI component.
         var gui = new Gui();
         registry.addComponent("gui", gui);
-
 
         document.getElementById("AMMO").style.bottom = "100px";
         document.getElementById("AMMO").style.position = "absolute";
         
- 
         var clock = new THREE.Clock(true);
 
         function render() {
