@@ -117,7 +117,14 @@
         tank.position.x = 0;
         physics.addTank(tank, tank.hitbox, tank.hitbox);
         this.add(tank);
-   
+
+        //enemy tank for label testing
+        //this.addAiTank("Sjakie");
+        var enemytank = new Tank("Sjakie", false);
+        enemytank.position.z = -100;
+        physics.addTank(enemytank,enemytank.hitbox,enemytank.hitbox);
+        this.add(enemytank);
+
         var camera = registry.components.camera;
         camera.follow(tank);
     }
