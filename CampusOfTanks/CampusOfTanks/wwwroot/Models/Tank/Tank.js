@@ -9,6 +9,10 @@ class Tank extends GameObject {
         this.init();
         this.initInput();
 
+        this.warmupTime = 180; //60 ticks, 60 fps == 1 second.
+        this.movementSpeed = 50;
+        this.turnSpeed = 1.2;
+
         //invisible sphere which is always in front of the barrel of the tank, projectiles use this sphere's matrix to spawn in front of the barrel.
         this.sphere = new THREE.Mesh(
             new THREE.SphereGeometry(0.5, 8, 8),
@@ -20,9 +24,6 @@ class Tank extends GameObject {
         this.sphere.position.set(this.position.x, this.position.y + 12, this.position.z + 40);
         //amount of damage tank can take before getting rekt
         this.hitpoints = 100;
-
-        this.speed = 50;
-        this.turnSpeed = 1;
 
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
@@ -54,14 +55,14 @@ class Tank extends GameObject {
 
         if (this.isLocal) {
             var input = registry.components.input;
-            input.keyHeldAction(keys.forward, () => { this.move(1); });
-            input.keyHeldAction(keys.backwards, () => { this.move(-1); });
-            input.keyPressAction(keys.space, () => { this.fire(); });
-            input.keyPressAction(keys.reload, () => { this.cycleAmmo(); });
+            input.keyHeldAction(keys.forward, (t) => { this.move(1, t); });
+            input.keyHeldAction(keys.backwards, (t) => { this.move(-1, t); });
+            input.keyHeldAction(keys.left, (t) => { this.turn(1, t); });
+            input.keyHeldAction(keys.right, (t) => { this.turn(-1, t); });
 
-            this.registerUpdate(() => {
-                this.lookAtMouse();
-            });
+            input.keyPressAction(keys.space, (t) => { this.fire(); });
+            input.keyPressAction(keys.reload, (t) => { this.cycleAmmo(); });
+
         }
     }
 
@@ -89,15 +90,6 @@ class Tank extends GameObject {
         this.label.scale.set(0.2, 0.2, 0.2);
         this.label.position.set(this.position.x, this.position.y + 20, this.position.z);
         this.add(this.label);
-    }
-
-    lookAtMouse() {
-        var mouse = registry.components.input;
-        var coords = mouse.mouseWorldPosition;
-
-        if (this.position.distanceTo(coords) >= 15) {
-            this.lookAt(coords.x, this.position.y, coords.z);
-        }
     }
 
     updateLabel() {
@@ -159,6 +151,7 @@ class Tank extends GameObject {
     }
     //called when spacebar is pressed.
     fire() {
+        console.log("fiyaaah");
         if (this.canShoot) {
             var selfref = this;
             var projectile;
@@ -196,7 +189,13 @@ class Tank extends GameObject {
         }
     }
 
-    move(dir) {
-        this.translateZ(dir * this.speed * this.deltaTime);
+    move(dir, tick) {
+        var warmup = Math.max(0.25, math.clamp01(tick / this.warmupTime));
+        this.translateZ(this.movementSpeed * warmup * this.deltaTime * dir);
+    }
+
+    turn(dir, tick) {
+        var warmup = Math.max(0.25, math.clamp01(tick / this.warmupTime));
+        this.rotateY(this.turnSpeed * warmup * this.deltaTime * dir);
     }
 }

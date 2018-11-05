@@ -13,8 +13,15 @@
         this.keyStates = [];
 
         for (var i = 0; i < 256; i++) {
-            this.keyStates[i] = false;
-            this.keyStatesCopy[i] = false;
+            this.keyStates[i] = {
+                state: false,
+                counter: 0
+            };
+
+            this.keyStatesCopy[i] = {
+                state: false,
+                counter: 0
+            };;
         }
     }
 
@@ -83,7 +90,14 @@
             console.log("[INPUT] Huh, why are we trying to cram non-ascii in our key array!? -> " + key);
         }
 
-        this.keyStates[key] = true;
+        var original = this.keyStates[key];
+        original.state = true;
+        original.counter++;
+
+        this.keyStates[key] = original;
+
+        this.invokeKey(key, "press");
+        this.invokeKey(key, "held");
     }
 
     keyUpEvent(data) {
@@ -93,7 +107,12 @@
             console.log("[INPUT] Huh, why are we trying to cram non-ascii in our key array!? -> " + key);
         }
 
-        this.keyStates[key] = false;
+        var original = this.keyStates[key];
+        original.state = false;
+        original.counter = 0;
+
+        this.keyStates[key] = original;
+        this.invokeKey(key, "release");
     }
 
     mouseMoveEvent(event) {
@@ -146,24 +165,13 @@
 
         for (var i = 0; i < 256; i++)
         {
-            var keyNow = this.keyStates[i];
             var keyLast = this.keyStatesCopy[i];
-
-            //Check for key press.
-            if (!keyLast && keyNow) {
-                this.invokeKey(i, "press");
-                this.invokeKey(i, "held");
-            }
-
-            //Check for key release.
-            if (keyLast && !keyNow) {
-                this.invokeKey(i, "release");
-            }
-
+            var keyNow = this.keyStates[i];
 
             //Check for key held.
-            if (keyLast && keyNow) {
+            if (keyLast.state && keyNow.state) {
                 this.invokeKey(i, "held");
+                this.keyStates[i].counter++;
             }
         }
 
@@ -175,10 +183,11 @@
 
     invokeKey(key, type) {
         for (var i = 0; i < this.keyCallbacks.length; i++) {
-             var data = this.keyCallbacks[i];
+            var data = this.keyCallbacks[i];
+            var keyData = this.keyStates[key];
 
             if (data.keyCode == key && data.type == type) {
-                data.callback();
+                data.callback(keyData.counter);
             }
         }
     }
