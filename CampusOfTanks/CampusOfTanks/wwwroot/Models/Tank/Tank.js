@@ -27,7 +27,7 @@ class Tank extends GameObject {
         //default ammo. 0 == appel, 1 == ei, 2 == bier
         this.ammoSelected = 2;
         this.ammoselect = "Bier";
-        this.images = ["Images/appel.jpg", "Images/ei.jpg", "Images/bier.jpg"];
+        this.images = ["Images/appel.png", "Images/ei.png", "Images/bier.png"];
         document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
         this.canShoot = true;
 
