@@ -16,6 +16,10 @@
 
         var cam = registry.components.camera;
 
+        var window = registry.components.window;
+        var half = window.width / 2;
+
+
         //Do a null check, in case the cam hasn't been added yet.
         if (cam) {
             cam.resize();

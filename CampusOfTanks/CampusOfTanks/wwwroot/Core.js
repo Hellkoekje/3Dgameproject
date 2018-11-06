@@ -56,12 +56,14 @@ window.onload = function () {
         var gameObjectCollection = new GameObjectCollection();
         registry.addComponent("gameobjects", gameObjectCollection);
 
+        var gamemode = new Gamemode(5);
+        registry.addComponent("gamemode", gamemode);
+
         //Scene component
         var scene = new GameScene(false);
         registry.addComponent("scene", scene);
 
-        var gamemode = new Gamemode(3);
-        registry.addComponent("gamemode", gamemode);
+        gamemode.begin();
 
         //Audio component
         var audio = new Audio(0.001);

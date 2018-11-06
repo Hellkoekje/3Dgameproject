@@ -43,6 +43,10 @@ class Tank extends GameObject {
         this.createLabel();
     }
 
+    isDead() {
+        return this.hitpoints <= 0;
+    }
+
     initInput() {
         var keys = {
             left: 65,
@@ -54,6 +58,10 @@ class Tank extends GameObject {
         };
 
         if (this.isLocal) {
+
+            var gamemode = registry.components.gamemode;
+            gamemode.setPlayerTank(this);
+
             var input = registry.components.input;
             input.keyHeldAction(keys.forward, (t) => { this.move(1, t); });
             input.keyHeldAction(keys.backwards, (t) => { this.move(-1, t); });

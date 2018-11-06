@@ -20,7 +20,15 @@
 
         this.aiTanks = aiTanks;
         this.tanks = [];
+        this.playerTank = undefined;
+    }
 
+    setPlayerTank(tank) {
+        this.tanks.push(tank);
+        this.playerTank = tank;
+    }
+
+    begin() {
         for (var i = 0; i < this.aiTanks; i++) {
             this.spawn("Botmans" + i);
         }
