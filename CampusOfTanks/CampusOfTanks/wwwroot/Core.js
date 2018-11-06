@@ -61,6 +61,8 @@ window.onload = function () {
         var gameObjectCollection = new GameObjectCollection();
         registry.addComponent("gameobjects", gameObjectCollection);
 
+        var gamemode = new Gamemode(5);
+        registry.addComponent("gamemode", gamemode);
         //Audio component
         var audio = new Audio(0.001);
         registry.addComponent("audio", audio);
@@ -69,11 +71,7 @@ window.onload = function () {
         var scene = new GameScene(false);
         registry.addComponent("scene", scene);
 
-
-        //var gamemode = new Gamemode();
-     //  registry.addComponent("gamemode", gamemode);
-
-
+        gamemode.begin();
 
         //GUI component.
         var gui = new Gui();
