@@ -87,7 +87,7 @@
             var tank = tanks[i];
 
             //Don't select ourselves.
-            if (tank.username == this.username) {
+            if (tank.uuid == this.uuid) {
                 continue;
             }
 

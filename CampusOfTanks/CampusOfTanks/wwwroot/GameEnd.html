@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <title>Campus of Tanks</title>
 
+
     <!-- Style Sheets -->
     <!-- Website Stylesheet. -->
     <link rel="stylesheet" type="text/css" href="StyleSheet.css" />
@@ -39,16 +40,15 @@
             </div>
 
             <!-- buttons for joining match or exit the game. -->
-            <div class="buttons">
-                <form>
-                    <input class="MyButton" type="button" value="Start Game" onclick="window.location.href='Username.html'" />
-                    <input class="MyButton" type="button" value="Exit" onclick="window.location.href='www.google.nl'" />
-                </form>
-            </div>
+           
         </div>
         <div class="col-md-2 nopadding"></div>
     </div>
-
+<div class="endgamescore" style="border: 5px solid black; border-color: black; background-color: blue; position: center; width: 600px;
+                                                               ">
+    <p id="score">You killed x tanks!</p> <!-- -->
+    <p id="tijd">And that took you x minutes!</p>
+</div>
 
 
     <!-- loading scripts as last. this is so the website is more and faster responsive. -->
