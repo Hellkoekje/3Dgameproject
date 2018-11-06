@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Campus of Tanks</title>
+
+    <!-- Fake favicon -->
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+
+    <!-- Core ThreeJS such as loaders stuff.-->
+    <script src="three.min.js"></script>
+    <script src="js/ModelLoader/MTLLoader.js"></script>
+    <script src="js/ModelLoader/OBJLoader.js"></script>
+
+    <!-- 3rd party-->
+    <script src="cannon.min.js"></script>
+    <script src="js/Controller/OrbitControls.js"></script>
+    <script src="js/Controller/ObjectControls.js"></script>
+
+
+
+    <!-- Refactor, round 2, now with even more hatred. -->
+    <script src="Game/Registry.js"></script>
+    <script src="Game/GameObjects/GameObject.js"></script>
+    <script src="Game/GameObjects/GameObjectCollection.js"></script>
+    <script src="Game/MathCustom.js"></script>
+    <script src="Game/Gamemode.js"></script>
+    <script src="Game/GameWindow.js"></script>
+    <script src="Game/GameScene.js"></script>
+    <script src="Game/Camera.js"></script>
+    <script src="Game/Audio.js"></script>
+    <script src="Game/Gui.js"></script>
+    <script src="Game/Input.js"></script>
+    <script src="Game/Physics.js"></script>
+
+    <!-- Gameplay scripts includes -->
+    <script src="Models/Tank/Tank.js"></script>
+    <script src="Models/Ammo/Projectile.js"></script>
+    <script src="Models/Ammo/Ei/Ei.js"></script>
+    <script src="Models/Ammo/Appel/Appel.js"></script>
+    <script src="Models/Ammo/Bier/Bier.js"></script>
+    <script src="Models/Tank/Hitbox/TankHitbox.js"></script>
+    <script src="Models/Ammo/Hitboxes/ProjectileBoxHitbox.js"></script>
+    <script src="Models/Ammo/Hitboxes/ProjectileSphereHitbox.js"></script>
+    <script src="js/GUI/FpsMsRam.js"></script>
+    <script src="Models/Level/Level.js"></script>
+
+    <!-- Main script -->
+    <script src="Core.js"></script>
+    <!-- dat.gui -->
+    <script src="js/dat.gui/dat.gui.min.js"></script>
+</head>
+<body style="margin:0px;padding:0px;overflow:hidden;">
+    <div id="AMMO">
+        <img id="ammoplaatje" src="" style="height:150px;width:150px;" />
+    </div>
+
+    
+
+</body>
+</html>

@@ -111,9 +111,10 @@
     constructEntities() {
         //Get dependencies from registry.
         var physics = registry.components.physics;
-
+        var url = new URLSearchParams(window.location.search);
+        var uname = url.get("username");
         // Friendly tank
-        var tank = new Tank("Hidde", true);
+        var tank = new Tank(uname, true);
         tank.position.x = 0;
         physics.addTank(tank, tank.hitbox, tank.hitbox);
         this.add(tank);

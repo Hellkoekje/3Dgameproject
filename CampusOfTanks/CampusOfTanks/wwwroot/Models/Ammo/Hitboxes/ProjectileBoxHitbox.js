@@ -14,7 +14,6 @@
         this.addEventListener("collide",
             function (e) {
                 this.projectile.alive = false;
-                //console.log(e.body.tank.rotation);
             });
 
     }
