@@ -56,35 +56,43 @@ window.onload = function () {
         var gameObjectCollection = new GameObjectCollection();
         registry.addComponent("gameobjects", gameObjectCollection);
 
+        //Audio component
+        var audio = new Audio(0.001);
+        registry.addComponent("audio", audio);
+
         //Scene component
         var scene = new GameScene(false);
         registry.addComponent("scene", scene);
 
-        var gamemode = new Gamemode();
-        registry.addComponent("gamemode", gamemode);
 
-        //Audio component
-        var audio = new Audio(0.001);
-        registry.addComponent("audio", audio);
+     //   var gamemode = new Gamemode();
+     //   registry.addComponent("gamemode", gamemode);
+
+
 
         //GUI component.
         var gui = new Gui();
         registry.addComponent("gui", gui);
 
+
         document.getElementById("AMMO").style.bottom = "100px";
         document.getElementById("AMMO").style.position = "absolute";
+        document.getElementById("tiid").style.top = "10px";
+        document.getElementById("tiid").style.position = "absolute";
         
         var clock = new THREE.Clock(true);
-
+        var timer = new Timer();
         function render() {
             var delta = clock.getDelta();
-
             input.update();
             physics.update();
+            timer;
 
             gameObjectCollection.update(delta);
             gameCam.update();
-            
+            var halfwidth = gameWindow.width / 2;
+            document.getElementById("tiid").style.left = halfwidth + "px";
+
             gameWindow.update(scene.getScene(), gameCam.getCamera());
             requestAnimationFrame(render);
         }
