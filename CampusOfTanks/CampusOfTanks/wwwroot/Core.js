@@ -91,7 +91,6 @@ window.onload = function () {
             var delta = clock.getDelta();
             input.update();
             physics.update();
-           
 
             gameObjectCollection.update(delta);
             gameCam.update();
