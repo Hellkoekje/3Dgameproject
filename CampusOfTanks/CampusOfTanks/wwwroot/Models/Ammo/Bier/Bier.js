@@ -2,13 +2,13 @@
 class Bier extends Projectile {
     constructor(firedFrom = Tank) {
         super(firedFrom);
-        this.delay = 2000;
+        this.delay = 6000;
     
-        this.travelSpeed = 700;
+        this.travelSpeed = 900;
         this.mass = 30;
         //size of the hitbox
         this.size = new CANNON.Vec3(1.75, 2.5, 1.75);
-        this.damage = 120;
+        this.damage = 100;
         this.init();
 
     }
