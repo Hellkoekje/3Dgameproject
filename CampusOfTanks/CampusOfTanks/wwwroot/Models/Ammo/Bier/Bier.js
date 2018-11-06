@@ -2,13 +2,15 @@
 class Bier extends Projectile {
     constructor(firedFrom = Tank) {
         super(firedFrom);
-        this.delay = 2000;
+        this.delay = 6000;
     
-        this.travelSpeed = 700;
+        this.travelSpeed = 900;
         this.mass = 30;
         //size of the hitbox
+
         this.radius = 5;
         this.damage = 120;
+
         this.init();
 
     }
@@ -30,7 +32,6 @@ class Bier extends Projectile {
                 object.rotation.y = 270*Math.PI/180;
 
                 selfRef.castShadow = true;
-
                 selfRef.add(object);
             });
         });

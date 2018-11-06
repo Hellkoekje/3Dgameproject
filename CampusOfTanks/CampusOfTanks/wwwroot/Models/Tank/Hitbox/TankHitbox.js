@@ -32,9 +32,16 @@
                     if (e.body.material !== null) {
                         if (e.body.material.name === "projectile" && e.body.projectile.firedFrom !== selfref.tank) {
 
+                            //Get damage, only do 33% to player tank.
+                            var damage = e.body.projectile.damage;
+                            if (this.tank.isLocal) {
+                                damage = Math.round(damage * 0.25);
+                            }
 
                             //lower our tanks HP by the damage of the projectile
-                            this.tank.hitpoints -= e.body.projectile.damage;
+                            this.tank.hitpoints -= damage;
+
+
                             this.tank.updateLabel();
                             if (this.tank.hitpoints <= 0) { // if hitpoints is below 0
                                 if (this.tank.isLocal) {
