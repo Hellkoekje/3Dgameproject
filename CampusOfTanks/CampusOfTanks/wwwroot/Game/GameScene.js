@@ -22,10 +22,7 @@
 
     constructLights()
     {
-        var ambientLight = new THREE.AmbientLight('#fff');
-        this.add(ambientLight);
-
-        var hemiLight = new THREE.HemisphereLight(0x7F7F7F, 0xFFFFFF, 0.8);
+        var hemiLight = new THREE.HemisphereLight(0xfff9cc, 0xfff9cc, 0.33);
         hemiLight.position.set(0, 80, 0);
         this.add(hemiLight);
 
@@ -50,7 +47,7 @@
         this.add(dirLight);
 
         if (this.visualize) {
-            var dirLightHeper = new THREE.DirectionalLightHelper(dirLight, 100, 0xFFFFFF);
+            var dirLightHeper = new THREE.DirectionalLightHelper(dirLight, 100, 0x333333);
             this.add(dirLightHeper);
         }
     }
@@ -69,7 +66,7 @@
 
 
         //Skybox
-        this.add(new THREE.Mesh(new THREE.SphereGeometry(1500, 24, 24),
+        this.add(new THREE.Mesh(new THREE.SphereGeometry(3000, 48, 48),
                 new THREE.MeshBasicMaterial({
                     map: new THREE.TextureLoader().load("Textures/skybox.jpg"),
                     side: THREE.DoubleSide

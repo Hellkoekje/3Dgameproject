@@ -9,10 +9,10 @@
         this.far = far;
         this.fov = fov;
 
-        this.zoom = 1.0;
+        this.zoom = 2;
         this.zoomMin = 0.3;
-        this.zoomMax = 1.5;
-        this.zoomSensitivity = 0.075;
+        this.zoomMax = 4;
+        this.zoomSensitivity = 0.1;
 
 
         this.camera = undefined;

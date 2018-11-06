@@ -10,7 +10,7 @@ class Tank extends GameObject {
         this.initInput();
 
         this.warmupTime = 90; //60 ticks, 60 fps == 1 second.
-        this.movementSpeed = 75;
+        this.movementSpeed = 100;
         this.turnSpeed = 1.2;
 
         //invisible sphere which is always in front of the barrel of the tank, projectiles use this sphere's matrix to spawn in front of the barrel.
