@@ -34,8 +34,6 @@
 
                             //Get damage, only do 33% to player tank.
                             var damage = e.body.projectile.damage;
-                            console.log("dmg: " + damage);
-
                             if (this.tank.isLocal) {
                                 damage = Math.round(damage * 0.25);
                             }

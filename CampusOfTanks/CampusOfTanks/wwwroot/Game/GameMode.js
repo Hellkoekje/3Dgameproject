@@ -1,7 +1,7 @@
 ﻿class Gamemode {
 
     constructor(aiTanks) {
-        this.waveSpawnRate = 30000;
+        this.waveSpawnRate = 20000;
         this.waveSize = 3;
 
         this.spawns = [];
