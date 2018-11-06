@@ -23,8 +23,6 @@
             return;
         }
 
-        console.log("state is " + this.state);
-
         if (this.target.isDead()) {
             this.state = "next";
             this.stateData = 0;
@@ -79,35 +77,36 @@
 
     selectTarget() {
         var gamemode = registry.components.gamemode;
-        var tanks = gamemode.tanks;
-        var pos = this.position;
+        return gamemode.playerTank;
+        //var tanks = gamemode.tanks;
+        //var pos = this.position;
 
-        var closest = undefined;
-        var closestDist = -1;
+        //var closest = undefined;
+        //var closestDist = -1;
 
-        for (var i = 0; i < tanks.length; i++) {
-            var tank = tanks[i];
+        //for (var i = 0; i < tanks.length; i++) {
+        //    var tank = tanks[i];
 
-            //Don't select ourselves.
-            if (tank.uuid == this.uuid) {
-                continue;
-            }
+        //    //Don't select ourselves.
+        //    if (tank.uuid == this.uuid) {
+        //        continue;
+        //    }
 
-            //Don't select dead bois
-            if (tank.isDead()) {
-                continue;
-            }
+        //    //Don't select dead bois
+        //    if (tank.isDead()) {
+        //        continue;
+        //    }
 
-            var enemyPos = tank.position;
-            var dist = pos.distanceTo(enemyPos);
+        //    var enemyPos = tank.position;
+        //    var dist = pos.distanceTo(enemyPos);
 
-            if (closestDist == -1 || dist < closestDist) {
-                closest = tanks[i];
-                closestDist = dist;
-            }
-        }
+        //    if (closestDist == -1 || dist < closestDist) {
+        //        closest = tanks[i];
+        //        closestDist = dist;
+        //    }
+        //}
 
-        return closest;
+        //return closest;
     }
 
     distanceToTarget() {

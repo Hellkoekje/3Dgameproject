@@ -1,23 +1,19 @@
 ﻿class Gamemode {
 
     constructor(aiTanks) {
-        this.spawnRate = 8000;
+        this.waveSpawnRate = 30000;
+        this.waveSize = 3;
 
         this.spawns = [];
-        this.spawns.push(new THREE.Vector3(500, 0, 0));
-        this.spawns.push(new THREE.Vector3(-500, 0, 0));
-        this.spawns.push(new THREE.Vector3(500, 0, 500));
-        this.spawns.push(new THREE.Vector3(-500, 0, 500));
-        this.spawns.push(new THREE.Vector3(500, 0, -500));
-        this.spawns.push(new THREE.Vector3(-500, 0, -500));
-        this.spawns.push(new THREE.Vector3(500, 0, 200));
-        this.spawns.push(new THREE.Vector3(-500, 0, 200));
-        this.spawns.push(new THREE.Vector3(500, 0, -200));
-        this.spawns.push(new THREE.Vector3(-500, 0, -200));
-        this.spawns.push(new THREE.Vector3(200, 0, 500));
-        this.spawns.push(new THREE.Vector3(-200, 0, 500));
-        this.spawns.push(new THREE.Vector3(200, 0, -500));
-        this.spawns.push(new THREE.Vector3(-200, 0, -500));
+
+        for (var x = -500; x <= 500; x += 200) {
+            for (var y = -500; y <= 500; y += 200) {
+                this.spawns.push(new THREE.Vector3(x, 0, y));
+            }
+        }
+
+        //Spawn the tanks outwards first.
+        this.spawns = this.spawns.reverse();
         this.spawnCounter = 0;
 
         this.aiTanks = aiTanks;
@@ -32,9 +28,19 @@
 
     begin() {
         var self = this;
+        this.wave(self, this.waveSize);
+
         setInterval(function () {
+            self.wave(self, self.waveSize);
+        }, this.waveSpawnRate);
+    }
+
+    wave(self, size) {
+        for (var i = 0; i < size; i++) {
             self.spawn("Botmans");
-        }, this.spawnRate);
+        }
+
+        self.waveSize++;
     }
 
     spawn(name) {
