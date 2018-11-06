@@ -36,8 +36,13 @@ window.onload = function () {
         else if (isFirefox) {
             document.addEventListener('wheel', (e) => input.mouseWheelEvent(e, 1));
         }
+        
 
         registry.addComponent("input", input);
+
+        //Timer component
+        var timer = new Timer();
+        registry.addComponent("timer", timer);
 
         //Camera component
         var gameCam = new Camera(1, 3100, 70, 0, 240, -100);
@@ -81,12 +86,12 @@ window.onload = function () {
         document.getElementById("tiid").style.position = "absolute";
         
         var clock = new THREE.Clock(true);
-        var timer = new Timer();
+       
         function render() {
             var delta = clock.getDelta();
             input.update();
             physics.update();
-            timer;
+           
 
             gameObjectCollection.update(delta);
             gameCam.update();

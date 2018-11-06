@@ -9,6 +9,7 @@ class Tank extends GameObject {
         this.init();
         this.initInput();
 
+        this.kills = 0;
         this.warmupTime = 90; //60 ticks, 60 fps == 1 second.
         this.movementSpeed = 100;
         this.turnSpeed = 1.2;
@@ -99,7 +100,7 @@ class Tank extends GameObject {
     updateLabel() {
         var canvas1 = document.createElement('canvas');
         var context = canvas1.getContext('2d');
-        context.font = "Bold 30pxww Arial";
+        context.font = "Bold 30px Arial";
         if (this.isLocal)
             context.fillStyle = "rgba(0,255,0,0.95)";
         else
