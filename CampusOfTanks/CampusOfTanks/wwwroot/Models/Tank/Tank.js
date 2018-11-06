@@ -130,7 +130,7 @@ class Tank extends GameObject {
         var mtlLoader = new THREE.MTLLoader();
 
         mtlLoader.setPath('Models/Tank/');
-        var url = "shadowsword.mtl";
+        var url = "materials.mtl";
 
         mtlLoader.load(url, function (materials) {
             materials.preload();
@@ -139,7 +139,10 @@ class Tank extends GameObject {
             objLoader.setMaterials(materials);
 
             objLoader.setPath('Models/Tank/');
-            objLoader.load('shadowsword.obj', function (object) {
+            objLoader.load('model.obj', function (object) {
+                object.scale.set(33, 33, 33);
+                object.position.set(1, 9, -7.5);
+                object.rotation.set(0, -Math.PI / 2, 0);
 
                 var group = new THREE.Group();
                 group.add(object);

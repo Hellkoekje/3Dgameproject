@@ -57,8 +57,7 @@
         //Get dependencies from registry.
         var physics = registry.components.physics;
 
-        //DeKuip level
-
+        //DeKuil level
         var level = new Level();
         level.position.y = -10;
         this.add(level);
