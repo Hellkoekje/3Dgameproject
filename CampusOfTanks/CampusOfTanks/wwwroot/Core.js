@@ -60,7 +60,7 @@ window.onload = function () {
         var scene = new GameScene(false);
         registry.addComponent("scene", scene);
 
-        var gamemode = new Gamemode();
+        var gamemode = new Gamemode(3);
         registry.addComponent("gamemode", gamemode);
 
         //Audio component

@@ -143,7 +143,7 @@
     }
 
     mouseWheelEvent(event, browser) {
-        var dy = event.deltaY;
+        var dy = event.deltaY / 100;
         var type = "";
 
         if (dy < 0) {
