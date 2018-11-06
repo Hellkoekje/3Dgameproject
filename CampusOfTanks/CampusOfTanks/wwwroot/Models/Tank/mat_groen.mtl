@@ -1,0 +1,29 @@
+#Rood brandblusser
+newmtl mat8
+  Ka 0.96 0.26 0.21
+  Kd 0.96 0.26 0.21
+
+#Groene dingetjes.
+newmtl mat10
+  Ka 0.30 0.69 0.31
+  Kd 0.30 0.69 0.31
+
+#Rupsbanden
+newmtl mat16
+  Ka 0.12 0.12 0.12
+  Kd 0.12 0.12 0.12
+
+#Body
+newmtl mat18
+  Ka 0.10 0.60 0.10
+  Kd 0.10 0.60 0.10
+  
+#Witte dingetjes
+newmtl mat21
+  Ka 1.00 1.00 1.00
+  Kd 1.00 1.00 1.00
+
+#Zwarte dingetjes
+newmtl mat23
+  Ka 0.10 0.10 0.10
+  Kd 0.10 0.10 0.10

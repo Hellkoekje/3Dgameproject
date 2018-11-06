@@ -130,7 +130,11 @@ class Tank extends GameObject {
         var mtlLoader = new THREE.MTLLoader();
 
         mtlLoader.setPath('Models/Tank/');
-        var url = "materials.mtl";
+
+        var url = "mat_rood.mtl";
+        if (this.isLocal) {
+            url = "mat_groen.mtl";
+        }
 
         mtlLoader.load(url, function (materials) {
             materials.preload();

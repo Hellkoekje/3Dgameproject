@@ -7,6 +7,8 @@
         this.target = undefined;
         this.state = "next";
         this.stateData = 0;
+
+        this.turnSpeed = 5;
     }
 
     updateAi() {
