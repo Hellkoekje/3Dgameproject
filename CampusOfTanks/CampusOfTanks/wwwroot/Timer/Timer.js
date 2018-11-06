@@ -1,8 +1,8 @@
 ﻿class Timer {
     constructor(timeteller) {
         this.minutes = 10;
-        this.seconds = 10;
-        this.counter = 10;
+        this.seconds = 0;
+        this.counter = 600;
         this.timer = document.getElementById("timer");
         this.timer.innerHTML = this.minutes + ":" + this.seconds;
         this.timeIt(timeteller);
