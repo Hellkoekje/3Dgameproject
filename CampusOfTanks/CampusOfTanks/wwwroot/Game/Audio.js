@@ -17,7 +17,7 @@
         this.sounds.push(this.sound);
         this.setVolume(masterVolume);
 
-        this.riptank();
+        //this.riptank();
         
 
     }
