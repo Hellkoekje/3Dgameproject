@@ -9,6 +9,7 @@
         this.stateData = 0;
 
         this.turnSpeed = 5;
+        this.movementSpeed = 133;
     }
 
     updateAi() {
