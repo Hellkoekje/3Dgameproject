@@ -70,7 +70,7 @@ class Tank extends GameObject {
 
             var input = registry.components.input;
             input.keyHeldAction(keys.forward, (t) => { this.move(1, t); });
-            input.keyHeldAction(keys.backwards, (t) => { this.move(-1, t); });
+            input.keyHeldAction(keys.backwards, (t) => { this.move(-0.33, t); });
             input.keyHeldAction(keys.left, (t) => { this.turn(1, t); });
             input.keyHeldAction(keys.right, (t) => { this.turn(-1, t); });
 
