@@ -21,6 +21,15 @@
         
 
     }
+    riplocaltank() {
+        var sound1 = new THREE.PositionalAudio(this.gameCam.cameraListener);
+        this.audioLoader.load('sounds/death.oga', function (buffer) {
+            sound1.setBuffer(buffer);
+            sound1.setRefDistance(20);
+            sound1.play();
+        });
+
+    }
 
     riptank() {
 

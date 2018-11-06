@@ -37,7 +37,11 @@
                             this.tank.hitpoints -= e.body.projectile.damage;
                             this.tank.updateLabel();
                             if (this.tank.hitpoints <= 0) { // if hitpoints is below 0
-                                selfref.audio.riptank();
+                                if (this.tank.isLocal)
+                                    selfref.audio.riplocaltank();
+                               else
+                                    selfref.audio.riptank();
+
                                 this.tank.alive = false;
                                 e.body.projectile.alive = false;
 
