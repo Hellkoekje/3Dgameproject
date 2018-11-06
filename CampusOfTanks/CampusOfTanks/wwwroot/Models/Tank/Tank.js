@@ -190,6 +190,8 @@ class Tank extends GameObject {
         }
     }
 
+
+
     move(dir, tick) {
         var warmup = Math.max(0.25, math.clamp01(tick / this.warmupTime));
         this.translateZ(this.movementSpeed * warmup * this.deltaTime * dir);
