@@ -30,7 +30,12 @@ class Tank extends GameObject {
         this.ammoSelected = 2;
         this.ammoselect = "Bier";
         this.images = ["Images/appel.png", "Images/ei.png", "Images/bier.png"];
-        document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
+        
+
+        if (this.isLocal) {
+            document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
+        }
+
         this.canShoot = true;
 
         //if false, remove from world
@@ -164,12 +169,18 @@ class Tank extends GameObject {
         if (this.ammoSelected < 2) {
 
             this.ammoSelected++;
-            document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
+
+            if (this.isLocal) {
+                document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
+            }
         }
         else {
 
             this.ammoSelected = 0;
-            document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
+
+            if (this.isLocal) {
+                document.getElementById("ammoplaatje").src = this.images[this.ammoSelected];
+            }
         }
 
     }
@@ -205,8 +216,6 @@ class Tank extends GameObject {
 
         }
     }
-
-
 
     move(dir, tick) {
         var warmup = Math.max(0.25, math.clamp01(tick / this.warmupTime));

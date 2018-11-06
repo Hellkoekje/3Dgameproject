@@ -30,7 +30,6 @@ class Bier extends Projectile {
                 object.rotation.y = 270*Math.PI/180;
 
                 selfRef.castShadow = true;
-
                 selfRef.add(object);
             });
         });
