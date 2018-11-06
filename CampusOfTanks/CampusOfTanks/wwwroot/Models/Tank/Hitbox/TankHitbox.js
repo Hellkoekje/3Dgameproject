@@ -45,7 +45,7 @@
                                         "GameEnd.html?kills=" + this.tank.kills + "&time=" + timer.counter;
                                 }
                                 else {
-                                    selfref.audio.riptank();
+                                     selfref.audio.riptank();
                                     e.body.projectile.firedFrom.kills++;
                                 }
                                 this.tank.alive = false;

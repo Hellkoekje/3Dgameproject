@@ -7,7 +7,7 @@ class Bier extends Projectile {
         this.travelSpeed = 700;
         this.mass = 30;
         //size of the hitbox
-        this.size = new CANNON.Vec3(1.75, 2.5, 1.75);
+        this.radius = 5;
         this.damage = 120;
         this.init();
 
@@ -35,7 +35,7 @@ class Bier extends Projectile {
             });
         });
 
-        this.hitbox = new ProjectileBoxHitbox(this.mass,this.physicsMaterial, this);
+        this.hitbox = new ProjectileSphereHitbox(this.mass,this.physicsMaterial, this);
         this.hitbox.position.copy(selfRef.position);
 
     }

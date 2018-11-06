@@ -6,19 +6,21 @@
         window.onload = function () {
             var url = new URLSearchParams(window.location.search);
             var kills = url.get("kills");
-            var secs = url.get("time");
+            var secsleft = url.get("time");
+            var secs = 600 - secsleft;
             var minutes = Math.floor(secs / 60);
             var remainingsecs = secs - minutes * 60;
+            
             var alive = url.get("alive");
 
             document.getElementById("score").innerHTML = "You have killed " + kills + " enemies!";
             if (alive === true) {
                 document.getElementById("tijd").innerHTML =
-                    "And that took you " + minutes + " minutes and " + remainingsecs + " seconds!";
+                    "And that took you " +   minutes + " minutes and " +  remainingsecs + " seconds!";
             }
             else {
                 document.getElementById("tijd").innerHTML =
-                    "And that took you " + minutes + " minutes and " + remainingsecs + " seconds, but you did not manage to survive :(";
+                    "And that took you " +  minutes + " minutes and " +  remainingsecs + " seconds, but you did not manage to survive :(";
             }
 
 
