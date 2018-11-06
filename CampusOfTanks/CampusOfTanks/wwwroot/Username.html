@@ -15,6 +15,10 @@
 <script type="text/javascript">
     function onClick() {
         var uname = document.getElementById("uname").value;
+        if (uname.length > 10) {
+            alert("Username cannot be longer than 10 characters. You entered " + uname.length + " characters.");
+            return;
+        }
         window.location.href = 'Game.html?username=' + uname;
         console.log(uname);
     }
