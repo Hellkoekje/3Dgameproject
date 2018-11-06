@@ -37,9 +37,6 @@ window.onload = function () {
             document.addEventListener('wheel', (e) => input.mouseWheelEvent(e, 1));
         }
 
-
-
-
         registry.addComponent("input", input);
 
         //Camera component
@@ -62,6 +59,9 @@ window.onload = function () {
         //Scene component
         var scene = new GameScene(false);
         registry.addComponent("scene", scene);
+
+        var gamemode = new Gamemode();
+        registry.addComponent("gamemode", gamemode);
 
         //Audio component
         var audio = new Audio(0.001);

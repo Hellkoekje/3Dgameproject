@@ -132,8 +132,6 @@
     addAiTank(name) {
         // Enemy tank
         var enemytank = new Tank(name, false);
-        enemytank.position.x = 0;
-        enemytank.position.z = -100;
         physics.addTank(enemytank, enemytank.hitbox, enemytank.hitbox);
         this.add(enemytank);
     }
