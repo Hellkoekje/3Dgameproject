@@ -1,6 +1,5 @@
 ﻿class MathCustom {
-    lerp1d(a, b, t)
-    {
+    lerp1d(a, b, t) {
         return a * (1 - t) + b * t;
     }
 
@@ -17,5 +16,12 @@
             this.lerp1d(v0.y, v1.y, t),
             this.lerp1d(v0.z, v1.z, t),
         );
+    }
+
+    clamp01(v) {
+        if (v > 1.0) return 1.0;
+        if (v < 0.0) return 0.0;
+
+        return v;
     }
 }

@@ -22,7 +22,7 @@
 
     constructLights()
     {
-        var hemiLight = new THREE.HemisphereLight(0x7F7F7F, 0xFFFFFF, 0.8);
+        var hemiLight = new THREE.HemisphereLight(0xfff9cc, 0xfff9cc, 0.33);
         hemiLight.position.set(0, 80, 0);
         this.add(hemiLight);
 
@@ -47,7 +47,7 @@
         this.add(dirLight);
 
         if (this.visualize) {
-            var dirLightHeper = new THREE.DirectionalLightHelper(dirLight, 100, 0xFFFFFF);
+            var dirLightHeper = new THREE.DirectionalLightHelper(dirLight, 100, 0x333333);
             this.add(dirLightHeper);
         }
     }
@@ -59,40 +59,40 @@
 
         //DeKuip level
 
-      /*  var level = new Level();
-        level.position.y = 10;
-        this.add(level);*/
+        var level = new Level();
+        level.position.y = -10;
+        this.add(level);
         
 
 
         //Skybox
-        this.add(new THREE.Mesh(new THREE.SphereGeometry(1500, 24, 24),
+        this.add(new THREE.Mesh(new THREE.SphereGeometry(3000, 48, 48),
                 new THREE.MeshBasicMaterial({
                     map: new THREE.TextureLoader().load("Textures/skybox.jpg"),
                     side: THREE.DoubleSide
                 }))
         );
 
-        //Plane
-        var geometry = new THREE.PlaneGeometry(1000, 1000, 1000);
-        var texture = new THREE.TextureLoader().load("Textures/Ground.jpg",
-            function (texture) {
-                texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-                texture.offset.set(0, 0);
-                texture.repeat.set(10, 10);
-            });
+        ////Plane
+        //var geometry = new THREE.PlaneGeometry(1000, 1000, 1000);
+        //var texture = new THREE.TextureLoader().load("Textures/Ground.jpg",
+        //    function (texture) {
+        //        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        //        texture.offset.set(0, 0);
+        //        texture.repeat.set(10, 10);
+        //    });
 
-        var material = new THREE.MeshPhongMaterial({ map: texture });
-        var plane = new THREE.Mesh(geometry, material);
-        plane.castShadow = false;
-        plane.receiveShadow = true;
-        plane.position.x = 0;
-        plane.position.y = -5;
-        plane.position.z = 0;
-        plane.rotation.x = -(Math.PI / 2);
-        plane.rotation.y = 0;
-        plane.rotation.z = 0;
-        this.add(plane);
+        //var material = new THREE.MeshPhongMaterial({ map: texture });
+        //var plane = new THREE.Mesh(geometry, material);
+        //plane.castShadow = false;
+        //plane.receiveShadow = true;
+        //plane.position.x = 0;
+        //plane.position.y = -5;
+        //plane.position.z = 0;
+        //plane.rotation.x = -(Math.PI / 2);
+        //plane.rotation.y = 0;
+        //plane.rotation.z = 0;
+        //this.add(plane);
 
         //Physics plane
         var groundShape = new CANNON.Plane();

@@ -9,9 +9,9 @@
         this.far = far;
         this.fov = fov;
 
-        this.zoom = 1.0;
+        this.zoom = 2;
         this.zoomMin = 0.3;
-        this.zoomMax = 3;
+        this.zoomMax = 4;
         this.zoomSensitivity = 0.1;
 
 
@@ -77,17 +77,13 @@
 
         if (!this.followingObject) return;
 
-        this.followingPosition = this.followingObject.position;
-        var followingPos = new THREE.Vector3(
-            this.followingPosition.x + this.offsetx * this.zoom,
-            this.followingPosition.y + this.offsety * this.zoom,
-            this.followingPosition.z + this.offsetz * this.zoom
-        );
+        var backwards = new THREE.Vector3(0, 200 * this.zoom, -200 * this.zoom);
+        var matrix = this.followingObject.matrix;
+        this.followingPosition = backwards.applyMatrix4(matrix);
 
-        var position = math.lerp3d(this.cameraPosition, followingPos, 0.8);
+        var position = math.lerp3d(this.cameraPosition, this.followingPosition, 0.8);
         this.camera.position.copy(position);
-        this.camera.position.x = this.followingObject.position.x;
-        this.camera.lookAt(this.followingPosition);
+        this.camera.lookAt(this.followingObject.position);
     }
 
     resize() {
