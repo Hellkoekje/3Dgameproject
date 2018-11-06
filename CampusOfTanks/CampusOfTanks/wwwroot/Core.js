@@ -59,13 +59,15 @@ window.onload = function () {
         var gameObjectCollection = new GameObjectCollection();
         registry.addComponent("gameobjects", gameObjectCollection);
 
+        //Audio component
+        var audio = new Audio(0.001);
+        registry.addComponent("audio", audio);
+
         //Scene component
         var scene = new GameScene(false);
         registry.addComponent("scene", scene);
 
-        //Audio component
-        var audio = new Audio(0.001);
-        registry.addComponent("audio", audio);
+       
 
         //GUI component.
         var gui = new Gui();
