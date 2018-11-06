@@ -5,7 +5,7 @@ class Tank extends GameObject {
 
         this.username = username;
         this.isLocal = isLocal;
-
+        this.audiohandler = registry.components.audio;
         this.init();
         this.initInput();
 
@@ -177,9 +177,10 @@ class Tank extends GameObject {
                     this.ammoselect = "Bier";
                     break;
             }
+            this.audiohandler.shoot(this.ammoselect);
             //fire the projectile!
             projectile.biem();
-
+           
             //delay next shot by the shootingdelay of the chosen ammo.
             this.canShoot = false;
             setTimeout(function () {

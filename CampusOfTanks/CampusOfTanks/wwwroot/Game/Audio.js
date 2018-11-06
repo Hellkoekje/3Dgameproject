@@ -17,8 +17,37 @@
         this.sounds.push(this.sound);
         this.setVolume(masterVolume);
 
-       
+    }
+
+    shoot(projectile) {
         
+        switch (projectile) {
+            case "Ei":
+                var sound1 = new THREE.PositionalAudio(this.gameCam.cameraListener);
+                this.audioLoader.load('sounds/ei.wav', function (buffer) {
+                    sound1.setBuffer(buffer);
+                    sound1.setRefDistance(20);
+                    sound1.play();
+                });
+                break;
+            case "Appel":
+                var sound1 = new THREE.PositionalAudio(this.gameCam.cameraListener);
+                this.audioLoader.load('sounds/appel.wav', function (buffer) {
+                    sound1.setBuffer(buffer);
+                    sound1.setRefDistance(20);
+                    sound1.play();
+                });
+                break;
+            case "Bier":
+                var sound1 = new THREE.PositionalAudio(this.gameCam.cameraListener);
+                this.audioLoader.load('sounds/bier.wav', function (buffer) {
+                    sound1.setBuffer(buffer);
+                    sound1.setRefDistance(20);
+                    sound1.play();
+                });
+                break;
+
+        }
 
     }
     riplocaltank() {

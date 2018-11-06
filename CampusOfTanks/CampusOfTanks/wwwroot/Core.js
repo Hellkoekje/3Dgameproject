@@ -65,8 +65,8 @@ window.onload = function () {
         registry.addComponent("scene", scene);
 
 
-     //   var gamemode = new Gamemode();
-     //   registry.addComponent("gamemode", gamemode);
+        //var gamemode = new Gamemode();
+     //  registry.addComponent("gamemode", gamemode);
 
 
 
