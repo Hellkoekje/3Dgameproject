@@ -2,7 +2,7 @@
 class Bier extends Projectile {
     constructor(firedFrom = Tank) {
         super(firedFrom);
-        this.delay = 6000;
+        this.delay = 3500;
     
         this.travelSpeed = 900;
         this.mass = 30;

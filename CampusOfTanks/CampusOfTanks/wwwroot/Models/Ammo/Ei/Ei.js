@@ -5,12 +5,12 @@ class Ei extends Projectile {
         
  
       
-        this.delay = 200;
+        this.delay = 50;
 
-        this.travelSpeed = 500;
+        this.travelSpeed = 800;
         this.mass = 30;
         this.radius = 2;
-        this.damage = 5;
+        this.damage = 10;
         this.init();
     }
 
