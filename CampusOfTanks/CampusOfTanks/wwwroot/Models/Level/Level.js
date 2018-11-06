@@ -20,6 +20,7 @@
                 object.position.set(0, 196, 0);
                 object.rotation.y = 270 * Math.PI / 180;
                 selfRef.castShadow = true;
+                selfRef.receiveShadows = true;
                 selfRef.add(object);
             });
         });

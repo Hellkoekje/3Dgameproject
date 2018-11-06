@@ -6,8 +6,11 @@
         this.init();
         this.selfref = this;
         this.collidable = false;
+        this.damageablebycollision = true;
         var selfref = this;
-       
+
+        //delay collisions for a few secs after game starts, for some reason collisions were triggering before the tanks were spawned at the right location.
+
         setTimeout(function() {
                 selfref.collidable = true;
 
@@ -44,8 +47,19 @@
                             } //then he ded
 
                         } else if (e.body.material.name === "tankhitbox" && e.body.tank !== selfref.tank) {
-                            this.tank.alive = false;
-                            e.body.tank.alive = false;
+                            if (this.damageablebycollision) {
+                                this.tank.hitpoints -= 10;
+                                this.tank.updateLabel();
+                                if (this.tank.hitpoints <= 0) { // if hitpoints is below 0
+                                    this.tank.alive = false;
+                                }
+                                this.damageablebycollision = false;
+                                setTimeout(function() {
+                                        selfref.damageablebycollision = true;
+                                    },
+                                    2000);
+                            }
+                            
 
                         }
                     }
