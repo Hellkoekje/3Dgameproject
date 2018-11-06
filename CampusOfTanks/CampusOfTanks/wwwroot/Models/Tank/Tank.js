@@ -72,13 +72,13 @@ class Tank extends GameObject {
         //hitpoints and name label
         var canvas1 = document.createElement('canvas');
         var context1 = canvas1.getContext('2d');
-        context1.font = "Bold 40px Arial";
+        context1.font = "Bold 30px Arial";
         if (this.isLocal)
             context1.fillStyle = "rgba(0,255,0,0.95)";
         else
             context1.fillStyle = "rgba(255, 0, 0, 0.95)";
 
-        context1.fillText(this.username + " " + this.hitpoints + "HP", 0, 50);
+        context1.fillText(this.username + " " + this.hitpoints + "HP", 0, 50,200);
 
 
         // canvas contents will be used for a texture
@@ -99,12 +99,12 @@ class Tank extends GameObject {
     updateLabel() {
         var canvas1 = document.createElement('canvas');
         var context = canvas1.getContext('2d');
-        context.font = "Bold 40px Arial";
+        context.font = "Bold 30pxww Arial";
         if (this.isLocal)
             context.fillStyle = "rgba(0,255,0,0.95)";
         else
             context.fillStyle = "rgba(255, 0, 0, 0.95)";
-        context.fillText(this.username + " " + this.hitpoints + "HP", 0, 50);
+        context.fillText(this.username + " " + this.hitpoints + "HP", 0, 50,200);
 
         // canvas contents will be used for a texture
         var labelTexture = new THREE.Texture(canvas1);
