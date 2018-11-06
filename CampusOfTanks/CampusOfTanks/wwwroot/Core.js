@@ -21,8 +21,7 @@ window.onload = function () {
         var physicsMaterial = new CANNON.Material("slipperyMaterial");
         var physicsContactMaterial = new CANNON.ContactMaterial(physicsMaterial, physicsMaterial, 0.0, 0.3);
         physics.addPhysicsMaterial("slippery", physicsContactMaterial);
-
-        
+       
         registry.addComponent("physics", physics);
 
         //Input component

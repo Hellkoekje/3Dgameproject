@@ -4,6 +4,13 @@
         this.tank = tank;
         this.init();
         this.selfref = this;
+        this.collidable = false;
+        var selfref = this;
+        setTimeout(function() {
+                selfref.collidable = true;
+
+            },
+            7500);
     }
 
     init() {
@@ -14,19 +21,24 @@
         var selfref = this;
         this.addEventListener("collide",
             function (e) {
-                
-                if (e.body.material !== null) {
-                    if (e.body.material.name === "projectile" && e.body.projectile.firedFrom !== selfref.tank) {
+                if (this.collidable) {
+                    if (e.body.material !== null) {
+                        if (e.body.material.name === "projectile" && e.body.projectile.firedFrom !== selfref.tank) {
 
-                       
-                        //lower our tanks HP by the damage of the projectile
-                        this.tank.hitpoints -= e.body.projectile.damage;
-                        this.tank.updateLabel();
-                        if (this.tank.hitpoints <= 0) { // if hitpoints is below 0
+
+                            //lower our tanks HP by the damage of the projectile
+                            this.tank.hitpoints -= e.body.projectile.damage;
+                            this.tank.updateLabel();
+                            if (this.tank.hitpoints <= 0) { // if hitpoints is below 0
+                                this.tank.alive = false;
+                                e.body.projectile.alive = false;
+                            } //then he ded
+
+                        } else if (e.body.material.name === "tankhitbox" && e.body.tank !== selfref.tank) {
                             this.tank.alive = false;
-                            e.body.projectile.alive = false;
-                        } //then he ded
+                            e.body.tank.alive = false;
 
+                        }
                     }
                 }
             });
