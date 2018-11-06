@@ -159,7 +159,6 @@ class Tank extends GameObject {
     }
     //called when spacebar is pressed.
     fire() {
-        console.log("fiyaaah");
         if (this.canShoot) {
             var selfref = this;
             var projectile;
