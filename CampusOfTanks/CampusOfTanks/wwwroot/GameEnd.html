@@ -1,13 +1,36 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <script type="text/javascript">
+        window.onload = function() {
+            var url = new URLSearchParams(window.location.search);
+            var kills = url.get("kills");
+            var secs = url.get("time");
+            var minutes = Math.floor(secs / 60);
+            var remainingsecs = secs - minutes * 60;
+            var alive = url.get("alive");
+
+            document.getElementById("score").innerHTML = "You have killed " + kills + " enemies!";
+            if (alive === true) {
+                document.getElementById("tijd").innerHTML =
+                    "And that took you " + minutes + " minutes and " + remainingsecs + " seconds!";
+            }
+            else {
+                document.getElementById("tijd").innerHTML =
+                    "And that took you " + minutes + " minutes and " + remainingsecs + " seconds, but you did not manage to survive :(";
+            }
+
+
+        }
+
+    </script>
+    <meta charset="utf-8"/>
     <title>Campus of Tanks</title>
-    <link href="GameEnd.css" rel="stylesheet" />
+    <link href="GameEnd.css" rel="stylesheet"/>
 
     <!-- Style Sheets -->
     <!-- Website Stylesheet. -->
-    <link rel="stylesheet" type="text/css" href="StyleSheet.css" />
+    <link rel="stylesheet" type="text/css" href="StyleSheet.css"/>
     <!-- bootstrap stylesheet. -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <!-- stylesheet for the fonts used. -->

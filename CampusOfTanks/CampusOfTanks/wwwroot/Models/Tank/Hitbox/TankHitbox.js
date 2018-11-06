@@ -68,7 +68,7 @@
                                         var timer = registry.components.timer;
 
                                         window.location.href =
-                                            "GameEnd.html?kills=" + this.tank.kills + "&time=" + timer.counter;
+                                            "GameEnd.html?kills=" + this.tank.kills + "&time=" + timer.counter+"&alive=false";
                                     }
 
                                     this.tank.alive = false;
