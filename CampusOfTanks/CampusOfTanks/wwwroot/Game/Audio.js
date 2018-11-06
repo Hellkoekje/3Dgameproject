@@ -16,6 +16,7 @@
 
         this.sounds.push(this.sound);
         this.setVolume(masterVolume);
+       
 
     }
 
