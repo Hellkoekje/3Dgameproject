@@ -144,7 +144,6 @@
 
     mouseWheelEvent(event, browser) {
         var dy = event.deltaY;
-
         var type = "";
 
         if (dy < 0) {

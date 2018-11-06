@@ -3,7 +3,14 @@ registry = new Registry();
 
 window.onload = function () {
 
+    // Chrome 1+
+    var isChrome = !!window.chrome && !!window.chrome.webstore;
+    var isFirefox = typeof InstallTrigger !== 'undefined';
+
     function init() {
+
+        console.log("Your browser is Chrome: " + isChrome + ", Firefox: " + isFirefox);
+
         // Physics component.
         var physics = new Physics({
             solverIterations: 20,
@@ -14,8 +21,7 @@ window.onload = function () {
         var physicsMaterial = new CANNON.Material("slipperyMaterial");
         var physicsContactMaterial = new CANNON.ContactMaterial(physicsMaterial, physicsMaterial, 0.0, 0.3);
         physics.addPhysicsMaterial("slippery", physicsContactMaterial);
-
-        
+       
         registry.addComponent("physics", physics);
 
         //Input component
@@ -23,9 +29,13 @@ window.onload = function () {
         window.addEventListener('keydown', (e) => { input.keyDownEvent(e); });
         window.addEventListener('keyup', (e) => input.keyUpEvent(e));
         document.addEventListener('mousemove', (e) => input.mouseMoveEvent(e));
-        document.addEventListener('mousewheel', (e) => input.mouseWheelEvent(e, 0));
-        document.addEventListener('wheel', (e) => input.mouseWheelEvent(e, 1));
 
+        if (isChrome) {
+            document.addEventListener('mousewheel', (e) => input.mouseWheelEvent(e, 0));
+        }
+        else if (isFirefox) {
+            document.addEventListener('wheel', (e) => input.mouseWheelEvent(e, 1));
+        }
 
         registry.addComponent("input", input);
 
@@ -46,13 +56,19 @@ window.onload = function () {
         var gameObjectCollection = new GameObjectCollection();
         registry.addComponent("gameobjects", gameObjectCollection);
 
+        //Audio component
+        var audio = new Audio(0.001);
+        registry.addComponent("audio", audio);
+
         //Scene component
         var scene = new GameScene(false);
         registry.addComponent("scene", scene);
 
-        //Audio component
-        var audio = new Audio(0.001);
-        registry.addComponent("audio", audio);
+
+     //   var gamemode = new Gamemode();
+     //   registry.addComponent("gamemode", gamemode);
+
+
 
         //GUI component.
         var gui = new Gui();

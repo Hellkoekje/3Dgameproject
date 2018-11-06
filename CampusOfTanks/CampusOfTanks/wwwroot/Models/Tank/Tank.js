@@ -159,7 +159,6 @@ class Tank extends GameObject {
     }
     //called when spacebar is pressed.
     fire() {
-        console.log("fiyaaah");
         if (this.canShoot) {
             var selfref = this;
             var projectile;
@@ -193,6 +192,10 @@ class Tank extends GameObject {
     move(dir, tick) {
         var warmup = Math.max(0.25, math.clamp01(tick / this.warmupTime));
         this.translateZ(this.movementSpeed * warmup * this.deltaTime * dir);
+        if (this.position.x > 550) this.position.x = 550;
+        if (this.position.x < -550) this.position.x = -550;
+        if (this.position.z > 550) this.position.z = 550;
+        if (this.position.z < -550) this.position.z = -550;
     }
 
     turn(dir, tick) {
