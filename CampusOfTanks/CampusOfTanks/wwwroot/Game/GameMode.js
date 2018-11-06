@@ -14,8 +14,6 @@
 
         //Spawn the tanks outwards first.
         this.spawns = this.spawns.reverse();
-        this.spawnCounter = 0;
-
         this.aiTanks = aiTanks;
         this.tanks = [];
         this.playerTank = undefined;
@@ -47,7 +45,8 @@
         var gameScene = registry.components.scene;
         var scene = gameScene.getScene();
         var physics = registry.components.physics;
-        var spawnPos = this.spawns[(this.spawnCounter++) % this.spawns.length];
+        var spawnPos = this.spawns[math.range(0, this.spawns.length)];
+
         var rot = Math.random() * 360;
 
         var botTank = new AITank(name, false);
