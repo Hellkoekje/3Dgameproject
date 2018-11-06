@@ -6,7 +6,7 @@
 
     <!-- Fake favicon -->
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
-
+    <link href="Timer/Timer.css" rel="stylesheet" />
     <!-- Core ThreeJS such as loaders stuff.-->
     <script src="three.min.js"></script>
     <script src="js/ModelLoader/MTLLoader.js"></script>
@@ -48,13 +48,20 @@
     <script src="Core.js"></script>
     <!-- dat.gui -->
     <script src="js/dat.gui/dat.gui.min.js"></script>
+
+    <!--Timer-->
+    <script src="Timer/Timer.js"></script>
 </head>
-<body style="margin:0px;padding:0px;overflow:hidden;">
+<body>
     <div id="AMMO">
         <img id="ammoplaatje" src="" style="height:150px;width:150px;" />
     </div>
-
+    <div id="tiid">
+    <p class="top" id="timer" >10:00</p>
+     </div>
     
+
+
 
 </body>
 </html>
