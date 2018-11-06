@@ -145,6 +145,14 @@
     mouseWheelEvent(event, browser) {
         var dy = event.deltaY;
 
+        //Chrome/Edge has a deltaY of -300 to 300.
+        //Firefox has deltaY of between -3 to 3.
+        if (browser === 0) {
+            dy = dy / 100;
+        }
+
+        console.log(browser);
+
         var type = "";
 
         if (dy < 0) {

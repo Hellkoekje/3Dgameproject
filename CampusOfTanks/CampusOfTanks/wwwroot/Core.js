@@ -3,7 +3,14 @@ registry = new Registry();
 
 window.onload = function () {
 
+    // Chrome 1+
+    var isChrome = !!window.chrome && !!window.chrome.webstore;
+    var isFirefox = typeof InstallTrigger !== 'undefined';
+
     function init() {
+
+        console.log("Your browser is Chrome: " + isChrome + ", Firefox: " + isFirefox);
+
         // Physics component.
         var physics = new Physics({
             solverIterations: 20,
@@ -22,8 +29,15 @@ window.onload = function () {
         window.addEventListener('keydown', (e) => { input.keyDownEvent(e); });
         window.addEventListener('keyup', (e) => input.keyUpEvent(e));
         document.addEventListener('mousemove', (e) => input.mouseMoveEvent(e));
-        document.addEventListener('mousewheel', (e) => input.mouseWheelEvent(e, 0));
-        document.addEventListener('wheel', (e) => input.mouseWheelEvent(e, 1));
+
+        if (isChrome) {
+            document.addEventListener('mousewheel', (e) => input.mouseWheelEvent(e, 0));
+        }
+        else if (isFirefox) {
+            document.addEventListener('wheel', (e) => input.mouseWheelEvent(e, 1));
+        }
+
+
 
 
         registry.addComponent("input", input);
