@@ -1,7 +1,5 @@
 ﻿///<reference path="./../Projectile.js"/>
 
-
-
 class Appel extends Projectile {
     constructor(firedFrom) {
         super(firedFrom);

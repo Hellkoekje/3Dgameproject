@@ -81,9 +81,9 @@ window.onload = function () {
         document.getElementById("AMMO").style.position = "absolute";
         document.getElementById("tiid").style.top = "10px";
         document.getElementById("tiid").style.position = "absolute";
-        
+
+        //Update the game loop.
         var clock = new THREE.Clock(true);
-       
         function render() {
             var delta = clock.getDelta();
             input.update();
