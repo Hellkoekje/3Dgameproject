@@ -1,4 +1,5 @@
-﻿class Gui {
+﻿//GUI.
+class Gui {
     constructor() {
 
         var guiControls = new function () {
