@@ -1,25 +1,47 @@
-﻿class GameScene {
+﻿//Represents the game scene and adds all the objects.
+class GameScene {
 
+    /**
+     * Constructor
+     * @param {any} visualize Should we include the helpers?
+     */
     constructor(visualize) {
         this.visualize = visualize;
         this.scene = new THREE.Scene();
+
+        //Add all the object
         this.constructLights();
         this.constructObjects();
         this.constructEntities();
     }
 
+    /**
+     * Gets the THREEjs scene object.
+     * @returns {THREE.Scene} The scene object.
+     */
     getScene() {
         return this.scene;
     }
 
+    /**
+     * Remove and object from the scene.
+     * @param {Object3D} obj The object we want to remove.
+     */
     remove(obj) {
         this.scene.remove(obj);
     }
 
+    /**
+     * Add an object to the scene.
+     * @param {Object3D} obj Object to add.
+     */
     add(obj) {
         this.scene.add(obj);
     }
 
+    /**
+     * Add all the lights to the scene.
+     */
     constructLights()
     {
         var hemiLight = new THREE.HemisphereLight(0xfff9cc, 0xfff9cc, 0.33);
@@ -52,6 +74,9 @@
         }
     }
 
+    /**
+     *  Add all the objects to the scene. 
+    */
     constructObjects()
     {
         //Get dependencies from registry.
@@ -84,11 +109,15 @@
         physics.addBody(groundBody);
     }
 
+    /**
+     * Add all the entities (such as players and entities).
+     */
     constructEntities() {
         //Get dependencies from registry.
         var physics = registry.components.physics;
         var url = new URLSearchParams(window.location.search);
         var uname = url.get("username");
+
         // Friendly tank
         var tank = new Tank(uname, true);
         tank.position.x = 0;
@@ -97,14 +126,8 @@
 
         //RIP Sjakie 2018-2018
 
+        //Camera needs to follow player tank.
         var camera = registry.components.camera;
         camera.follow(tank);
-    }
-
-    addAiTank(name) {
-        // Enemy tank
-        var enemytank = new Tank(name, false);
-        physics.addTank(enemytank, enemytank.hitbox, enemytank.hitbox);
-        this.add(enemytank);
     }
 }
