@@ -1,5 +1,5 @@
 ﻿
-//Represents a object in the game
+//  Represents a object in the game
 //  Inherits from Group, so we can place it in the scene.
 class GameObject extends THREE.Group {
 
