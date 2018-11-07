@@ -15,7 +15,7 @@
             selfref.collidable = true;
 
         },
-            3000);
+            2000);
     }
 
     init() {

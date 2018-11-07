@@ -1,7 +1,7 @@
 ﻿class Audio {
 
     constructor(masterVolume) {
-        this.masterVolume = 0;
+        this.masterVolume = 0.5;
         this.sounds = [];
 
         this.gameCam = registry.components.camera;
