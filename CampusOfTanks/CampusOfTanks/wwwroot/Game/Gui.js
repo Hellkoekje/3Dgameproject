@@ -1,7 +1,6 @@
-﻿//GUI.
+﻿//GUI that is on screen.
 class Gui {
     constructor() {
-
         var guiControls = new function () {
             this.setVolume = 0.25;
         };

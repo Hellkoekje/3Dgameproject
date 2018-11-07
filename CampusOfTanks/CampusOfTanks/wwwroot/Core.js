@@ -28,7 +28,6 @@ window.onload = function () {
         var input = new Input();
         window.addEventListener('keydown', (e) => { input.keyDownEvent(e); });
         window.addEventListener('keyup', (e) => input.keyUpEvent(e));
-        document.addEventListener('mousemove', (e) => input.mouseMoveEvent(e));
 
         if (isChrome) {
             document.addEventListener('mousewheel', (e) => input.mouseWheelEvent(e, 0));
